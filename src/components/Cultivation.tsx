@@ -1,6 +1,6 @@
 import ScrollAnimation from "@/components/ScrollAnimation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import cultivationImage from "@/assets/cultivation-facility-bright.jpg";
+import cultivationImage from "@/assets/cultivation-contrast-hq.jpg";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
@@ -26,7 +26,7 @@ const Cultivation = () => {
             alt="Indoor cannabis cultivation facility with advanced lighting" 
             className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/40 to-transparent" />
           
           <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-8 md:px-16">
             <h2 className="font-pharma text-3xl sm:text-4xl md:text-5xl font-semibold text-foreground mb-4 sm:mb-6 max-w-2xl drop-shadow-sm tracking-tight">
