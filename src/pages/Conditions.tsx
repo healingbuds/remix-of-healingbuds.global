@@ -6,79 +6,82 @@ import BackToTop from "@/components/BackToTop";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import medicalProductsImage from "@/assets/medical-products-clean.png";
+import productsPainManagement from "@/assets/products-pain-management.jpg";
+import productsMentalHealth from "@/assets/products-mental-health.jpg";
+import productsNeurological from "@/assets/products-neurological.jpg";
+import productsSleep from "@/assets/products-sleep.jpg";
 
 const conditions = [
   { 
     id: "anxiety", 
     name: "Anxiety", 
-    image: medicalProductsImage,
+    image: productsMentalHealth,
     category: "Mental Health"
   },
   { 
     id: "chronic-pain", 
     name: "Chronic Pain", 
-    image: medicalProductsImage,
+    image: productsPainManagement,
     category: "Pain Management"
   },
   { 
     id: "arthritis", 
     name: "Arthritis", 
-    image: medicalProductsImage,
+    image: productsPainManagement,
     category: "Pain Management"
   },
   { 
     id: "back-pain", 
     name: "Back Pain", 
-    image: medicalProductsImage,
+    image: productsPainManagement,
     category: "Pain Management"
   },
   { 
     id: "complex-regional-pain-syndrome", 
     name: "Complex Regional Pain Syndrome", 
-    image: medicalProductsImage,
+    image: productsPainManagement,
     category: "Pain Management"
   },
   { 
     id: "epilepsy", 
     name: "Epilepsy", 
-    image: medicalProductsImage,
+    image: productsNeurological,
     category: "Neurological"
   },
   { 
     id: "insomnia", 
     name: "Insomnia", 
-    image: medicalProductsImage,
+    image: productsSleep,
     category: "Sleep Disorders"
   },
   { 
     id: "migraines", 
     name: "Migraines", 
-    image: medicalProductsImage,
+    image: productsPainManagement,
     category: "Pain Management"
   },
   { 
     id: "multiple-sclerosis", 
     name: "Multiple Sclerosis", 
-    image: medicalProductsImage,
+    image: productsNeurological,
     category: "Neurological"
   },
   { 
     id: "neuropathic-pain", 
     name: "Neuropathic Pain", 
-    image: medicalProductsImage,
+    image: productsPainManagement,
     category: "Pain Management"
   },
   { 
     id: "parkinsons-disease", 
     name: "Parkinson's Disease", 
-    image: medicalProductsImage,
+    image: productsNeurological,
     category: "Neurological"
   },
   { 
     id: "ptsd", 
     name: "PTSD", 
-    image: medicalProductsImage,
+    image: productsMentalHealth,
     category: "Mental Health"
   },
 ];
