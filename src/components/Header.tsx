@@ -180,18 +180,23 @@ const Header = () => {
               <button
                 onClick={() => setEligibilityDialogOpen(true)}
                 className={cn(
-                  "font-body font-semibold text-white px-4 py-2 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg",
+                  "font-body font-semibold px-6 py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl",
+                  "backdrop-blur-2xl bg-gradient-to-br from-white/30 via-white/20 to-white/10",
+                  "dark:from-white/20 dark:via-white/10 dark:to-white/5",
+                  "border border-white/40 shadow-lg hover:border-white/60",
+                  "text-white hover:bg-white/30",
                   scrolled ? "text-sm" : "text-sm"
                 )}
-                style={{ 
-                  background: 'linear-gradient(135deg, hsl(var(--lime-green)), hsl(var(--deep-teal)))',
-                }}
               >
                 Check Eligibility
               </button>
               <button
                 className={cn(
-                  "font-body font-semibold text-foreground px-4 py-2 rounded-full transition-all duration-300 hover:scale-105 border-2 border-primary/50 bg-background/90 hover:bg-primary/10 hover:shadow-lg",
+                  "font-body font-semibold px-6 py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl",
+                  "backdrop-blur-2xl bg-gradient-to-br from-white/20 via-white/15 to-white/10",
+                  "dark:from-white/15 dark:via-white/10 dark:to-white/5",
+                  "border border-white/30 shadow-lg hover:border-white/50",
+                  "text-foreground hover:bg-white/25",
                   scrolled ? "text-sm" : "text-sm"
                 )}
               >
