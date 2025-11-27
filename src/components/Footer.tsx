@@ -78,13 +78,13 @@ const Footer = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/research" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block">
-                      Healthcare Professionals
+                    <Link to="/conditions" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block">
+                      Conditions Treated
                     </Link>
                   </li>
                   <li>
-                    <Link to="/#news" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block">
-                      News & Updates
+                    <Link to="/research" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block">
+                      Research & Innovation
                     </Link>
                   </li>
                 </ul>
