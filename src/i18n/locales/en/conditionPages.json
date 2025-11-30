@@ -1,0 +1,218 @@
+{
+  "breadcrumbs": {
+    "home": "Home",
+    "conditions": "Eligible Conditions"
+  },
+  "toc": {
+    "title": "Table of Contents"
+  },
+  "cta": {
+    "title": "Ready to Explore Your Treatment Options?",
+    "subtitle": "Contact our specialist team to learn more about medical cannabis treatment.",
+    "contact": "Contact Us →",
+    "viewConditions": "View All Eligible Conditions"
+  },
+  "consultation": "Schedule a Consultation →",
+  "anxiety": {
+    "title": "Anxiety and Medical Cannabis",
+    "subtitle": "Anxiety disorders affect millions of people globally, causing persistent worry and fear that interfere with daily activities. For those who haven't found relief with traditional treatments, medical cannabis may offer an alternative approach.",
+    "toc": {
+      "causes": "What Causes Anxiety?",
+      "symptoms": "Anxiety Symptoms",
+      "types": "Types of Anxiety Disorders",
+      "treatment": "Anxiety Treatment",
+      "medicalCannabis": "Medical Cannabis for Anxiety",
+      "faq": "Frequently Asked Questions"
+    },
+    "causes": {
+      "title": "What Causes Anxiety?",
+      "intro": "Anxiety disorders can develop from a complex set of risk factors, including genetics, brain chemistry, personality, and life events. Understanding the underlying causes is essential for effective treatment.",
+      "items": [
+        { "title": "Genetic Factors", "desc": "Family history and inherited traits can increase susceptibility" },
+        { "title": "Brain Chemistry", "desc": "Imbalances in neurotransmitters may contribute to anxiety" },
+        { "title": "Environmental Stress", "desc": "Traumatic experiences or prolonged stress can trigger anxiety" },
+        { "title": "Medical Conditions", "desc": "Certain health issues can cause or worsen anxiety symptoms" }
+      ]
+    },
+    "symptoms": {
+      "title": "Anxiety Symptoms",
+      "intro": "Anxiety manifests through both physical and psychological symptoms:",
+      "physical": {
+        "title": "Physical Symptoms",
+        "items": ["Rapid heartbeat", "Sweating and trembling", "Shortness of breath", "Muscle tension", "Fatigue", "Sleep disturbances"]
+      },
+      "psychological": {
+        "title": "Psychological Symptoms",
+        "items": ["Persistent worry", "Restlessness", "Difficulty concentrating", "Irritability", "Sense of impending doom", "Avoidance behaviors"]
+      }
+    },
+    "types": {
+      "title": "Types of Anxiety Disorders",
+      "items": [
+        { "type": "Generalized Anxiety Disorder (GAD)", "desc": "Persistent excessive worry about various aspects of daily life" },
+        { "type": "Social Anxiety Disorder", "desc": "Intense fear of social situations and being judged by others" },
+        { "type": "Panic Disorder", "desc": "Recurrent unexpected panic attacks and fear of future episodes" },
+        { "type": "Specific Phobias", "desc": "Excessive fear of specific objects or situations" },
+        { "type": "Separation Anxiety", "desc": "Excessive fear of being separated from attachment figures" }
+      ]
+    },
+    "treatment": {
+      "title": "Anxiety Treatment",
+      "intro": "Effective anxiety treatment typically involves a combination of approaches:",
+      "items": [
+        { "title": "Psychotherapy", "desc": "Cognitive behavioral therapy (CBT) and exposure therapy" },
+        { "title": "Medications", "desc": "Antidepressants, anti-anxiety medications, and beta-blockers" },
+        { "title": "Lifestyle Changes", "desc": "Exercise, stress management, and sleep hygiene" },
+        { "title": "Support Groups", "desc": "Connecting with others experiencing similar challenges" }
+      ]
+    },
+    "medicalCannabis": {
+      "title": "Medical Cannabis for Anxiety",
+      "content1": "For patients with anxiety who have not found adequate relief with conventional treatments, medical cannabis may represent an alternative therapeutic option. Research suggests that certain cannabinoids may help regulate the body's stress response system.",
+      "content2": "At Healing Buds, our medical professionals conduct comprehensive evaluations to determine whether medical cannabis is appropriate for your specific anxiety condition. We provide personalized treatment plans and ongoing support."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "Can medical cannabis help with anxiety?",
+          "answer": "Some studies suggest that certain cannabinoids may help manage anxiety symptoms, though responses vary by individual. The endocannabinoid system plays a role in regulating stress and emotional responses, which is why medical cannabis is being explored as a potential treatment option."
+        },
+        {
+          "question": "Will medical cannabis make my anxiety worse?",
+          "answer": "Response to medical cannabis varies by individual, and dosing is critical. Our medical team carefully monitors your treatment to find the optimal dosage and formulation for your specific needs, minimizing the risk of adverse effects."
+        },
+        {
+          "question": "How long does treatment take to work?",
+          "answer": "The timeline varies depending on the individual, the specific product, and the administration method. Some patients notice improvements within days, while others may require several weeks to find their optimal treatment regimen."
+        }
+      ]
+    }
+  },
+  "chronicPain": {
+    "title": "Chronic Pain and Medical Cannabis",
+    "subtitle": "Chronic pain affects millions of people worldwide, significantly impacting quality of life and daily functioning. Medical cannabis has emerged as a potential treatment option for those who haven't found relief with conventional therapies.",
+    "breadcrumb": "Chronic Pain",
+    "toc": {
+      "causes": "What Causes Chronic Pain?",
+      "symptoms": "Chronic Pain Symptoms",
+      "treatment": "Chronic Pain Treatment",
+      "medicalCannabis": "Medical Cannabis for Chronic Pain",
+      "faq": "Frequently Asked Questions"
+    },
+    "causes": {
+      "title": "What Causes Chronic Pain?",
+      "intro": "Chronic pain is defined as pain that persists for more than 12 weeks, often despite treatment. It can arise from various sources and may continue long after the initial injury has healed.",
+      "items": [
+        { "title": "Injury or Surgery", "desc": "Nerve damage or tissue injury that doesn't heal properly" },
+        { "title": "Chronic Conditions", "desc": "Arthritis, fibromyalgia, and other long-term diseases" },
+        { "title": "Nerve Damage", "desc": "Neuropathy from diabetes, infections, or trauma" },
+        { "title": "Unknown Causes", "desc": "Sometimes chronic pain develops without any identifiable cause" }
+      ]
+    },
+    "symptoms": {
+      "title": "Chronic Pain Symptoms",
+      "intro": "Chronic pain can manifest in various forms and intensities:",
+      "types": {
+        "title": "Pain Types",
+        "items": ["Aching or throbbing pain", "Burning sensations", "Shooting or stabbing pain", "Stiffness and soreness", "Tingling or numbness"]
+      },
+      "associated": {
+        "title": "Associated Symptoms",
+        "items": ["Fatigue and sleep problems", "Mood changes and depression", "Reduced mobility", "Decreased appetite", "Social withdrawal"]
+      }
+    },
+    "treatment": {
+      "title": "Chronic Pain Treatment",
+      "intro": "Effective chronic pain management often requires a multidisciplinary approach:",
+      "items": [
+        { "title": "Physical Therapy", "desc": "Exercise and rehabilitation programs" },
+        { "title": "Medications", "desc": "Pain relievers, anti-inflammatories, and nerve blockers" },
+        { "title": "Psychological Support", "desc": "Cognitive behavioral therapy and counseling" },
+        { "title": "Alternative Therapies", "desc": "Acupuncture, massage, and mindfulness" }
+      ]
+    },
+    "medicalCannabis": {
+      "title": "Medical Cannabis for Chronic Pain",
+      "content1": "Research suggests that cannabinoids may interact with the body's endocannabinoid system to help manage pain signals. Medical cannabis has shown promise in clinical studies for reducing chronic pain and improving quality of life.",
+      "content2": "Our medical team works with patients to develop personalized treatment plans, carefully monitoring dosage and effects to optimize pain relief while minimizing side effects."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "Is medical cannabis effective for all types of chronic pain?",
+          "answer": "Medical cannabis may be more effective for certain types of pain, particularly neuropathic pain. Our physicians conduct thorough evaluations to determine if it's appropriate for your specific condition."
+        },
+        {
+          "question": "Can I use medical cannabis alongside other pain medications?",
+          "answer": "In some cases, medical cannabis may be used as part of a comprehensive pain management plan. Our team carefully reviews your current medications to ensure safe and effective treatment."
+        },
+        {
+          "question": "How quickly can I expect relief from chronic pain?",
+          "answer": "Response times vary depending on the type of cannabis product, administration method, and individual factors. Some patients experience relief within hours, while others may need several weeks to find their optimal treatment."
+        }
+      ]
+    }
+  },
+  "insomnia": {
+    "title": "Insomnia Treatment",
+    "subtitle": "Understanding sleep disorders and exploring medical cannabis as a treatment option for improving sleep quality and duration.",
+    "breadcrumb": "Insomnia",
+    "toc": {
+      "causes": "Causes",
+      "symptoms": "Symptoms",
+      "treatment": "Treatment",
+      "medicalCannabis": "Medical Cannabis",
+      "faq": "FAQ"
+    },
+    "causes": {
+      "title": "What Causes Insomnia?",
+      "content1": "Insomnia is a sleep disorder characterized by difficulty falling asleep, staying asleep, or both. It can be acute (short-term) or chronic (lasting three months or longer).",
+      "content2": "Common causes include stress, anxiety, depression, poor sleep habits, medications, caffeine or alcohol consumption, underlying health conditions, and environmental factors.",
+      "content3": "Chronic insomnia can lead to serious health consequences including increased risk of cardiovascular disease, obesity, diabetes, and impaired cognitive function."
+    },
+    "symptoms": {
+      "title": "Insomnia Symptoms",
+      "sleep": {
+        "title": "Sleep-Related Symptoms",
+        "items": ["Difficulty falling asleep", "Waking up during the night", "Waking too early", "Not feeling rested after sleep", "Sleeping for short periods"]
+      },
+      "daytime": {
+        "title": "Daytime Symptoms",
+        "items": ["Fatigue and low energy", "Difficulty concentrating", "Irritability and mood changes", "Impaired work performance", "Increased errors or accidents"]
+      }
+    },
+    "treatment": {
+      "title": "Treatment Options",
+      "items": [
+        { "title": "Sleep Hygiene", "desc": "Establishing consistent sleep schedules and bedtime routines" },
+        { "title": "Cognitive Behavioral Therapy", "desc": "Addressing thoughts and behaviors affecting sleep" },
+        { "title": "Medications", "desc": "Prescription sleep aids and over-the-counter options" },
+        { "title": "Lifestyle Changes", "desc": "Exercise, diet modifications, and stress management" }
+      ]
+    },
+    "medicalCannabis": {
+      "title": "Medical Cannabis for Sleep",
+      "content1": "Research suggests that certain cannabinoids, particularly CBD, may help regulate sleep patterns and reduce anxiety that interferes with sleep. THC has also shown potential for reducing the time it takes to fall asleep.",
+      "content2": "Our sleep specialists work with patients to develop personalized treatment plans, carefully selecting strains and dosages optimized for improving sleep quality without morning grogginess."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "Can medical cannabis help me fall asleep faster?",
+          "answer": "Some studies suggest that certain cannabis formulations may reduce sleep onset latency. Our specialists can recommend products specifically formulated for sleep support."
+        },
+        {
+          "question": "Will I feel groggy in the morning?",
+          "answer": "Proper dosing and strain selection are key to avoiding morning grogginess. Our team works with you to find the optimal timing and dosage for restful sleep without next-day effects."
+        },
+        {
+          "question": "Is medical cannabis addictive for sleep use?",
+          "answer": "When used as prescribed and monitored by medical professionals, the risk of dependence is managed. We regularly assess your treatment to ensure safe, effective long-term use."
+        }
+      ]
+    }
+  }
+}
