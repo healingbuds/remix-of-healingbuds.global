@@ -75,90 +75,71 @@ export const BotanicalDecoration = ({ variant = 'leaf', className }: BotanicalDe
     );
   }
 
-  // Elegant 7-fingered fan leaf with serrated edges - line art style
+  // Realistic cannabis bud/cola - dense flower structure
   if (variant === 'cannabis-leaf-elegant') {
     return (
       <svg 
         className={cn("text-primary", className)}
-        viewBox="0 0 120 150"
+        viewBox="0 0 120 180"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Stem */}
+        {/* Main stem */}
         <path 
-          d="M60 145 L60 95" 
+          d="M60 175 L60 140" 
           stroke="currentColor" 
-          strokeWidth="1.2" 
+          strokeWidth="2" 
           strokeLinecap="round"
         />
         
-        {/* Center leaflet (tallest) with serrated edges */}
-        <path 
-          d="M60 95 
-             Q58 80 56 65 Q55 58 54 52 Q55 48 57 45 Q58 40 59 35 Q60 28 60 20
-             Q60 28 61 35 Q62 40 63 45 Q65 48 66 52 Q65 58 64 65 Q62 80 60 95"
-          stroke="currentColor" 
-          strokeWidth="1" 
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-        {/* Center vein */}
-        <path d="M60 95 L60 25" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.5" />
+        {/* Main bud body - dense rounded shape */}
+        <ellipse cx="60" cy="85" rx="32" ry="55" stroke="currentColor" strokeWidth="1.2" fill="none" />
         
-        {/* Left inner leaflet */}
-        <path 
-          d="M60 95 
-             Q52 85 45 70 Q42 62 40 55 Q41 50 44 45 Q45 38 48 32
-             Q52 40 54 50 Q56 62 60 95"
-          stroke="currentColor" strokeWidth="1" strokeLinecap="round" fill="none"
-        />
-        <path d="M60 95 Q52 80 46 55" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.4" />
+        {/* Inner structure - calyx clusters */}
+        <path d="M45 60 Q40 55 42 48 Q48 52 50 58 Q46 56 45 60" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M75 60 Q80 55 78 48 Q72 52 70 58 Q74 56 75 60" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M40 80 Q34 75 36 68 Q42 72 44 78 Q40 76 40 80" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M80 80 Q86 75 84 68 Q78 72 76 78 Q80 76 80 80" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M42 100 Q36 96 38 90 Q44 93 46 98 Q42 96 42 100" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M78 100 Q84 96 82 90 Q76 93 74 98 Q78 96 78 100" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M50 115 Q45 112 47 106 Q52 109 54 114 Q50 112 50 115" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M70 115 Q75 112 73 106 Q68 109 66 114 Q70 112 70 115" stroke="currentColor" strokeWidth="0.8" fill="none" />
         
-        {/* Left middle leaflet */}
-        <path 
-          d="M60 95 
-             Q48 88 35 75 Q30 68 26 60 Q28 54 32 48 Q34 42 38 36
-             Q44 48 50 62 Q56 78 60 95"
-          stroke="currentColor" strokeWidth="1" strokeLinecap="round" fill="none"
-        />
-        <path d="M60 95 Q45 80 32 55" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.4" />
+        {/* Center calyx details */}
+        <path d="M55 70 Q52 65 54 58 Q58 62 60 68 Q56 66 55 70" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M65 70 Q68 65 66 58 Q62 62 60 68 Q64 66 65 70" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M55 90 Q52 85 54 78 Q58 82 60 88 Q56 86 55 90" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M65 90 Q68 85 66 78 Q62 82 60 88 Q64 86 65 90" stroke="currentColor" strokeWidth="0.8" fill="none" />
         
-        {/* Left outer leaflet */}
-        <path 
-          d="M60 95 
-             Q45 92 30 85 Q22 80 16 72 Q18 66 22 60 Q25 54 30 50
-             Q38 62 48 75 Q55 85 60 95"
-          stroke="currentColor" strokeWidth="1" strokeLinecap="round" fill="none"
-        />
-        <path d="M60 95 Q40 88 22 68" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.4" />
+        {/* Pistils/hairs - orange hair detail lines */}
+        <path d="M38 65 Q32 60 28 58" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.6" />
+        <path d="M82 65 Q88 60 92 58" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.6" />
+        <path d="M35 85 Q28 82 24 80" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.6" />
+        <path d="M85 85 Q92 82 96 80" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.6" />
+        <path d="M38 105 Q32 103 28 102" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.6" />
+        <path d="M82 105 Q88 103 92 102" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.6" />
+        <path d="M50 45 Q48 40 46 35" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.6" />
+        <path d="M70 45 Q72 40 74 35" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.6" />
+        <path d="M60 35 Q60 28 60 22" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.6" />
         
-        {/* Right inner leaflet */}
-        <path 
-          d="M60 95 
-             Q68 85 75 70 Q78 62 80 55 Q79 50 76 45 Q75 38 72 32
-             Q68 40 66 50 Q64 62 60 95"
-          stroke="currentColor" strokeWidth="1" strokeLinecap="round" fill="none"
-        />
-        <path d="M60 95 Q68 80 74 55" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.4" />
+        {/* Sugar leaves poking out */}
+        <path d="M30 75 Q22 70 18 75 Q24 74 30 75" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M90 75 Q98 70 102 75 Q96 74 90 75" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M32 95 Q24 92 20 96 Q26 95 32 95" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M88 95 Q96 92 100 96 Q94 95 88 95" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M45 125 Q40 128 36 132 Q42 130 48 128" stroke="currentColor" strokeWidth="0.8" fill="none" />
+        <path d="M75 125 Q80 128 84 132 Q78 130 72 128" stroke="currentColor" strokeWidth="0.8" fill="none" />
         
-        {/* Right middle leaflet */}
-        <path 
-          d="M60 95 
-             Q72 88 85 75 Q90 68 94 60 Q92 54 88 48 Q86 42 82 36
-             Q76 48 70 62 Q64 78 60 95"
-          stroke="currentColor" strokeWidth="1" strokeLinecap="round" fill="none"
-        />
-        <path d="M60 95 Q75 80 88 55" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.4" />
-        
-        {/* Right outer leaflet */}
-        <path 
-          d="M60 95 
-             Q75 92 90 85 Q98 80 104 72 Q102 66 98 60 Q95 54 90 50
-             Q82 62 72 75 Q65 85 60 95"
-          stroke="currentColor" strokeWidth="1" strokeLinecap="round" fill="none"
-        />
-        <path d="M60 95 Q80 88 98 68" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round" opacity="0.4" />
+        {/* Trichome texture suggestion - tiny circles */}
+        <circle cx="48" cy="55" r="1" fill="currentColor" opacity="0.3" />
+        <circle cx="72" cy="55" r="1" fill="currentColor" opacity="0.3" />
+        <circle cx="42" cy="75" r="1" fill="currentColor" opacity="0.3" />
+        <circle cx="78" cy="75" r="1" fill="currentColor" opacity="0.3" />
+        <circle cx="45" cy="95" r="1" fill="currentColor" opacity="0.3" />
+        <circle cx="75" cy="95" r="1" fill="currentColor" opacity="0.3" />
+        <circle cx="55" cy="65" r="1" fill="currentColor" opacity="0.3" />
+        <circle cx="65" cy="65" r="1" fill="currentColor" opacity="0.3" />
+        <circle cx="60" cy="80" r="1" fill="currentColor" opacity="0.3" />
       </svg>
     );
   }
