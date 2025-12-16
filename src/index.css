@@ -29,8 +29,8 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 176 39% 17%;
 
-    /* Primary & Secondary using brand colors */
-    --primary: 164 48% 53%;             /* Accent Light Green */
+    /* Primary & Secondary using brand colors - sage teal matching nav */
+    --primary: 175 42% 35%;               /* Sage-teal matching navbar tone */
     --primary-foreground: 0 0% 98%;
 
     --secondary: 178 48% 33%;           /* Secondary Green */
@@ -144,8 +144,8 @@ All colors MUST be HSL.
     --popover: 200 6% 12%;
     --popover-foreground: 210 15% 93%;
 
-    /* Primary green - softened, medical-grade */
-    --primary: 155 38% 45%;               /* Desaturated, calm green */
+    /* Primary - sage green, matching nav tone */
+    --primary: 168 35% 38%;               /* Muted sage-teal, matching navbar */
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - muted warm tone for balance */
@@ -156,9 +156,9 @@ All colors MUST be HSL.
     --muted: 200 5% 14%;
     --muted-foreground: 210 10% 55%;
 
-    /* Accent - subtle green for highlights only */
-    --accent: 155 25% 16%;
-    --accent-foreground: 155 35% 70%;
+    /* Accent - subtle sage for highlights only */
+    --accent: 168 20% 18%;
+    --accent-foreground: 168 30% 65%;
 
     --destructive: 0 55% 50%;
     --destructive-foreground: 0 0% 100%;
@@ -166,10 +166,10 @@ All colors MUST be HSL.
     /* Borders and inputs - neutral */
     --border: 200 6% 20%;
     --input: 200 5% 14%;
-    --ring: 155 38% 45%;
+    --ring: 168 35% 38%;
     
     /* Status colors for medical UX */
-    --success: 155 38% 45%;               /* Same as primary - verified states */
+    --success: 168 35% 38%;               /* Same as primary - verified states */
     --warning: 38 75% 55%;                /* Warm amber for attention */
     --info: 200 60% 50%;                  /* Calm blue for info */
   }

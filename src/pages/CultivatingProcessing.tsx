@@ -7,7 +7,7 @@ import BackToTop from "@/components/BackToTop";
 import MobileBottomActions from "@/components/MobileBottomActions";
 import { Plus } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import cultivationImage from "@/assets/cannabis-cultivation-hands.jpg";
+import cultivationImage from "@/assets/greenhouse-exterior-hq.jpg";
 import greenhouseRows from "@/assets/greenhouse-exterior-path.jpg";
 import productionImage from "@/assets/water-irrigation-system.jpg";
 import indoorCultivation from "@/assets/indoor-grow-facility.jpg";
