@@ -1,8 +1,5 @@
 import plantDecoration1 from "@/assets/plant-decoration-1.png";
-import plantDecoration2 from "@/assets/plant-decoration-2.png";
 import plantDecoration3 from "@/assets/plant-decoration-3.png";
-import plantDecoration4 from "@/assets/plant-decoration-4.png";
-import plantDecoration5 from "@/assets/plant-decoration-5.png";
 import { motion } from "framer-motion";
 
 // Custom SVG icons matching the reference design (line-art style)
@@ -117,15 +114,10 @@ const cardVariants = {
   },
 };
 
-// Scattered leaf decoration data
+// Subtle scattered leaf decorations - barely visible quality touch (2-3 only)
 const leafDecorations = [
-  { src: plantDecoration1, className: "absolute -top-8 -left-8 w-32 md:w-48 opacity-[0.08] dark:opacity-[0.12] rotate-[-25deg]" },
-  { src: plantDecoration2, className: "absolute top-20 -right-12 w-28 md:w-40 opacity-[0.06] dark:opacity-[0.10] rotate-[15deg]" },
-  { src: plantDecoration3, className: "absolute -bottom-12 left-1/4 w-36 md:w-52 opacity-[0.07] dark:opacity-[0.11] rotate-[8deg]" },
-  { src: plantDecoration4, className: "absolute bottom-32 -right-8 w-24 md:w-36 opacity-[0.05] dark:opacity-[0.09] rotate-[-12deg] scale-x-[-1]" },
-  { src: plantDecoration5, className: "absolute -bottom-16 -left-16 w-40 md:w-56 opacity-[0.09] dark:opacity-[0.14] rotate-[20deg]" },
-  { src: plantDecoration1, className: "absolute top-1/2 -left-20 w-32 md:w-44 opacity-[0.05] dark:opacity-[0.08] rotate-[35deg] scale-x-[-1]" },
-  { src: plantDecoration3, className: "absolute -bottom-8 -right-16 w-44 md:w-64 opacity-[0.08] dark:opacity-[0.12] rotate-[-5deg]" },
+  { src: plantDecoration1, className: "absolute bottom-4 right-12 w-28 md:w-36 opacity-[0.03] dark:opacity-[0.025] rotate-12" },
+  { src: plantDecoration3, className: "absolute top-8 left-8 w-20 md:w-28 opacity-[0.025] dark:opacity-[0.02] -rotate-12" },
 ];
 
 const ValueProps = () => {
