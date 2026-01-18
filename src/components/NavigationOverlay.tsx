@@ -357,6 +357,24 @@ const NavigationOverlay = ({
                 </div>
 
                 <Link 
+                  to="/franchise-opportunities" 
+                  className={cn(
+                    "text-base transition-all duration-200 py-4 px-5 rounded-2xl",
+                    "touch-manipulation min-h-[56px] flex items-center gap-3 active:scale-[0.98]",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+                    isActive("/franchise-opportunities") 
+                      ? "text-white font-semibold bg-gradient-to-r from-primary/40 to-primary/20 shadow-lg shadow-primary/20" 
+                      : "text-white/90 hover:text-white hover:bg-white/10"
+                  )}
+                  onClick={onClose}
+                >
+                  {isActive("/franchise-opportunities") && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  )}
+                  {t('nav.franchise')}
+                </Link>
+
+                <Link 
                   to="/contact" 
                   className={cn(
                     "text-base transition-all duration-200 py-4 px-5 rounded-2xl",
