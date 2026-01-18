@@ -106,7 +106,7 @@ const locationConfigs: Record<string, LocationConfig> = {
     postalCodePlaceholder: '1000-001',
     postalCodePattern: '^[A-Z0-9\\s-]{3,10}$',
     dateFormat: 'dd/MM/yyyy',
-    email: 'info@healingbuds.global',
+    email: 'info@healingbuds.pt',
     phone: '+351 210 123 456',
     address: 'Avenida D. João II, 98 A',
     city: '1990-100 Lisboa, Portugal',
