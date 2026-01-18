@@ -117,10 +117,10 @@ const cardVariants = {
 const leafDecorations = [
   { 
     src: plantDecoration1, 
-    className: "absolute -bottom-20 -right-20 w-80 md:w-96 opacity-10 dark:opacity-10 rotate-12",
+    className: "absolute -bottom-20 -right-20 w-80 md:w-96 opacity-20 dark:opacity-15 rotate-12 brightness-150 contrast-75",
     style: { 
-      maskImage: "radial-gradient(ellipse 60% 60% at 100% 100%, black 15%, transparent 65%)",
-      WebkitMaskImage: "radial-gradient(ellipse 60% 60% at 100% 100%, black 15%, transparent 65%)"
+      maskImage: "radial-gradient(ellipse 80% 80% at 100% 100%, black 30%, transparent 85%)",
+      WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 100% 100%, black 30%, transparent 85%)"
     }
   },
 ];
@@ -143,8 +143,8 @@ const ValueProps = () => {
             alt=""
             className={`${leaf.className} pointer-events-none select-none`}
             style={leaf.style}
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ scale: 0.9 }}
+            whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.1 * index, ease: "easeOut" }}
             aria-hidden="true"
