@@ -224,6 +224,14 @@ const globalArticles: NewsArticle[] = [
   },
 ];
 
+// All articles combined for article lookup
+export const allNewsArticles: NewsArticle[] = [
+  ...globalArticles,
+  ...ukArticles,
+  ...ptArticles,
+  ...zaArticles,
+];
+
 // Function to get articles based on region
 export const getNewsArticlesByRegion = (countryCode: string): NewsArticle[] => {
   let regionArticles: NewsArticle[];
@@ -247,6 +255,24 @@ export const getNewsArticlesByRegion = (countryCode: string): NewsArticle[] => {
   }
   
   return regionArticles;
+};
+
+// Function to find any article by ID (searches all regions)
+export const findArticleById = (articleId: string): NewsArticle | undefined => {
+  return allNewsArticles.find(article => article.id === articleId);
+};
+
+// Function to get related articles (same region or global)
+export const getRelatedArticles = (articleId: string, limit: number = 2): NewsArticle[] => {
+  const article = findArticleById(articleId);
+  if (!article) return [];
+  
+  const region = article.region || 'GLOBAL';
+  const regionArticles = getNewsArticlesByRegion(region === 'ALL' ? 'GLOBAL' : region);
+  
+  return regionArticles
+    .filter(a => a.id !== articleId)
+    .slice(0, limit);
 };
 
 // Default export for backward compatibility (uses global articles)

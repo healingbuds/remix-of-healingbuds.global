@@ -7,16 +7,25 @@ import BackToTop from "@/components/BackToTop";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, User, ExternalLink, MapPin } from "lucide-react";
-import { useNewsRegion } from "@/hooks/useNewsRegion";
+import { useNewsRegion, regionOptions } from "@/hooks/useNewsRegion";
+import { findArticleById, getRelatedArticles } from "@/data/newsArticles";
 import ScrollAnimation from "@/components/ScrollAnimation";
 
 const NewsArticle = () => {
   const { t } = useTranslation("theWire");
   const { articleId } = useParams();
   const navigate = useNavigate();
-  const { articles, currentRegionOption } = useNewsRegion();
+  const { currentRegionOption } = useNewsRegion();
   
-  const article = articles.find((a) => a.id === articleId);
+  // Find article across all regions (not just current region)
+  const article = articleId ? findArticleById(articleId) : undefined;
+  const relatedArticles = articleId ? getRelatedArticles(articleId, 2) : [];
+  
+  // Get the article's region info for display
+  const articleRegion = article?.region || 'GLOBAL';
+  const articleRegionOption = regionOptions.find(r => 
+    r.code === articleRegion || (articleRegion === 'ALL' && r.code === 'GLOBAL')
+  ) || regionOptions[0];
 
   if (!article) {
     return (
@@ -60,8 +69,8 @@ const NewsArticle = () => {
                 className="px-3 py-1.5 text-sm font-medium border-primary/30 bg-primary/5 text-foreground gap-2"
               >
                 <MapPin className="w-3.5 h-3.5 text-primary" />
-                <span className="text-base">{currentRegionOption.flag}</span>
-                {currentRegionOption.label}
+                <span className="text-base">{articleRegionOption.flag}</span>
+                {articleRegionOption.label}
               </Badge>
             </div>
           </div>
@@ -147,10 +156,7 @@ const NewsArticle = () => {
                     {t("moreFromWire")}
                   </h3>
                   <div className="grid sm:grid-cols-2 gap-6">
-                    {articles
-                      .filter((a) => a.id !== article.id)
-                      .slice(0, 2)
-                      .map((relatedArticle) => (
+                    {relatedArticles.map((relatedArticle) => (
                         <Link
                           key={relatedArticle.id}
                           to={`/the-wire/${relatedArticle.id}`}
