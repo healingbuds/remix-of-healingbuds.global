@@ -502,6 +502,26 @@ ${data.message || 'Not provided'}
               </div>
             </div>
           </section>
+
+          {/* Powered by Budstacks */}
+          <section className="py-8 bg-muted/20 border-t border-border/30">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex justify-center items-center">
+                <a 
+                  href="https://budstacks.io" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity group"
+                >
+                  <span className="font-body text-muted-foreground text-sm">Franchise Partner with</span>
+                  <span className="font-jakarta font-bold text-lg text-foreground group-hover:text-primary transition-colors tracking-tight">
+                    Budstacks<span className="text-primary">.</span>
+                  </span>
+                  <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">SaaS</span>
+                </a>
+              </div>
+            </div>
+          </section>
         </main>
         
         <Footer />
