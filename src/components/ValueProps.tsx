@@ -113,9 +113,16 @@ const cardVariants = {
   },
 };
 
-// Subtle leaf decoration - bottom right only
+// Subtle leaf decoration - cropped into bottom right corner with gradient fade
 const leafDecorations = [
-  { src: plantDecoration1, className: "absolute -bottom-8 -right-8 w-48 md:w-64 opacity-10 dark:opacity-10 rotate-12" },
+  { 
+    src: plantDecoration1, 
+    className: "absolute -bottom-16 -right-16 w-64 md:w-80 opacity-10 dark:opacity-10 rotate-12",
+    style: { 
+      maskImage: "radial-gradient(ellipse 70% 70% at 100% 100%, black 20%, transparent 70%)",
+      WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 100% 100%, black 20%, transparent 70%)"
+    }
+  },
 ];
 
 const ValueProps = () => {
@@ -135,6 +142,7 @@ const ValueProps = () => {
             src={leaf.src}
             alt=""
             className={`${leaf.className} pointer-events-none select-none`}
+            style={leaf.style}
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
