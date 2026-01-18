@@ -45,6 +45,9 @@ All colors MUST be HSL.
     /* Accent - soft sage-teal for hovers and highlights */
     --accent: 165 35% 92%;
     --accent-foreground: 176 39% 17%;
+    
+    /* Gold accent for navbar separator */
+    --navbar-gold: 45 92% 45%;
 
     /* Destructive - warmer amber-coral instead of harsh red/pink */
     --destructive: 15 65% 55%;
