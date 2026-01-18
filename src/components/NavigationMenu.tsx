@@ -37,7 +37,7 @@ const NavigationMenu = ({ scrolled, onCloseAllDropdowns }: NavigationMenuProps) 
 
   // Active state detection
   const isActive = (path: string) => location.pathname === path;
-  const isWhatWeDoActive = ['/what-we-do', '/cultivating-processing', '/manufacture-distribution', '/medical-clinics', '/online-pharmacy'].includes(location.pathname);
+  const isWhatWeDoActive = ['/what-we-do', '/cultivating-processing', '/manufacture-distribution', '/medical-clinics'].includes(location.pathname);
   const isAboutUsActive = ['/about-us', '/blockchain-technology'].includes(location.pathname);
 
   // Click outside handler
@@ -151,8 +151,7 @@ const NavigationMenu = ({ scrolled, onCloseAllDropdowns }: NavigationMenuProps) 
               {[
                 { to: '/cultivating-processing', label: 'cultivating', desc: 'cultivatingDesc' },
                 { to: '/manufacture-distribution', label: 'manufacture', desc: 'manufactureDesc' },
-                { to: '/medical-clinics', label: 'clinics', desc: 'clinicsDesc' },
-                { to: '/online-pharmacy', label: 'pharmacy', desc: 'pharmacyDesc' }
+                { to: '/medical-clinics', label: 'clinics', desc: 'clinicsDesc' }
               ].map(({ to, label, desc }, index, arr) => (
                 <Link
                   key={to}
@@ -272,13 +271,6 @@ const NavigationMenu = ({ scrolled, onCloseAllDropdowns }: NavigationMenuProps) 
           )}
         </AnimatePresence>
       </div>
-      
-      <Link 
-        to="/shop" 
-        className={getNavItemStyles(isActive("/shop") || location.pathname.startsWith("/shop/"))}
-      >
-        {t('nav.shop')}
-      </Link>
       
       <Link to="/contact" className={getNavItemStyles(isActive("/contact"))}>
         {t('nav.contactUs')}
