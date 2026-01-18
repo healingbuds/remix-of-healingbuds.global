@@ -52,7 +52,7 @@ const NavigationOverlay = ({
 
   // Active state detection
   const isActive = (path: string) => location.pathname === path;
-  const isWhatWeDoActive = ['/what-we-do', '/cultivating-processing', '/manufacture-distribution', '/medical-clinics', '/online-pharmacy'].includes(location.pathname);
+  const isWhatWeDoActive = ['/what-we-do', '/cultivating-processing', '/manufacture-distribution', '/medical-clinics'].includes(location.pathname);
   const isAboutUsActive = ['/about-us', '/blockchain-technology'].includes(location.pathname);
 
   // Reset dropdown states when menu closes
@@ -244,8 +244,7 @@ const NavigationOverlay = ({
                           {[
                             { to: '/cultivating-processing', label: 'cultivating' },
                             { to: '/manufacture-distribution', label: 'manufacture' },
-                            { to: '/medical-clinics', label: 'clinics' },
-                            { to: '/online-pharmacy', label: 'pharmacy' }
+                            { to: '/medical-clinics', label: 'clinics' }
                           ].map(({ to, label }) => (
                             <Link 
                               key={to}
@@ -374,24 +373,6 @@ const NavigationOverlay = ({
                 </div>
 
                 <Link 
-                  to="/shop" 
-                  className={cn(
-                    "text-base transition-all duration-200 py-4 px-5 rounded-2xl",
-                    "touch-manipulation min-h-[56px] flex items-center gap-3 active:scale-[0.98]",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
-                    isActive("/shop") || location.pathname.startsWith("/shop/") 
-                      ? "text-white font-semibold bg-gradient-to-r from-primary/40 to-primary/20 shadow-lg shadow-primary/20" 
-                      : "text-white/90 hover:text-white hover:bg-white/10"
-                  )}
-                  onClick={onClose}
-                >
-                  {(isActive("/shop") || location.pathname.startsWith("/shop/")) && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  )}
-                  {t('nav.shop')}
-                </Link>
-
-                <Link 
                   to="/contact" 
                   className={cn(
                     "text-base transition-all duration-200 py-4 px-5 rounded-2xl",
@@ -446,7 +427,7 @@ const NavigationOverlay = ({
                       )}
                     >
                       <LayoutDashboard className="w-5 h-5" />
-                      Patient Portal
+                      Dashboard
                     </Link>
                     <button
                       type="button"
@@ -465,24 +446,7 @@ const NavigationOverlay = ({
                       {t('nav.signOut')}
                     </button>
                   </>
-                ) : (
-                  <Link
-                    to="/auth"
-                    onClick={onClose}
-                    className={cn(
-                      "flex items-center justify-center gap-3 w-full text-center",
-                      "font-semibold px-6 py-4 rounded-2xl",
-                      "transition-all duration-300 ease-out active:scale-[0.97]",
-                      "bg-white/10 backdrop-blur-sm border border-white/20 text-white text-base",
-                      "hover:bg-white/15 hover:border-white/30",
-                      "touch-manipulation min-h-[56px]",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
-                    )}
-                  >
-                    <LayoutDashboard className="w-5 h-5" />
-                    {t('nav.patientLogin')}
-                  </Link>
-                )}
+                ) : null}
               </div>
 
               {/* Divider */}

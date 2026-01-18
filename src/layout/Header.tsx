@@ -200,7 +200,7 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
                       )}
                     >
                       <LayoutDashboard className="w-4 h-4" />
-                      Patient Portal
+                      Dashboard
                     </Link>
                     <button
                       onClick={handleLogout}
@@ -217,21 +217,7 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
                       {t('nav.signOut')}
                     </button>
                   </>
-                ) : (
-                  <Link
-                    to="/auth"
-                    className={cn(
-                      "font-body font-bold px-4 py-2 rounded-full transition-all duration-300",
-                      "hover:scale-105 hover:shadow-xl whitespace-nowrap",
-                      "bg-transparent text-white hover:bg-white/20",
-                      "border-2 border-white/60 shadow-lg",
-                      "text-xs 2xl:text-sm",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2"
-                    )}
-                  >
-                    {t('nav.patientLogin')}
-                  </Link>
-                )}
+                ) : null}
               </div>
             </div>
 
