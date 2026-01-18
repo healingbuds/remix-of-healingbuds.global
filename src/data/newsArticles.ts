@@ -15,7 +15,7 @@ export interface NewsArticle {
   author: string;
   date: string;
   content: string[];
-  region?: 'GLOBAL' | 'GB' | 'PT' | 'ZA' | 'ALL'; // Region-specific articles
+  region?: 'GLOBAL' | 'GB' | 'PT' | 'ZA' | 'TH' | 'ALL'; // Region-specific articles
 }
 
 // UK-specific articles
@@ -201,6 +201,67 @@ const zaArticles: NewsArticle[] = [
   },
 ];
 
+// Thailand-specific articles
+const thArticles: NewsArticle[] = [
+  {
+    id: "thailand-cannabis-medical-revolution",
+    category: "TH News",
+    title: "Thailand Leads Asia-Pacific Medical Cannabis Revolution",
+    description: "Following historic legalization, Thailand positions itself as the region's premier destination for medical cannabis treatment and research.",
+    image: conferenceHq,
+    featured: true,
+    tags: ["Thailand", "Medical Cannabis", "Asia-Pacific", "Healthcare"],
+    author: "Healing Buds Thailand",
+    date: "Dec 22, 2024",
+    region: 'TH',
+    content: [
+      "Thailand's groundbreaking decision to legalize cannabis has transformed the nation into Asia-Pacific's leading medical cannabis destination. The kingdom's progressive approach combines traditional healing wisdom with modern medical protocols, creating a unique therapeutic ecosystem.",
+      "Government-backed initiatives have established licensed dispensaries and clinics across Bangkok, Chiang Mai, and Phuket. These facilities cater to both Thai citizens and medical tourists seeking treatments unavailable in their home countries.",
+      "The Department of Thai Traditional and Alternative Medicine works closely with modern healthcare providers to develop integrated treatment protocols. This collaboration ensures that patients receive care grounded in both ancient practice and contemporary science.",
+      "International pharmaceutical companies have begun partnering with Thai institutions, attracted by the regulatory clarity and research opportunities. These partnerships are accelerating the development of cannabis-based medicines tailored to Asian patient populations.",
+      "As neighboring countries observe Thailand's experience, the kingdom is positioned to influence cannabis policy across the ASEAN region. The medical cannabis framework being developed could serve as a model for other Asian nations considering similar reforms."
+    ],
+  },
+  {
+    id: "thailand-traditional-medicine-cannabis",
+    category: "Culture",
+    title: "Thai Traditional Medicine Embraces Cannabis Heritage",
+    description: "Ancient healing practices meet modern medical science as Thailand integrates cannabis into its celebrated traditional medicine systems.",
+    image: researchLab,
+    featured: false,
+    tags: ["Thailand", "Traditional Medicine", "Culture", "Heritage"],
+    author: "Healing Buds Thailand",
+    date: "Dec 16, 2024",
+    region: 'TH',
+    content: [
+      "Cannabis has been used in Thai traditional medicine for centuries, documented in ancient texts and passed down through generations of healers. The recent legalization has allowed practitioners to openly incorporate these traditional preparations into their practice once again.",
+      "The Chao Phraya Abhaibhubejhr Hospital, a renowned center for Thai traditional medicine, has pioneered the integration of cannabis into therapeutic protocols. Their research documents traditional formulations while adapting them for modern clinical applications.",
+      "Traditional preparations often combine cannabis with other herbs in carefully balanced formulas. These compound medicines address conditions ranging from chronic pain to digestive disorders, reflecting sophisticated pharmacological understanding developed over centuries.",
+      "Younger generations of traditional medicine practitioners are being trained in both ancient techniques and modern quality control standards. This ensures that traditional knowledge is preserved while meeting contemporary safety and efficacy requirements.",
+      "The Thai government has established protections for traditional cannabis formulations, preventing foreign patenting of indigenous knowledge. This approach balances commercial development with cultural preservation and community benefit."
+    ],
+  },
+  {
+    id: "thailand-cannabis-research-universities",
+    category: "Research",
+    title: "Thai Universities Establish World-Class Cannabis Research Centers",
+    description: "Leading Thai universities partner with international institutions to advance cannabis science and develop innovative medical applications.",
+    image: productionFacility,
+    featured: false,
+    tags: ["Thailand", "Research", "Universities", "Science"],
+    author: "Healing Buds Thailand",
+    date: "Dec 10, 2024",
+    region: 'TH',
+    content: [
+      "Chulalongkorn University and Mahidol University have established dedicated cannabis research centers equipped with state-of-the-art laboratories and cultivation facilities. These institutions are producing research that addresses both global questions and Asia-specific medical needs.",
+      "Research priorities include the development of cannabis varieties suited to tropical cultivation, standardization of Thai traditional preparations, and clinical studies examining efficacy across diverse patient populations.",
+      "International collaborations connect Thai researchers with leading cannabis scientists worldwide. Knowledge exchange programs bring foreign expertise to Thailand while Thai researchers contribute unique perspectives informed by traditional medicine knowledge.",
+      "The Thai FDA has created expedited approval pathways for cannabis research, recognizing the economic and scientific opportunities the sector presents. This regulatory support has attracted significant research investment from both public and private sources.",
+      "Graduate programs in cannabis science are training the next generation of Thai researchers and industry professionals. These programmes ensure that Thailand builds domestic expertise to support long-term sector development."
+    ],
+  },
+];
+
 // Global/shared articles
 const globalArticles: NewsArticle[] = [
   {
@@ -230,6 +291,7 @@ export const allNewsArticles: NewsArticle[] = [
   ...ukArticles,
   ...ptArticles,
   ...zaArticles,
+  ...thArticles,
 ];
 
 // Function to get articles based on region
@@ -248,6 +310,9 @@ export const getNewsArticlesByRegion = (countryCode: string): NewsArticle[] => {
       break;
     case 'ZA':
       regionArticles = [...zaArticles, ...globalArticles];
+      break;
+    case 'TH':
+      regionArticles = [...thArticles, ...globalArticles];
       break;
     default:
       // Default to global articles

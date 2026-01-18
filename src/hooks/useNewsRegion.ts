@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getNewsArticlesByRegion, NewsArticle } from '@/data/newsArticles';
 
-export type NewsRegion = 'GLOBAL' | 'GB' | 'PT' | 'ZA';
+export type NewsRegion = 'GLOBAL' | 'GB' | 'PT' | 'ZA' | 'TH';
 
 interface RegionOption {
   code: NewsRegion;
@@ -14,6 +14,7 @@ export const regionOptions: RegionOption[] = [
   { code: 'GB', label: 'United Kingdom', flag: '🇬🇧' },
   { code: 'PT', label: 'Portugal', flag: '🇵🇹' },
   { code: 'ZA', label: 'South Africa', flag: '🇿🇦' },
+  { code: 'TH', label: 'Thailand', flag: '🇹🇭' },
 ];
 
 const STORAGE_KEY = 'healing-buds-news-region';
@@ -24,7 +25,7 @@ export const useNewsRegion = () => {
   // Load saved region preference on mount
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved && ['GLOBAL', 'GB', 'PT', 'ZA'].includes(saved)) {
+    if (saved && ['GLOBAL', 'GB', 'PT', 'ZA', 'TH'].includes(saved)) {
       setSelectedRegion(saved as NewsRegion);
     }
   }, []);
