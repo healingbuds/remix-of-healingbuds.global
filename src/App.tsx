@@ -45,7 +45,7 @@ const PatientDashboard = lazy(() => import("./pages/PatientDashboard"));
 const AdminPrescriptions = lazy(() => import("./pages/AdminPrescriptions"));
 const AdminStrains = lazy(() => import("./pages/AdminStrains"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
-
+const FranchiseOpportunities = lazy(() => import("./pages/FranchiseOpportunities"));
 const queryClient = new QueryClient();
 
 const AnimatedRoutes = () => {
@@ -94,6 +94,7 @@ const AnimatedRoutes = () => {
           <Route path="/the-wire" element={<TheWire />} />
           <Route path="/the-wire/:articleId" element={<NewsArticle />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/franchise-opportunities" element={<FranchiseOpportunities />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
