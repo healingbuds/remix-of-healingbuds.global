@@ -12,9 +12,6 @@ import CursorFollower from "@/components/CursorFollower";
 import PageLoadingSkeleton from "@/components/PageLoadingSkeleton";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import SkipLinks from "@/components/SkipLinks";
-import ProtectedRoute from "@/components/ProtectedRoute";
-
-import { ShopProvider } from "@/context/ShopContext";
 import { CursorProvider } from "@/context/CursorContext";
 
 // Lazy load pages for better performance
@@ -35,16 +32,6 @@ const Contact = lazy(() => import("./pages/Contact"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const Auth = lazy(() => import("./pages/Auth"));
-const Shop = lazy(() => import("./pages/Shop"));
-const ShopRegister = lazy(() => import("./pages/ShopRegister"));
-const CultivarDetail = lazy(() => import("./pages/CultivarDetail"));
-const Checkout = lazy(() => import("./pages/Checkout"));
-const Orders = lazy(() => import("./pages/Orders"));
-const PatientDashboard = lazy(() => import("./pages/PatientDashboard"));
-const AdminPrescriptions = lazy(() => import("./pages/AdminPrescriptions"));
-const AdminStrains = lazy(() => import("./pages/AdminStrains"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const FranchiseOpportunities = lazy(() => import("./pages/FranchiseOpportunities"));
 const queryClient = new QueryClient();
 
@@ -56,31 +43,7 @@ const AnimatedRoutes = () => {
       <Suspense fallback={<PageLoadingSkeleton variant="hero" />}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<PatientDashboard />} />
           
-          {/* Protected Admin Routes */}
-          <Route path="/admin" element={
-            <ProtectedRoute requiredRole="admin">
-              <AdminDashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/prescriptions" element={
-            <ProtectedRoute requiredRole="admin">
-              <AdminPrescriptions />
-            </ProtectedRoute>
-          } />
-          <Route path="/admin/strains" element={
-            <ProtectedRoute requiredRole="admin">
-              <AdminStrains />
-            </ProtectedRoute>
-          } />
-          
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/register" element={<ShopRegister />} />
-          <Route path="/shop/cultivar/:cultivarId" element={<CultivarDetail />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/orders" element={<Orders />} />
           <Route path="/what-we-do" element={<WhatWeDo />} />
           <Route path="/cultivating-processing" element={<CultivatingProcessing />} />
           <Route path="/manufacture-distribution" element={<ManufactureDistribution />} />
@@ -111,20 +74,18 @@ const App = () => (
       <CursorProvider>
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
-            <ShopProvider>
-              <CursorFollower>
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <SkipLinks />
-                  <ScrollToTop />
-                  <RouteProgress />
-                  <main id="main-content" tabIndex={-1}>
-                    <AnimatedRoutes />
-                  </main>
-                </BrowserRouter>
-              </CursorFollower>
-            </ShopProvider>
+            <CursorFollower>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <SkipLinks />
+                <ScrollToTop />
+                <RouteProgress />
+                <main id="main-content" tabIndex={-1}>
+                  <AnimatedRoutes />
+                </main>
+              </BrowserRouter>
+            </CursorFollower>
           </TooltipProvider>
         </QueryClientProvider>
       </CursorProvider>

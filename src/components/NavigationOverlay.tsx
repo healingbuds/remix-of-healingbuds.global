@@ -14,11 +14,10 @@
  */
 
 import { Link, useLocation } from "react-router-dom";
-import { ChevronDown, X, LogOut, LayoutDashboard } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { User } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import hbLogoWhite from "@/assets/hb-logo-white-new.png";
@@ -28,18 +27,12 @@ import ThemeToggle from "./ThemeToggle";
 interface NavigationOverlayProps {
   isOpen: boolean;
   onClose: () => void;
-  user: User | null;
-  onLogout: () => void;
-  onEligibilityClick: () => void;
   scrolled: boolean;
 }
 
 const NavigationOverlay = ({
   isOpen,
   onClose,
-  user,
-  onLogout,
-  onEligibilityClick,
   scrolled
 }: NavigationOverlayProps) => {
   const [mobileWhatWeDoOpen, setMobileWhatWeDoOpen] = useState(false);
@@ -115,15 +108,6 @@ const NavigationOverlay = ({
     onClose();
   }, [location.pathname]);
 
-  const handleEligibility = () => {
-    onEligibilityClick();
-    onClose();
-  };
-
-  const handleLogout = () => {
-    onLogout();
-    onClose();
-  };
 
   return (
     <AnimatePresence>
@@ -394,11 +378,11 @@ const NavigationOverlay = ({
               {/* Divider */}
               <div className="my-8 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-              {/* Mobile CTAs */}
+              {/* Contact CTA */}
               <div className="space-y-4">
-                <button
-                  type="button"
-                  onClick={handleEligibility}
+                <Link
+                  to="/contact"
+                  onClick={onClose}
                   className={cn(
                     "w-full font-semibold px-6 py-4 rounded-2xl",
                     "transition-all duration-300 ease-out active:scale-[0.97]",
@@ -406,47 +390,12 @@ const NavigationOverlay = ({
                     "shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40",
                     "hover:from-primary/90 hover:to-primary/70",
                     "touch-manipulation min-h-[56px]",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                    "flex items-center justify-center"
                   )}
                 >
-                  {t('nav.checkEligibility')}
-                </button>
-                {user ? (
-                  <>
-                    <Link
-                      to="/dashboard"
-                      onClick={onClose}
-                      className={cn(
-                        "w-full font-semibold px-6 py-4 rounded-2xl",
-                        "transition-all duration-300 ease-out active:scale-[0.97]",
-                        "bg-white/10 backdrop-blur-sm border border-white/20 text-white text-base",
-                        "flex items-center justify-center gap-3",
-                        "hover:bg-white/15 hover:border-white/30",
-                        "touch-manipulation min-h-[56px]",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
-                      )}
-                    >
-                      <LayoutDashboard className="w-5 h-5" />
-                      Dashboard
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className={cn(
-                        "w-full font-semibold px-6 py-4 rounded-2xl",
-                        "transition-all duration-300 ease-out active:scale-[0.97]",
-                        "bg-white/5 border border-white/10 text-white/80 text-base",
-                        "flex items-center justify-center gap-3",
-                        "hover:bg-white/10 hover:text-white hover:border-white/20",
-                        "touch-manipulation min-h-[56px]",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
-                      )}
-                    >
-                      <LogOut className="w-5 h-5" />
-                      {t('nav.signOut')}
-                    </button>
-                  </>
-                ) : null}
+                  {t('nav.contact')}
+                </Link>
               </div>
 
               {/* Divider */}

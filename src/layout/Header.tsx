@@ -19,17 +19,13 @@
  * - NavigationOverlay (mobile overlay)
  */
 
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
-import { User } from "@supabase/supabase-js";
-import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
 import hbLogoWhite from "@/assets/hb-logo-white-new.png";
-import EligibilityDialog from "@/components/EligibilityDialog";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import NavigationMenu from "@/components/NavigationMenu";
@@ -42,11 +38,7 @@ interface HeaderProps {
 const Header = ({ onMenuStateChange }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [eligibilityDialogOpen, setEligibilityDialogOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
   const { t } = useTranslation('common');
   const headerRef = useRef<HTMLElement>(null);
   
@@ -68,21 +60,6 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Auth state management
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
   // Notify parent of menu state changes
   useEffect(() => {
     onMenuStateChange?.(mobileMenuOpen);
@@ -92,20 +69,6 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    toast({
-      title: "Signed out",
-      description: "You have been successfully signed out.",
-    });
-    setMobileMenuOpen(false);
-    navigate("/");
-  };
-
-  const handleEligibilityClick = () => {
-    setEligibilityDialogOpen(true);
-  };
 
   return (
     <>
@@ -171,10 +134,10 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
               <LanguageSwitcher scrolled={scrolled} />
               <ThemeToggle />
 
-              {/* Action Buttons - explicit constraints prevent collapse */}
+              {/* Contact CTA Button */}
               <div className="flex items-center gap-1.5 xl:gap-2 flex-shrink-0 ml-2">
-                <button
-                  onClick={() => setEligibilityDialogOpen(true)}
+                <Link
+                  to="/contact"
                   className={cn(
                     "font-body font-bold px-4 py-2 rounded-full transition-all duration-300",
                     "hover:scale-105 hover:shadow-xl whitespace-nowrap",
@@ -184,40 +147,8 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2"
                   )}
                 >
-                  {t('nav.checkEligibility')}
-                </button>
-                {user ? (
-                  <>
-                    <Link
-                      to="/dashboard"
-                      className={cn(
-                        "font-body font-bold px-4 py-2 rounded-full transition-all duration-300",
-                        "hover:scale-105 hover:shadow-xl whitespace-nowrap",
-                        "bg-primary text-white hover:bg-primary/90",
-                        "border-2 border-primary shadow-lg flex items-center gap-1.5",
-                        "text-xs 2xl:text-sm",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2"
-                      )}
-                    >
-                      <LayoutDashboard className="w-4 h-4" />
-                      Dashboard
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className={cn(
-                        "font-body font-bold px-4 py-2 rounded-full transition-all duration-300",
-                        "hover:scale-105 hover:shadow-xl whitespace-nowrap",
-                        "bg-transparent text-white hover:bg-white/20",
-                        "border-2 border-white/60 shadow-lg flex items-center gap-1.5",
-                        "text-xs 2xl:text-sm",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2"
-                      )}
-                    >
-                      <LogOut className="w-4 h-4" />
-                      {t('nav.signOut')}
-                    </button>
-                  </>
-                ) : null}
+                  {t('nav.contact')}
+                </Link>
               </div>
             </div>
 
@@ -253,14 +184,8 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
       <NavigationOverlay
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
-        user={user}
-        onLogout={handleLogout}
-        onEligibilityClick={handleEligibilityClick}
         scrolled={scrolled}
       />
-
-      {/* Eligibility Dialog */}
-      <EligibilityDialog open={eligibilityDialogOpen} onOpenChange={setEligibilityDialogOpen} />
     </>
   );
 };

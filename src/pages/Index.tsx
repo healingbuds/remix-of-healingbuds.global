@@ -8,13 +8,11 @@ import News from "@/components/News";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import BackToTop from "@/components/BackToTop";
-import MobileBottomActions from "@/components/MobileBottomActions";
 import SEOHead from "@/components/SEOHead";
 import { useState, useEffect } from "react";
 
 const Index = () => {
   const [scrollFade, setScrollFade] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,8 +34,8 @@ const Index = () => {
         description="Pioneering tomorrow's medical cannabis solutions with EU GMP-certified products, blockchain traceability, and global distribution across UK, South Africa, Thailand, and Portugal."
         canonical="/"
       />
-      <div className="min-h-screen bg-background pb-20 lg:pb-0">
-        <Header onMenuStateChange={setMenuOpen} />
+      <div className="min-h-screen bg-background">
+        <Header />
         {/* Dynamic scroll-based fade overlay from hero bottom */}
         <div 
           className="fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background/30 via-background/15 to-transparent z-30 pointer-events-none transition-opacity duration-500 ease-out"
@@ -53,7 +51,6 @@ const Index = () => {
         </main>
         <Footer />
         <BackToTop />
-        <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );
