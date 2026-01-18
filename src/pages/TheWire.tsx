@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/layout/Header";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import BackToTop from "@/components/BackToTop";
 import ScrollAnimation from "@/components/ScrollAnimation";
 
@@ -33,6 +34,11 @@ const TheWire = () => {
       <div className="min-h-screen bg-background">
         <Header onMenuStateChange={setMenuOpen} />
         <main className="pt-32 sm:pt-36 pb-20">
+          {/* Breadcrumb */}
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-4">
+            <PageBreadcrumb />
+          </div>
+
           {/* Hero Section */}
           <section className="container mx-auto px-4 sm:px-6 lg:px-8 mb-12">
             <ScrollAnimation>

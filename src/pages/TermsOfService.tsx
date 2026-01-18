@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import Header from "@/layout/Header";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import BackToTop from "@/components/BackToTop";
 
 import { FileText, AlertCircle, Scale, Users, Shield, Coins } from "lucide-react";
@@ -24,6 +25,7 @@ const TermsOfService = () => {
         <Header onMenuStateChange={setMenuOpen} />
         <main className="pt-24 pb-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+            <PageBreadcrumb />
             {/* Header */}
             <div className="text-center mb-12">
               <div className="flex justify-center mb-4">

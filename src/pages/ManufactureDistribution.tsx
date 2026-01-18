@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import Header from "@/layout/Header";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
 
@@ -26,7 +27,9 @@ const ManufactureDistribution = () => {
       <div className="min-h-screen bg-background pb-24 lg:pb-0">
         <Header onMenuStateChange={setMenuOpen} />
         <main className="pt-24">
-          {/* Hero Section with Parallax */}
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <PageBreadcrumb />
+          </div>
           <section ref={heroRef} className="relative h-[500px] overflow-hidden">
             <motion.img 
               src={productionFacility}
