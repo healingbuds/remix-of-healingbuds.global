@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      dispensary_notifications: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          notified_at: string | null
+          region: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          notified_at?: string | null
+          region: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          notified_at?: string | null
+          region?: string
+        }
+        Relationships: []
+      }
       dosage_logs: {
         Row: {
           consumption_method: string

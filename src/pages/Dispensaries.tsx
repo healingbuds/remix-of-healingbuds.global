@@ -1,18 +1,26 @@
-import { motion } from "framer-motion";
-import { MapPin, ExternalLink, Clock, Users, CheckCircle } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MapPin, ExternalLink, Clock, Users, CheckCircle, Bell, X, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { z } from "zod";
 import Header from "@/layout/Header";
 import Footer from "@/components/Footer";
 import PageBreadcrumb from "@/components/PageBreadcrumb";
 import PageHero from "@/components/PageHero";
 import PageTransition from "@/components/PageTransition";
 import SEOHead from "@/components/SEOHead";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 // Import clinic images for regions
 import clinicSouthAfrica from "@/assets/clinic-south-africa.jpg";
 import clinicThailand from "@/assets/clinic-thailand.jpg";
 import clinicUK from "@/assets/clinic-uk.jpg";
 import clinicPortugal from "@/assets/clinic-portugal.jpg";
+
+const emailSchema = z.string().trim().email({ message: "Please enter a valid email address" }).max(255);
 
 interface RegionCard {
   id: string;
@@ -77,20 +85,211 @@ const getStatusStyles = (status: RegionCard["status"]) => {
       return {
         badge: "bg-amber-500/20 text-amber-400 border-amber-500/30",
         dot: "bg-amber-400",
-        card: "border-border/50 opacity-80",
+        card: "border-border/50 hover:border-amber-500/30 cursor-pointer group",
       };
     case "coming-soon":
       return {
         badge: "bg-muted/50 text-muted-foreground border-border/50",
         dot: "bg-muted-foreground",
-        card: "border-border/50 opacity-70",
+        card: "border-border/50 hover:border-primary/30 cursor-pointer group",
       };
   }
 };
 
-const RegionCardComponent = ({ region, index }: { region: RegionCard; index: number }) => {
+interface NotifyModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  region: RegionCard;
+}
+
+const NotifyModal = ({ isOpen, onClose, region }: NotifyModalProps) => {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    // Validate email
+    const result = emailSchema.safeParse(email);
+    if (!result.success) {
+      setError(result.error.errors[0].message);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { error: dbError } = await supabase
+        .from("dispensary_notifications")
+        .insert({
+          email: result.data,
+          region: region.id,
+        });
+
+      if (dbError) {
+        // Handle duplicate entry
+        if (dbError.code === "23505") {
+          setError("You're already signed up for notifications for this region.");
+        } else {
+          throw dbError;
+        }
+      } else {
+        setIsSuccess(true);
+        toast({
+          title: "You're on the list!",
+          description: `We'll notify you when ${region.name} launches.`,
+        });
+      }
+    } catch (err) {
+      console.error("Error signing up for notifications:", err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleClose = () => {
+    setEmail("");
+    setError("");
+    setIsSuccess(false);
+    onClose();
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleClose}
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
+          />
+          
+          {/* Modal */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ type: "spring", duration: 0.5 }}
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md"
+          >
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-2xl mx-4">
+              {/* Close Button */}
+              <button
+                onClick={handleClose}
+                className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Close modal"
+              >
+                <X size={20} />
+              </button>
+
+              {/* Header */}
+              <div className="flex items-center gap-4 mb-6">
+                <div className="text-4xl">{region.flag}</div>
+                <div>
+                  <h3 className="font-jakarta text-xl font-semibold text-foreground">
+                    {region.name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{region.statusLabel}</p>
+                </div>
+              </div>
+
+              {isSuccess ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center py-4"
+                >
+                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="text-primary" size={32} />
+                  </div>
+                  <h4 className="font-jakarta text-lg font-semibold text-foreground mb-2">
+                    You're on the list!
+                  </h4>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    We'll send you an email when {region.name} dispensaries are ready.
+                  </p>
+                  <Button onClick={handleClose} variant="outline" className="w-full">
+                    Close
+                  </Button>
+                </motion.div>
+              ) : (
+                <>
+                  <p className="font-body text-muted-foreground text-sm mb-6">
+                    Be the first to know when our {region.name} dispensaries launch. 
+                    Enter your email and we'll notify you as soon as we're ready.
+                  </p>
+
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <Input
+                        type="email"
+                        placeholder="Enter your email address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className={error ? "border-destructive" : ""}
+                        disabled={isSubmitting}
+                      />
+                      {error && (
+                        <p className="text-sm text-destructive mt-1">{error}</p>
+                      )}
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={isSubmitting || !email}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin mr-2" />
+                          Signing up...
+                        </>
+                      ) : (
+                        <>
+                          <Bell size={16} className="mr-2" />
+                          Notify Me
+                        </>
+                      )}
+                    </Button>
+                  </form>
+
+                  <p className="text-xs text-muted-foreground text-center mt-4">
+                    We respect your privacy. Unsubscribe anytime.
+                  </p>
+                </>
+              )}
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+};
+
+interface RegionCardComponentProps {
+  region: RegionCard;
+  index: number;
+  onNotifyClick: (region: RegionCard) => void;
+}
+
+const RegionCardComponent = ({ region, index, onNotifyClick }: RegionCardComponentProps) => {
   const styles = getStatusStyles(region.status);
-  const isClickable = region.status === "live" && region.externalUrl;
+  const isLive = region.status === "live" && region.externalUrl;
+  const canNotify = region.status === "coming-soon" || region.status === "partner-only";
+
+  const handleClick = () => {
+    if (canNotify) {
+      onNotifyClick(region);
+    }
+  };
 
   const cardContent = (
     <motion.div
@@ -98,6 +297,7 @@ const RegionCardComponent = ({ region, index }: { region: RegionCard; index: num
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
+      onClick={canNotify ? handleClick : undefined}
       className={`relative overflow-hidden rounded-2xl border bg-card/50 backdrop-blur-sm ${styles.card} transition-all duration-300`}
     >
       {/* Image */}
@@ -105,7 +305,7 @@ const RegionCardComponent = ({ region, index }: { region: RegionCard; index: num
         <img
           src={region.image}
           alt={`${region.name} dispensary`}
-          className={`w-full h-full object-cover transition-transform duration-500 ${isClickable ? "group-hover:scale-105" : ""}`}
+          className={`w-full h-full object-cover transition-transform duration-500 ${isLive || canNotify ? "group-hover:scale-105" : ""}`}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
         
@@ -127,7 +327,7 @@ const RegionCardComponent = ({ region, index }: { region: RegionCard; index: num
       <div className="p-6">
         <h3 className="font-jakarta text-xl font-semibold text-foreground mb-2 flex items-center gap-2">
           {region.name}
-          {isClickable && (
+          {isLive && (
             <ExternalLink size={16} className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
           )}
         </h3>
@@ -136,33 +336,33 @@ const RegionCardComponent = ({ region, index }: { region: RegionCard; index: num
         </p>
         
         {/* Action */}
-        {isClickable ? (
+        {isLive ? (
           <div className="flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all">
             <MapPin size={16} />
             <span>Visit Dispensary</span>
             <ExternalLink size={14} />
           </div>
         ) : region.status === "partner-only" ? (
-          <div className="flex items-center gap-2 text-amber-400/70 text-sm">
-            <Users size={16} />
-            <span>Partner Operations</span>
+          <div className="flex items-center gap-2 text-amber-400 text-sm font-medium group-hover:gap-3 transition-all">
+            <Bell size={16} />
+            <span>Notify Me When Available</span>
           </div>
         ) : (
-          <div className="flex items-center gap-2 text-muted-foreground text-sm">
-            <Clock size={16} />
-            <span>Coming Soon</span>
+          <div className="flex items-center gap-2 text-primary text-sm font-medium group-hover:gap-3 transition-all">
+            <Bell size={16} />
+            <span>Notify Me When Available</span>
           </div>
         )}
       </div>
 
-      {/* Overlay for non-clickable */}
-      {!isClickable && (
-        <div className="absolute inset-0 bg-background/30 pointer-events-none" />
+      {/* Hover overlay for notify cards */}
+      {canNotify && (
+        <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
       )}
     </motion.div>
   );
 
-  if (isClickable && region.externalUrl) {
+  if (isLive && region.externalUrl) {
     return (
       <a
         href={region.externalUrl}
@@ -180,6 +380,18 @@ const RegionCardComponent = ({ region, index }: { region: RegionCard; index: num
 
 const Dispensaries = () => {
   const { t } = useTranslation("common");
+  const [notifyModal, setNotifyModal] = useState<{ isOpen: boolean; region: RegionCard | null }>({
+    isOpen: false,
+    region: null,
+  });
+
+  const handleNotifyClick = (region: RegionCard) => {
+    setNotifyModal({ isOpen: true, region });
+  };
+
+  const handleCloseModal = () => {
+    setNotifyModal({ isOpen: false, region: null });
+  };
 
   return (
     <PageTransition>
@@ -230,7 +442,12 @@ const Dispensaries = () => {
             {/* Region Cards Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {regions.map((region, index) => (
-                <RegionCardComponent key={region.id} region={region} index={index} />
+                <RegionCardComponent 
+                  key={region.id} 
+                  region={region} 
+                  index={index} 
+                  onNotifyClick={handleNotifyClick}
+                />
               ))}
             </div>
           </div>
@@ -275,6 +492,15 @@ const Dispensaries = () => {
       </main>
       
       <Footer />
+
+      {/* Notify Modal */}
+      {notifyModal.region && (
+        <NotifyModal
+          isOpen={notifyModal.isOpen}
+          onClose={handleCloseModal}
+          region={notifyModal.region}
+        />
+      )}
     </PageTransition>
   );
 };
