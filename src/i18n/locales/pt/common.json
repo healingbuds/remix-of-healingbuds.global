@@ -2,6 +2,25 @@
   "breadcrumbs": {
     "home": "Início"
   },
+  "cookies": {
+    "title": "Valorizamos a Sua Privacidade",
+    "description": "Utilizamos cookies para melhorar a sua experiência de navegação, fornecer conteúdo personalizado e analisar o nosso tráfego. Ao clicar em \"Aceitar Todos\", consente a utilização de cookies de acordo com a nossa",
+    "privacyPolicy": "Política de Privacidade",
+    "acceptAll": "Aceitar Todos",
+    "rejectOptional": "Apenas Necessários",
+    "customize": "Personalizar",
+    "customizeTitle": "Preferências de Cookies",
+    "savePreferences": "Guardar Preferências",
+    "necessary": "Necessários",
+    "necessaryDesc": "Essenciais para o funcionamento do website. Não podem ser desativados.",
+    "functional": "Funcionais",
+    "functionalDesc": "Ativam funcionalidades personalizadas e lembram as suas preferências.",
+    "analytics": "Analíticos",
+    "analyticsDesc": "Ajudam-nos a compreender como os visitantes interagem com o nosso website.",
+    "marketing": "Marketing",
+    "marketingDesc": "Utilizados para fornecer anúncios relevantes e acompanhar a eficácia das campanhas.",
+    "required": "Obrigatório"
+  },
   "nav": {
     "whatWeDo": "O Que Fazemos",
     "research": "Investigação",

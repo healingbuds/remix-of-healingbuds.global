@@ -2,6 +2,25 @@
   "breadcrumbs": {
     "home": "Home"
   },
+  "cookies": {
+    "title": "We Value Your Privacy",
+    "description": "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking \"Accept All\", you consent to our use of cookies in accordance with our",
+    "privacyPolicy": "Privacy Policy",
+    "acceptAll": "Accept All",
+    "rejectOptional": "Necessary Only",
+    "customize": "Customize",
+    "customizeTitle": "Cookie Preferences",
+    "savePreferences": "Save Preferences",
+    "necessary": "Necessary",
+    "necessaryDesc": "Essential for the website to function. Cannot be disabled.",
+    "functional": "Functional",
+    "functionalDesc": "Enable personalized features and remember your preferences.",
+    "analytics": "Analytics",
+    "analyticsDesc": "Help us understand how visitors interact with our website.",
+    "marketing": "Marketing",
+    "marketingDesc": "Used to deliver relevant ads and track campaign effectiveness.",
+    "required": "Required"
+  },
   "nav": {
     "whatWeDo": "What We Do",
     "research": "Research",

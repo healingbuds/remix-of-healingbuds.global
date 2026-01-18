@@ -12,6 +12,7 @@ import CursorFollower from "@/components/CursorFollower";
 import PageLoadingSkeleton from "@/components/PageLoadingSkeleton";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import SkipLinks from "@/components/SkipLinks";
+import CookieConsent from "@/components/CookieConsent";
 import { CursorProvider } from "@/context/CursorContext";
 
 // Lazy load pages for better performance
@@ -84,6 +85,7 @@ const App = () => (
                 <main id="main-content" tabIndex={-1}>
                   <AnimatedRoutes />
                 </main>
+                <CookieConsent />
               </BrowserRouter>
             </CursorFollower>
           </TooltipProvider>

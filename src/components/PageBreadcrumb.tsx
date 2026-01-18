@@ -89,24 +89,41 @@ const PageBreadcrumb = ({
               >
                 <BreadcrumbItem>
                   {isLast ? (
-                    <BreadcrumbPage className="font-medium text-foreground">
-                      {item.label}
+                    <BreadcrumbPage className="font-semibold text-foreground relative">
+                      <span className="relative">
+                        {item.label}
+                        {/* Gradient underline for current page */}
+                        <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-primary via-primary/80 to-transparent rounded-full" />
+                      </span>
                     </BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink asChild>
                       <Link 
                         to={item.href || '/'} 
-                        className="flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors duration-200"
+                        className="group flex items-center gap-1.5 text-muted-foreground relative py-1"
                       >
-                        {isHome && <Home className="w-3.5 h-3.5" />}
-                        <span>{item.label}</span>
+                        {isHome && (
+                          <Home className="w-3.5 h-3.5 transition-all duration-300 group-hover:text-primary group-hover:scale-110" />
+                        )}
+                        <span className="relative overflow-hidden">
+                          {item.label}
+                          {/* Animated gradient underline on hover */}
+                          <span className="absolute -bottom-0.5 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent scale-x-0 origin-left transition-transform duration-300 ease-out group-hover:scale-x-100 rounded-full" />
+                        </span>
+                        {/* Subtle glow effect on hover */}
+                        <span className="absolute inset-0 -z-10 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md blur-sm" />
                       </Link>
                     </BreadcrumbLink>
                   )}
                 </BreadcrumbItem>
                 {!isLast && (
                   <BreadcrumbSeparator>
-                    <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/50" />
+                    <motion.div
+                      whileHover={{ x: 2 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40" />
+                    </motion.div>
                   </BreadcrumbSeparator>
                 )}
               </motion.div>
