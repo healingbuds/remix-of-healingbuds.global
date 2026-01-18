@@ -15,7 +15,7 @@
 
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -103,12 +103,14 @@ const NavigationOverlay = ({
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
 
-  // Close on route change
+  // Close on route change - only when navigating to a new page
+  const previousPathRef = useRef(location.pathname);
   useEffect(() => {
-    onClose();
-  }, [location.pathname]);
-
-
+    if (previousPathRef.current !== location.pathname) {
+      previousPathRef.current = location.pathname;
+      onClose();
+    }
+  }, [location.pathname, onClose]);
   return (
     <AnimatePresence>
       {isOpen && (
@@ -169,11 +171,15 @@ const NavigationOverlay = ({
               </Link>
               <button
                 type="button"
-                onClick={onClose}
-                className="p-2.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onClose();
+                }}
+                className="p-2.5 rounded-lg bg-white/10 hover:bg-white/20 active:bg-white/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 relative z-10 touch-manipulation"
                 aria-label="Close menu"
               >
-                <X className="w-6 h-6 text-white" />
+                <X className="w-6 h-6 text-white pointer-events-none" />
               </button>
             </div>
             
