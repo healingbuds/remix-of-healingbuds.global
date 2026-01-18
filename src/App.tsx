@@ -14,6 +14,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import SkipLinks from "@/components/SkipLinks";
 import CookieConsent from "@/components/CookieConsent";
 import { CursorProvider } from "@/context/CursorContext";
+import { NewsRegionProvider } from "@/context/NewsRegionContext";
 import { useKeyboardUser } from "@/hooks/useKeyboardUser";
 
 // Lazy load pages for better performance
@@ -83,25 +84,27 @@ const App = () => (
   <ErrorBoundary>
     <ThemeProvider defaultTheme="dark" storageKey="healing-buds-theme">
       <CursorProvider>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <CursorFollower>
-              <KeyboardUserDetector>
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <SkipLinks />
-                  <ScrollToTop />
-                  <RouteProgress />
-                  <main id="main-content" className="outline-none" tabIndex={-1}>
-                    <AnimatedRoutes />
-                  </main>
-                  <CookieConsent />
-                </BrowserRouter>
-              </KeyboardUserDetector>
-            </CursorFollower>
-          </TooltipProvider>
-        </QueryClientProvider>
+        <NewsRegionProvider>
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+              <CursorFollower>
+                <KeyboardUserDetector>
+                  <Toaster />
+                  <Sonner />
+                  <BrowserRouter>
+                    <SkipLinks />
+                    <ScrollToTop />
+                    <RouteProgress />
+                    <main id="main-content" className="outline-none" tabIndex={-1}>
+                      <AnimatedRoutes />
+                    </main>
+                    <CookieConsent />
+                  </BrowserRouter>
+                </KeyboardUserDetector>
+              </CursorFollower>
+            </TooltipProvider>
+          </QueryClientProvider>
+        </NewsRegionProvider>
       </CursorProvider>
     </ThemeProvider>
   </ErrorBoundary>

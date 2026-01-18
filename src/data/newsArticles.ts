@@ -2,6 +2,9 @@ import conferenceHq from "@/assets/conference-hq.jpg";
 import awardHq from "@/assets/award-hq.jpg";
 import productionFacility from "@/assets/production-facility-hq.jpg";
 import researchLab from "@/assets/research-lab-hq.jpg";
+import thailandClinic from "@/assets/news-thailand-clinic.jpg";
+import thailandTraditional from "@/assets/news-thailand-traditional.jpg";
+import thailandResearch from "@/assets/news-thailand-research.jpg";
 
 export interface NewsArticle {
   id: string;
@@ -208,7 +211,7 @@ const thArticles: NewsArticle[] = [
     category: "TH News",
     title: "Thailand Leads Asia-Pacific Medical Cannabis Revolution",
     description: "Following historic legalization, Thailand positions itself as the region's premier destination for medical cannabis treatment and research.",
-    image: conferenceHq,
+    image: thailandClinic,
     featured: true,
     tags: ["Thailand", "Medical Cannabis", "Asia-Pacific", "Healthcare"],
     author: "Healing Buds Thailand",
@@ -227,7 +230,7 @@ const thArticles: NewsArticle[] = [
     category: "Culture",
     title: "Thai Traditional Medicine Embraces Cannabis Heritage",
     description: "Ancient healing practices meet modern medical science as Thailand integrates cannabis into its celebrated traditional medicine systems.",
-    image: researchLab,
+    image: thailandTraditional,
     featured: false,
     tags: ["Thailand", "Traditional Medicine", "Culture", "Heritage"],
     author: "Healing Buds Thailand",
@@ -246,7 +249,7 @@ const thArticles: NewsArticle[] = [
     category: "Research",
     title: "Thai Universities Establish World-Class Cannabis Research Centers",
     description: "Leading Thai universities partner with international institutions to advance cannabis science and develop innovative medical applications.",
-    image: productionFacility,
+    image: thailandResearch,
     featured: false,
     tags: ["Thailand", "Research", "Universities", "Science"],
     author: "Healing Buds Thailand",
