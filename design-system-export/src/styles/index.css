@@ -1,0 +1,169 @@
+/**
+ * Healing Buds Design System - Main Stylesheet
+ * 
+ * Import order matters:
+ * 1. Theme tokens
+ * 2. Navigation styles
+ * 3. Tailwind
+ * 4. Utilities
+ */
+
+@import './theme.css';
+@import './navigation.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  
+  h1 { @apply text-4xl md:text-5xl lg:text-6xl; line-height: 1.1; }
+  h2 { @apply text-3xl md:text-4xl lg:text-5xl; line-height: 1.15; }
+  h3 { @apply text-2xl md:text-3xl; line-height: 1.25; }
+  h4 { @apply text-xl md:text-2xl; }
+  
+  p {
+    line-height: 1.7;
+    @apply text-base md:text-lg;
+    letter-spacing: 0.01em;
+  }
+}
+
+@layer utilities {
+  /* Hover Effects */
+  .hover-lift {
+    @apply transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg;
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-200 ease-out hover:scale-[1.01];
+  }
+  
+  .smooth-transition {
+    transition: var(--transition-smooth);
+  }
+  
+  .spring-transition {
+    transition: var(--transition-spring);
+  }
+  
+  /* Card Styles */
+  .card-linear {
+    @apply bg-card rounded-xl border border-border/50 transition-all duration-200;
+  }
+  
+  .card-linear:hover {
+    box-shadow: var(--shadow-card);
+    @apply border-border/70 translate-y-[-1px];
+  }
+  
+  .card-themed {
+    @apply bg-card rounded-xl border border-border/60 shadow-sm transition-all duration-200;
+  }
+  
+  .dark .card-themed {
+    @apply border-border/40 bg-card/95 shadow-lg;
+  }
+  
+  .card-themed:hover {
+    @apply shadow-md border-border/80 -translate-y-0.5;
+  }
+  
+  .dark .card-themed:hover {
+    @apply border-border/50 shadow-xl;
+  }
+  
+  /* Section Backgrounds */
+  .section-default { @apply bg-background; }
+  
+  .section-alt { background-color: hsl(158 14% 95%); }
+  .dark .section-alt { background-color: hsl(175 8% 10%); }
+  
+  .section-muted { @apply bg-muted/40; }
+  
+  .section-sage { background-color: hsl(160 18% 94%); }
+  .dark .section-sage { background-color: hsl(172 10% 12%); }
+  
+  .section-cream { background-color: hsl(45 20% 97%); }
+  .dark .section-cream { background-color: hsl(40 6% 11%); }
+  
+  /* Button Utilities */
+  .btn-primary {
+    @apply px-5 py-2.5 rounded-xl font-medium transition-all duration-300 bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.97];
+  }
+  
+  .btn-secondary {
+    @apply px-5 py-2.5 rounded-xl font-medium transition-all duration-300 bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-md active:scale-[0.97];
+  }
+  
+  .btn-outline {
+    @apply px-5 py-2.5 rounded-xl font-medium transition-all duration-300 border-2 border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50 hover:shadow-md active:scale-[0.98];
+  }
+  
+  .btn-ghost {
+    @apply px-5 py-2.5 rounded-xl font-medium transition-all duration-300 text-primary hover:bg-primary/10 active:bg-primary/20;
+  }
+  
+  .btn-glass {
+    @apply px-5 py-2.5 rounded-2xl font-semibold transition-all duration-300 backdrop-blur-2xl bg-gradient-to-br from-white/30 via-white/20 to-white/10 border border-white/40 text-white hover:border-white/60 hover:from-white/40 hover:via-white/30 hover:to-white/20 hover:shadow-xl active:scale-[0.97] shadow-lg;
+  }
+  
+  .btn-glass-secondary {
+    @apply px-5 py-2.5 rounded-2xl font-semibold transition-all duration-300 backdrop-blur-2xl bg-gradient-to-br from-white/20 via-white/15 to-white/10 border border-white/30 text-white hover:border-white/50 hover:from-white/30 hover:via-white/25 hover:to-white/20 hover:shadow-lg active:scale-[0.97] shadow-lg;
+  }
+  
+  /* Shadow Utilities */
+  .shadow-card { box-shadow: var(--shadow-card); }
+  .shadow-elegant { box-shadow: var(--shadow-elegant); }
+  
+  /* Surface */
+  .surface {
+    @apply bg-background/50 backdrop-blur-sm border border-border/30 rounded-xl;
+  }
+  
+  /* Glow Effects */
+  .glow-accent {
+    @apply shadow-lg;
+    box-shadow: 0 0 12px rgba(77, 170, 140, 0.15);
+  }
+  
+  .glow-accent-strong {
+    @apply shadow-xl;
+    box-shadow: 0 0 20px rgba(77, 170, 140, 0.25);
+  }
+  
+  /* Status Indicators */
+  .status-verified {
+    @apply text-primary bg-primary/10 border border-primary/20;
+  }
+  
+  .status-pending {
+    @apply text-muted-foreground bg-muted border border-border;
+  }
+  
+  .status-attention {
+    @apply text-amber-400 bg-amber-400/10 border border-amber-400/20;
+  }
+  
+  /* Safe Areas */
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+}
