@@ -139,19 +139,14 @@ export default function GlobalLanding() {
           transition={{ delay: 1.1, duration: 0.6 }}
           className="absolute bottom-8 left-0 right-0"
         >
-          <a 
-            href="https://drgreen.io" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 opacity-50 hover:opacity-80 transition-opacity"
-          >
+          <div className="flex items-center justify-center gap-2 opacity-50">
             <span className="text-white/50 text-xs">Powered by</span>
             <img 
               src={drGreenLogo} 
               alt="Dr. Green Digital Key" 
               className="h-4 w-auto object-contain"
             />
-          </a>
+          </div>
         </motion.div>
       </motion.div>
     </div>

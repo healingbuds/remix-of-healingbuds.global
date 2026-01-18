@@ -144,19 +144,14 @@ const Footer = () => {
             </p>
             
             {/* Powered by Dr. Green */}
-            <a 
-              href="https://drgreen.io" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity group"
-            >
+            <div className="flex items-center gap-2 opacity-70">
               <span className="font-body text-white/50 text-xs">Powered by</span>
               <img 
                 src={drGreenLogo} 
                 alt="Dr. Green Digital Key" 
-                className="h-5 w-auto object-contain group-hover:brightness-110 transition-all"
+                className="h-5 w-auto object-contain"
               />
-            </a>
+            </div>
           </div>
         </div>
       </div>
