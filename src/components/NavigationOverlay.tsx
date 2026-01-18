@@ -15,7 +15,8 @@
 
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, X } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -112,7 +113,11 @@ const NavigationOverlay = ({
       onClose();
     }
   }, [location.pathname, onClose]);
-  return (
+  const portalTarget = useMemo(() => (typeof document !== 'undefined' ? document.body : null), []);
+
+  if (!portalTarget) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
@@ -449,7 +454,8 @@ const NavigationOverlay = ({
           </motion.nav>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    portalTarget
   );
 };
 
