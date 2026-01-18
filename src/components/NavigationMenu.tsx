@@ -89,12 +89,17 @@ const NavigationMenu = ({ scrolled, onCloseAllDropdowns }: NavigationMenuProps) 
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-inset"
   );
 
-  // Dropdown animation config
+  // Dropdown animation config - smooth spring physics
   const dropdownAnimation = {
-    initial: { opacity: 0, y: -12, scale: 0.95 },
+    initial: { opacity: 0, y: -8, scale: 0.96 },
     animate: { opacity: 1, y: 0, scale: 1 },
-    exit: { opacity: 0, y: -8, scale: 0.97 },
-    transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] as const }
+    exit: { opacity: 0, y: -6, scale: 0.98 },
+    transition: { 
+      type: "spring" as const, 
+      stiffness: 400, 
+      damping: 30,
+      mass: 0.8
+    }
   };
 
   // Dropdown styles

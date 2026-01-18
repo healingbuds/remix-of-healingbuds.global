@@ -147,7 +147,7 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2"
                   )}
                 >
-                  {t('nav.contact')}
+                  {t('nav.contactUs')}
                 </Link>
               </div>
             </div>

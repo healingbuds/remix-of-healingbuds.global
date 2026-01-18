@@ -132,13 +132,16 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Gradient Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+        
         {/* Bottom Bar */}
-        <div className="py-8">
+        <div className="py-10 lg:py-12">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="font-body text-white/50 text-xs">
+            <p className="font-body text-white/60 text-xs">
               {t('footer.copyright', { year: currentYear })}
             </p>
-            <p className="font-body text-white/40 text-xs">
+            <p className="font-body text-white/50 text-xs max-w-md text-center sm:text-right">
               {t('footer.commitment')}
             </p>
           </div>

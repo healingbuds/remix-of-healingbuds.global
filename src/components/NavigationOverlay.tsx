@@ -131,7 +131,12 @@ const NavigationOverlay = ({
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ 
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+              mass: 0.8
+            }}
             className="xl:hidden fixed inset-0 z-[9999] flex flex-col"
             style={{ 
               backgroundColor: 'hsl(178 35% 22%)',
