@@ -15,7 +15,7 @@ export interface NewsArticle {
   author: string;
   date: string;
   content: string[];
-  region?: 'GB' | 'PT' | 'ZA' | 'ALL'; // Region-specific articles
+  region?: 'GLOBAL' | 'GB' | 'PT' | 'ZA' | 'ALL'; // Region-specific articles
 }
 
 // UK-specific articles
@@ -204,22 +204,22 @@ const zaArticles: NewsArticle[] = [
 // Global/shared articles
 const globalArticles: NewsArticle[] = [
   {
-    id: "healing-buds-popcorn-partnership",
-    category: "Company",
-    title: "Healing Buds Global: How Popcorn Built the Blueprint for Compliant Cannabis Technology",
-    description: "Healing Buds Global stands as the flagship implementation of Popcorn's comprehensive cannabis SaaS platform, demonstrating how white-label technology enables rapid market entry under EU GMP certification.",
+    id: "healing-buds-blockchain-traceability",
+    category: "Technology",
+    title: "Healing Buds Global: Pioneering Seed-to-Sale Blockchain Traceability",
+    description: "How Healing Buds leverages blockchain technology to ensure complete transparency and compliance across the medical cannabis supply chain.",
     image: awardHq,
-    featured: false,
-    tags: ["Healing Buds", "Technology", "SaaS", "Global"],
+    featured: true,
+    tags: ["Healing Buds", "Technology", "Blockchain", "Compliance"],
     author: "Healing Buds Editorial",
     date: "Nov 28, 2024",
     region: 'ALL',
     content: [
-      "Healing Buds Global represents the definitive proof of concept for Popcorn's end-to-end cannabis business platform. As a specialist agency in web and app development, payment processing, customer support infrastructure, white-labeling, and NFT franchising, Popcorn has created a turnkey solution that transforms how entrepreneurs enter the regulated cannabis market.",
-      "The Healing Buds platform showcases every capability in the Popcorn stack: a fully responsive patient-facing website, integrated eligibility checking, secure payment processing compliant with cannabis industry regulations, and backend systems that connect directly to EU GMP certified supply chain.",
-      "What makes this partnership significant is the replicability. Popcorn designed the Healing Buds infrastructure to be white-labeled, meaning any entrepreneur operating under the franchise framework can deploy an identical caliber platform customized to their brand within weeks, not years.",
-      "The NFT franchising component is particularly innovative. Using blockchain technology, Popcorn has created a transparent system for managing franchise agreements, tracking royalties, and verifying compliance across the entire network of operators.",
-      "For aspiring cannabis entrepreneurs, Healing Buds Global isn't just a medical cannabis provider—it's a template for what's possible when world-class technology meets proper regulatory framework."
+      "Healing Buds Global has implemented comprehensive blockchain-based traceability that tracks every product from cultivation through to patient delivery. This seed-to-sale visibility ensures regulatory compliance while providing patients with unprecedented transparency about their medicine.",
+      "Each batch of medical cannabis receives a unique digital identifier recorded on an immutable ledger. Patients can verify the origin, testing results, and chain of custody for their products, building trust in a market where authenticity matters.",
+      "The system integrates with EU GMP certified facilities across Portugal and partner operations globally. Quality control data, including cannabinoid profiles and contaminant testing, is permanently recorded and accessible.",
+      "Regulatory bodies benefit from real-time visibility into the supply chain, simplifying audits and ensuring that licensed operators maintain compliance. This transparency positions Healing Buds as a model for responsible cannabis commerce.",
+      "As medical cannabis markets mature, the infrastructure that Healing Buds has built demonstrates how technology can support both patient safety and regulatory confidence across multiple jurisdictions."
     ],
   },
 ];
@@ -229,6 +229,9 @@ export const getNewsArticlesByRegion = (countryCode: string): NewsArticle[] => {
   let regionArticles: NewsArticle[];
   
   switch (countryCode) {
+    case 'GLOBAL':
+      regionArticles = [...globalArticles];
+      break;
     case 'GB':
       regionArticles = [...ukArticles, ...globalArticles];
       break;
@@ -239,12 +242,12 @@ export const getNewsArticlesByRegion = (countryCode: string): NewsArticle[] => {
       regionArticles = [...zaArticles, ...globalArticles];
       break;
     default:
-      // Default to UK articles for unsupported regions
-      regionArticles = [...ukArticles, ...globalArticles];
+      // Default to global articles
+      regionArticles = [...globalArticles];
   }
   
   return regionArticles;
 };
 
-// Default export for backward compatibility (uses UK articles)
-export const newsArticles: NewsArticle[] = [...ukArticles, ...globalArticles];
+// Default export for backward compatibility (uses global articles)
+export const newsArticles: NewsArticle[] = [...globalArticles];

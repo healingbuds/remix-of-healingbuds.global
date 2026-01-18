@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useGeoLocation } from './useGeoLocation';
 import { getNewsArticlesByRegion, NewsArticle } from '@/data/newsArticles';
 
-export type NewsRegion = 'GB' | 'PT' | 'ZA';
+export type NewsRegion = 'GLOBAL' | 'GB' | 'PT' | 'ZA';
 
 interface RegionOption {
   code: NewsRegion;
@@ -11,6 +10,7 @@ interface RegionOption {
 }
 
 export const regionOptions: RegionOption[] = [
+  { code: 'GLOBAL', label: 'Global', flag: '🌍' },
   { code: 'GB', label: 'United Kingdom', flag: '🇬🇧' },
   { code: 'PT', label: 'Portugal', flag: '🇵🇹' },
   { code: 'ZA', label: 'South Africa', flag: '🇿🇦' },
@@ -19,22 +19,18 @@ export const regionOptions: RegionOption[] = [
 const STORAGE_KEY = 'healing-buds-news-region';
 
 export const useNewsRegion = () => {
-  const locationConfig = useGeoLocation();
   const [selectedRegion, setSelectedRegion] = useState<NewsRegion | null>(null);
 
   // Load saved region preference on mount
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved && ['GB', 'PT', 'ZA'].includes(saved)) {
+    if (saved && ['GLOBAL', 'GB', 'PT', 'ZA'].includes(saved)) {
       setSelectedRegion(saved as NewsRegion);
     }
   }, []);
 
-  // The active region is either manually selected or auto-detected
-  const activeRegion: NewsRegion = selectedRegion || 
-    (['GB', 'PT', 'ZA'].includes(locationConfig.countryCode) 
-      ? locationConfig.countryCode as NewsRegion 
-      : 'GB');
+  // The active region is either manually selected or defaults to Global
+  const activeRegion: NewsRegion = selectedRegion || 'GLOBAL';
 
   const setRegion = (code: NewsRegion) => {
     setSelectedRegion(code);
