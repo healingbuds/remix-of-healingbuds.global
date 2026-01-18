@@ -166,7 +166,7 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
                   scrolled && "p-2.5"
                 )}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-label={mobileMenuOpen ? t('accessibility.menuClose', 'Close menu') : t('accessibility.menuOpen', 'Open menu')}
                 aria-expanded={mobileMenuOpen}
               >
                 {mobileMenuOpen ? (

@@ -1,4 +1,10 @@
 {
+  "accessibility": {
+    "skipToMain": "Skip to main content",
+    "skipToNav": "Skip to navigation",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu"
+  },
   "breadcrumbs": {
     "home": "Home"
   },

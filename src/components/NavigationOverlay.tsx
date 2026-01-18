@@ -138,6 +138,7 @@ const NavigationOverlay = ({
           
           {/* Menu Surface - highest z-index, owns entire viewport */}
           <motion.nav 
+            id="main-navigation-mobile"
             ref={focusTrapRef as React.RefObject<HTMLElement>}
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}

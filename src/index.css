@@ -703,30 +703,69 @@ All colors MUST be HSL.
 }
 
 /* ===== ACCESSIBILITY: Skip Links ===== */
-.skip-links {
-  position: absolute;
+.skip-links-container {
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999;
+  z-index: 10001; /* Above everything including navigation overlay */
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .skip-link {
   position: absolute;
-  left: -9999px;
-  top: 0;
-  padding: 1rem 1.5rem;
-  background: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  left: 0;
+  transform: translateY(-100%);
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, hsl(178 48% 25%), hsl(164 48% 40%));
+  color: white;
+  font-family: var(--font-jakarta), system-ui, sans-serif;
   font-weight: 600;
+  font-size: 0.875rem;
   text-decoration: none;
-  border-radius: 0 0 0.5rem 0;
-  transition: left 0.15s ease-in-out;
+  border-radius: 0 0 0.75rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.15s ease;
+  white-space: nowrap;
+  opacity: 0;
 }
 
 .skip-link:focus {
-  left: 0;
-  outline: 2px solid hsl(var(--ring));
+  transform: translateY(0);
+  opacity: 1;
+  outline: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), 0 0 0 3px rgba(255, 255, 255, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  opacity: 1;
+  outline: 3px solid white;
   outline-offset: 2px;
+}
+
+.skip-link-second {
+  top: 0;
+}
+
+.skip-link-second:focus,
+.skip-link-second:focus-visible {
+  transform: translateY(52px); /* Position below first skip link when both focused */
+}
+
+/* Keyboard user enhanced focus styles */
+body.keyboard-user *:focus-visible {
+  outline: 3px solid hsl(var(--ring));
+  outline-offset: 3px;
+}
+
+body.keyboard-user button:focus-visible,
+body.keyboard-user a:focus-visible,
+body.keyboard-user [role="button"]:focus-visible {
+  outline: 3px solid hsl(var(--ring));
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px hsla(var(--ring) / 0.2);
 }
 
 /* ===== ACCESSIBILITY: Reduced Motion Support ===== */

@@ -110,11 +110,16 @@ const NavigationMenu = ({ scrolled, onCloseAllDropdowns }: NavigationMenuProps) 
   };
 
   return (
-    <nav className={cn(
-      "hidden xl:flex items-center justify-center",
-      "transition-all duration-500 ease-out mx-4",
-      scrolled ? "gap-0.5 xl:gap-1 2xl:gap-2" : "gap-1 xl:gap-2 2xl:gap-3"
-    )}>
+    <nav 
+      id="main-navigation"
+      role="navigation"
+      aria-label="Main navigation"
+      className={cn(
+        "hidden xl:flex items-center justify-center",
+        "transition-all duration-500 ease-out mx-4",
+        scrolled ? "gap-0.5 xl:gap-1 2xl:gap-2" : "gap-1 xl:gap-2 2xl:gap-3"
+      )}
+    >
       {/* What We Do Dropdown */}
       <div 
         ref={whatWeDoRef}

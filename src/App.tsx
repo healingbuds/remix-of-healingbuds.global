@@ -14,6 +14,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import SkipLinks from "@/components/SkipLinks";
 import CookieConsent from "@/components/CookieConsent";
 import { CursorProvider } from "@/context/CursorContext";
+import { useKeyboardUser } from "@/hooks/useKeyboardUser";
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
@@ -69,6 +70,12 @@ const AnimatedRoutes = () => {
   );
 };
 
+// Keyboard detection wrapper component
+const KeyboardUserDetector = ({ children }: { children: React.ReactNode }) => {
+  useKeyboardUser();
+  return <>{children}</>;
+};
+
 const App = () => (
   <ErrorBoundary>
     <ThemeProvider defaultTheme="dark" storageKey="healing-buds-theme">
@@ -76,17 +83,19 @@ const App = () => (
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
             <CursorFollower>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <SkipLinks />
-                <ScrollToTop />
-                <RouteProgress />
-                <main id="main-content" tabIndex={-1}>
-                  <AnimatedRoutes />
-                </main>
-                <CookieConsent />
-              </BrowserRouter>
+              <KeyboardUserDetector>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <SkipLinks />
+                  <ScrollToTop />
+                  <RouteProgress />
+                  <main id="main-content" className="outline-none" tabIndex={-1}>
+                    <AnimatedRoutes />
+                  </main>
+                  <CookieConsent />
+                </BrowserRouter>
+              </KeyboardUserDetector>
             </CursorFollower>
           </TooltipProvider>
         </QueryClientProvider>
