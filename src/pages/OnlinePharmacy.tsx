@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
-import MobileBottomActions from "@/components/MobileBottomActions";
+
 import { ShoppingCart, Clock, Shield, HeartPulse, ChevronDown } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import medicalProductsImage from "@/assets/medical-products-hq.jpg";
@@ -336,7 +336,6 @@ const OnlinePharmacy = () => {
         </main>
         <Footer />
         <BackToTop />
-        <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );

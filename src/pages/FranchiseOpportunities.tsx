@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
-import MobileBottomActions from "@/components/MobileBottomActions";
+
 import SEOHead from "@/components/SEOHead";
 import { Building2, Globe, Shield, TrendingUp, Loader2, CheckCircle2, AlertCircle, Phone } from "lucide-react";
 import greenhouseImage from "@/assets/greenhouse-exterior-hq.jpg";
@@ -503,7 +503,6 @@ ${data.message || 'Not provided'}
         
         <Footer />
         <BackToTop />
-        <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );

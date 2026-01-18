@@ -6,7 +6,7 @@ import PageTransition from "@/components/PageTransition";
 import PageHero from "@/components/PageHero";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
-import MobileBottomActions from "@/components/MobileBottomActions";
+
 import AnimatedStatistics from "@/components/AnimatedStatistics";
 import { Users, Heart, FileText } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -287,7 +287,6 @@ const MedicalClinics = () => {
         </main>
         <Footer />
         <BackToTop />
-        <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );

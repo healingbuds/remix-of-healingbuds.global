@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
-import MobileBottomActions from "@/components/MobileBottomActions";
+
 import { Mail, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import greenhouseImage from "@/assets/greenhouse-rows.png";
 import { useState } from "react";
@@ -291,7 +291,6 @@ const Contact = () => {
       </main>
       <Footer />
       <BackToTop />
-      <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );
