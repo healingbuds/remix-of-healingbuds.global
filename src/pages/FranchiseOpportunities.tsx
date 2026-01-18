@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import Header from "@/layout/Header";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
 
@@ -171,7 +172,9 @@ ${data.message || 'Not provided'}
         <Header onMenuStateChange={setMenuOpen} />
         
         <main className="pt-28 md:pt-32">
-          {/* Hero Section */}
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <PageBreadcrumb />
+          </div>
           <section className="bg-background py-16 md:py-20">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <ScrollAnimation>

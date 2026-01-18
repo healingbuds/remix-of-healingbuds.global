@@ -3,6 +3,7 @@ import Header from "@/layout/Header";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import PageHero from "@/components/PageHero";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
 import AnimatedStatistics from "@/components/AnimatedStatistics";
@@ -48,7 +49,9 @@ const AboutUs = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="pt-28 md:pt-32 relative z-0">
-          {/* Hero Section using PageHero component */}
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <PageBreadcrumb />
+          </div>
           <PageHero
             title={t('hero.title')}
             subtitle={t('hero.subtitle')}

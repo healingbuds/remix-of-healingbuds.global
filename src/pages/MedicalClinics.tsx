@@ -4,6 +4,7 @@ import Header from "@/layout/Header";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import PageHero from "@/components/PageHero";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
 
@@ -40,7 +41,9 @@ const MedicalClinics = () => {
       <div className="min-h-screen bg-background pb-24 lg:pb-0">
         <Header onMenuStateChange={setMenuOpen} />
         <main className="pt-24">
-          {/* Hero Section using PageHero component */}
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <PageBreadcrumb />
+          </div>
           <PageHero
             title={t('hero.title')}
             subtitle={t('hero.subtitle')}

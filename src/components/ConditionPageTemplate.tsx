@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ChevronRight, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import PageTransition from "@/components/PageTransition";
+import PageBreadcrumb from "@/components/PageBreadcrumb";
 
 interface ConditionPageTemplateProps {
   conditionKey: string;
@@ -60,13 +61,9 @@ const ConditionPageTemplate = ({ conditionKey }: ConditionPageTemplateProps) => 
 
         {/* Breadcrumbs */}
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground font-geist">
-            <Link to="/" className="hover:text-primary transition-colors">{t("breadcrumbs.home")}</Link>
-            <ChevronRight className="w-4 h-4" />
-            <Link to="/conditions" className="hover:text-primary transition-colors">{t("breadcrumbs.conditions")}</Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-foreground">{t(`${conditionKey}.breadcrumb`)}</span>
-          </div>
+          <PageBreadcrumb 
+            currentPageLabel={t(`${conditionKey}.breadcrumb`)}
+          />
         </div>
 
         {/* Main Content */}
