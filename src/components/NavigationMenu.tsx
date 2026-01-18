@@ -271,6 +271,10 @@ const NavigationMenu = ({ scrolled, onCloseAllDropdowns }: NavigationMenuProps) 
           )}
         </AnimatePresence>
       </div>
+
+      <Link to="/franchise-opportunities" className={getNavItemStyles(isActive("/franchise-opportunities"))}>
+        {t('nav.franchise')}
+      </Link>
       
       <Link to="/contact" className={getNavItemStyles(isActive("/contact"))}>
         {t('nav.contactUs')}
