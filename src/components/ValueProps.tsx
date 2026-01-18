@@ -117,17 +117,17 @@ const cardVariants = {
 const leafDecorations = [
   { 
     src: plantDecoration1, 
-    className: "absolute -bottom-16 -right-16 w-64 md:w-80 opacity-10 dark:opacity-10 rotate-12",
+    className: "absolute -bottom-20 -right-20 w-80 md:w-96 opacity-10 dark:opacity-10 rotate-12",
     style: { 
-      maskImage: "radial-gradient(ellipse 70% 70% at 100% 100%, black 20%, transparent 70%)",
-      WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 100% 100%, black 20%, transparent 70%)"
+      maskImage: "radial-gradient(ellipse 60% 60% at 100% 100%, black 15%, transparent 65%)",
+      WebkitMaskImage: "radial-gradient(ellipse 60% 60% at 100% 100%, black 15%, transparent 65%)"
     }
   },
 ];
 
 const ValueProps = () => {
   return (
-    <div className="px-2">
+    <div className="px-2 my-8 md:my-12">
       <motion.section 
         className="py-20 sm:py-24 md:py-28 rounded-2xl sm:rounded-3xl relative overflow-hidden bg-[hsl(178_48%_21%)] dark:bg-[hsl(175_35%_18%)]"
         initial="hidden"
