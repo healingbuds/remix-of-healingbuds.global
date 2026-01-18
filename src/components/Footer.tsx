@@ -1,4 +1,5 @@
 import hbLogoWhite from "@/assets/hb-logo-white-new.png";
+import drGreenLogo from "@/assets/drgreen-nft-logo.png";
 import { Link } from "react-router-dom";
 import { Mail, MapPin, Leaf } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -137,13 +138,25 @@ const Footer = () => {
         
         {/* Bottom Bar */}
         <div className="py-10 lg:py-12">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
             <p className="font-body text-white/60 text-xs">
               {t('footer.copyright', { year: currentYear })}
             </p>
-            <p className="font-body text-white/50 text-xs max-w-md text-center sm:text-right">
-              {t('footer.commitment')}
-            </p>
+            
+            {/* Powered by Dr. Green */}
+            <a 
+              href="https://drgreen.io" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity group"
+            >
+              <span className="font-body text-white/50 text-xs">Powered by</span>
+              <img 
+                src={drGreenLogo} 
+                alt="Dr. Green Digital Key" 
+                className="h-5 w-auto object-contain group-hover:brightness-110 transition-all"
+              />
+            </a>
           </div>
         </div>
       </div>
