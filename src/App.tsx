@@ -15,6 +15,7 @@ import SkipLinks from "@/components/SkipLinks";
 import CookieConsent from "@/components/CookieConsent";
 import { CursorProvider } from "@/context/CursorContext";
 import { NewsRegionProvider } from "@/context/NewsRegionContext";
+import { TestRegionProvider } from "@/context/TestRegionContext";
 import { useKeyboardUser } from "@/hooks/useKeyboardUser";
 
 // Lazy load pages for better performance
@@ -87,7 +88,8 @@ const App = () => (
     <ThemeProvider defaultTheme="dark" storageKey="healing-buds-theme">
       <CursorProvider>
         <NewsRegionProvider>
-          <QueryClientProvider client={queryClient}>
+          <TestRegionProvider>
+            <QueryClientProvider client={queryClient}>
             <TooltipProvider>
               <CursorFollower>
                 <KeyboardUserDetector>
@@ -105,7 +107,8 @@ const App = () => (
                 </KeyboardUserDetector>
               </CursorFollower>
             </TooltipProvider>
-          </QueryClientProvider>
+            </QueryClientProvider>
+          </TestRegionProvider>
         </NewsRegionProvider>
       </CursorProvider>
     </ThemeProvider>
