@@ -5,7 +5,7 @@ import PageTransition from "@/components/PageTransition";
 import PageHero from "@/components/PageHero";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
-import MobileBottomActions from "@/components/MobileBottomActions";
+
 import { Plus } from "lucide-react";
 import { motion } from "framer-motion";
 import cultivationImage from "@/assets/greenhouse-exterior-hq.jpg";
@@ -466,7 +466,6 @@ const CultivatingProcessing = () => {
         </main>
         <Footer />
         <BackToTop />
-        <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );

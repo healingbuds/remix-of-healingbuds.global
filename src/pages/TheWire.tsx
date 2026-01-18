@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import BackToTop from "@/components/BackToTop";
 import ScrollAnimation from "@/components/ScrollAnimation";
-import MobileBottomActions from "@/components/MobileBottomActions";
+
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -168,7 +168,6 @@ const TheWire = () => {
         </main>
         <Footer />
         <BackToTop />
-        <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );

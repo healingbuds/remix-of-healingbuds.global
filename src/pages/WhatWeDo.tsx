@@ -6,7 +6,7 @@ import PageTransition from "@/components/PageTransition";
 import PageHero from "@/components/PageHero";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
-import MobileBottomActions from "@/components/MobileBottomActions";
+
 import AnimatedStatistics from "@/components/AnimatedStatistics";
 import { Leaf, Users, FlaskConical } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -173,7 +173,6 @@ const WhatWeDo = () => {
         </main>
         <Footer />
         <BackToTop />
-        <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );

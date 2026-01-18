@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
-import MobileBottomActions from "@/components/MobileBottomActions";
+
 import International from "@/components/International";
 import { motion, useScroll, useTransform } from "framer-motion";
 import productionFacility from "@/assets/production-facility-hq.jpg";
@@ -211,7 +211,6 @@ const ManufactureDistribution = () => {
         </main>
         <Footer />
         <BackToTop />
-        <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );

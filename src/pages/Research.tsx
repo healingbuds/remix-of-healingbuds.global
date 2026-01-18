@@ -6,7 +6,7 @@ import PageTransition from "@/components/PageTransition";
 import PageHero from "@/components/PageHero";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import BackToTop from "@/components/BackToTop";
-import MobileBottomActions from "@/components/MobileBottomActions";
+
 import { BotanicalDecoration } from "@/components/BotanicalDecoration";
 import { Microscope, FileText, Award, Users, Search } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -312,7 +312,6 @@ const Research = () => {
         </main>
         <Footer />
         <BackToTop />
-        <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );

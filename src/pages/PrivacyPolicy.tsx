@@ -4,7 +4,7 @@ import Header from "@/layout/Header";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import BackToTop from "@/components/BackToTop";
-import MobileBottomActions from "@/components/MobileBottomActions";
+
 import { Shield, Lock, Eye, FileText, Users, Globe } from "lucide-react";
 import { useGeoLocation } from "@/hooks/useGeoLocation";
 
@@ -169,7 +169,6 @@ const PrivacyPolicy = () => {
         </main>
         <Footer />
         <BackToTop />
-        <MobileBottomActions menuOpen={menuOpen} />
       </div>
     </PageTransition>
   );
