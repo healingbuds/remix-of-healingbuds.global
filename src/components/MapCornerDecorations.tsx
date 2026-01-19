@@ -135,8 +135,8 @@ function OrganicBranchArt({ className = '' }: { className?: string }) {
 }
 
 export default function MapCornerDecorations({ className = '' }: MapCornerDecorationsProps) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark' || theme === 'system';
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   
   // Theme-aware opacities
   const leafOpacity = isDark ? 'text-primary/30' : 'text-primary/20';
