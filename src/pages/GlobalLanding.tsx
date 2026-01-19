@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import hbLogoWhite from "@/assets/hb-logo-white-new.png";
 import hbLogoIcon from "@/assets/hb-logo-icon.png";
-import drGreenLogo from "@/assets/drgreen-nft-logo.png";
+import drGreenLogo from "@/assets/drgreen-logo-white.png";
 import TestRegionSwitcher from "@/components/TestRegionSwitcher";
 import { useTestRegion, testRegionOptions } from "@/context/TestRegionContext";
 
@@ -247,8 +247,8 @@ export default function GlobalLanding() {
             <span className="text-white/50 text-xs">Powered by</span>
             <img 
               src={drGreenLogo} 
-              alt="Dr. Green Digital Key" 
-              className="h-4 w-auto object-contain"
+              alt="Dr. Green" 
+              className="h-5 w-auto object-contain"
             />
           </div>
         </motion.div>
