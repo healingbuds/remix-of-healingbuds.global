@@ -157,9 +157,9 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
 
   // Memoized map config based on screen size
   const mapConfig = useMemo(() => ({
-    center: isMobile ? [10, 30] as [number, number] : [20, 20] as [number, number],
-    zoom: isMobile ? 1.8 : 2.5,
-    minZoom: isMobile ? 1 : 2,
+    center: isMobile ? [5, 40] as [number, number] : [15, 25] as [number, number],
+    zoom: isMobile ? 1.5 : 2.2,
+    minZoom: isMobile ? 1 : 1.5,
     maxZoom: 8,
     flyToZoom: isMobile ? 3 : 4,
   }), [isMobile]);
