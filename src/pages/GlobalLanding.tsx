@@ -154,14 +154,14 @@ export default function GlobalLanding() {
                 className={region.status === "live" ? "cursor-pointer" : ""}
               >
                 <Card 
-                  className={`relative overflow-hidden bg-gradient-to-br from-white/8 via-white/5 to-transparent backdrop-blur-md transition-all duration-300 ${
+                  className={`relative overflow-hidden bg-[hsl(178,48%,16%)] backdrop-blur-md transition-all duration-300 ${
                     isSelected 
                       ? "border-primary border-2 shadow-lg shadow-primary/20" 
-                      : "border-white/10 hover:border-white/20"
+                      : "border-white/20 hover:border-white/30"
                   } ${
                     region.status === "live" 
                       ? "hover:shadow-lg hover:shadow-primary/10" 
-                      : "opacity-60"
+                      : "opacity-70"
                   }`}
                   onClick={() => region.status === "live" && window.open(region.url, "_blank")}
                 >
@@ -207,7 +207,7 @@ export default function GlobalLanding() {
                           <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       ) : (
-                        <span className="inline-block px-3 py-1.5 text-xs text-white/50 bg-white/5 rounded-full text-center border border-white/10">
+                        <span className="inline-block px-3 py-1.5 text-xs text-white/70 bg-white/10 rounded-full text-center border border-white/20">
                           Coming Soon
                         </span>
                       )}
@@ -226,11 +226,11 @@ export default function GlobalLanding() {
           transition={{ delay: 1.0, duration: 0.6 }}
           className="flex flex-wrap justify-center gap-6 mb-12"
         >
-          <div className="flex items-center gap-2 text-white/60 text-sm">
+          <div className="flex items-center gap-2 text-white/80 text-sm">
             <Shield className="w-5 h-5 text-primary" />
             <span>EU GMP Regulated</span>
           </div>
-          <div className="flex items-center gap-2 text-white/60 text-sm">
+          <div className="flex items-center gap-2 text-white/80 text-sm">
             <Globe className="w-5 h-5 text-primary" />
             <span>Global Network</span>
           </div>
