@@ -21,8 +21,8 @@ export default function MapAmbientParticles({
   particleCount = 40, 
   className = '' 
 }: MapAmbientParticlesProps) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark' || theme === 'system';
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   
   // Theme-aware colors
   const particleColor = isDark ? 'hsl(175, 42%, 50%)' : 'hsl(178, 48%, 35%)';

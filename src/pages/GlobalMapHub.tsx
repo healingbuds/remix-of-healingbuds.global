@@ -44,8 +44,8 @@ export default function GlobalMapHub() {
   const [showWelcome, setShowWelcome] = useState(true);
   const [mapReady, setMapReady] = useState(false);
   const [showKeyboardHint, setShowKeyboardHint] = useState(false);
-  const { theme } = useTheme();
-  const isDark = theme === 'dark' || theme === 'system';
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   
   useEffect(() => {
     const detectedRegion = detectRegionFromDomain();

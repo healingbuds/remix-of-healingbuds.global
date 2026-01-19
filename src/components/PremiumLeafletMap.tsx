@@ -281,8 +281,8 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
   const polylinesRef = useRef<L.Polyline[]>([]);
   const energyOverlayRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
-  const { theme } = useTheme();
-  const isDark = theme === 'dark' || theme === 'system';
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
 
   // Memoized map config based on screen size
   const mapConfig = useMemo(() => ({
