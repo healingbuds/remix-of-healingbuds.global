@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -10,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { getRegionalContent, RegionalContentType } from '@/data/regionalContent';
 import { globalContent } from '@/data/globalContent';
 import RegionalRegistrationForm from '@/components/RegionalRegistrationForm';
+import LeadGateOverlay from '@/components/LeadGateOverlay';
 import hbLogo from '@/assets/hb-logo-white-new.png';
 
 // Animated background orbs component
@@ -307,8 +309,12 @@ const GlobalPreviewContent = () => {
   );
 };
 
-// Regional Preview Component - Modern Dark Tech
-const RegionalPreviewContent = ({ content, regionCode }: { content: RegionalContentType; regionCode: string }) => {
+const RegionalPreviewContent = ({ content, regionCode, isRegistered, onRegister }: { 
+  content: RegionalContentType; 
+  regionCode: string;
+  isRegistered: boolean;
+  onRegister: () => void;
+}) => {
   const formatPrice = (amount: number) => `${content.currency.symbol}${amount.toLocaleString()}`;
 
   return (
@@ -493,6 +499,24 @@ const RegionalPreviewContent = ({ content, regionCode }: { content: RegionalCont
 
 const RegionalPreviewModern = () => {
   const { regionCode } = useParams<{ regionCode: string }>();
+  const [isRegistered, setIsRegistered] = useState(false);
+  
+  // Check localStorage for registration status on mount
+  useEffect(() => {
+    if (regionCode) {
+      const storageKey = `healingbuds_registered_${regionCode.toLowerCase()}`;
+      const registered = localStorage.getItem(storageKey) === 'true';
+      setIsRegistered(registered);
+    }
+  }, [regionCode]);
+  
+  const handleRegistrationSuccess = () => {
+    if (regionCode) {
+      const storageKey = `healingbuds_registered_${regionCode.toLowerCase()}`;
+      localStorage.setItem(storageKey, 'true');
+      setIsRegistered(true);
+    }
+  };
   
   if (regionCode?.toLowerCase() === 'global') {
     return <GlobalPreviewContent />;
@@ -520,7 +544,27 @@ const RegionalPreviewModern = () => {
     );
   }
 
-  return <RegionalPreviewContent content={content} regionCode={regionCode!} />;
+  return (
+    <>
+      {/* Lead Gate Overlay - shows registration form with blurred background */}
+      <LeadGateOverlay
+        content={content}
+        regionCode={regionCode!}
+        onSuccess={handleRegistrationSuccess}
+        isVisible={!isRegistered}
+      />
+      
+      {/* Main Preview Content - visible but blurred when not registered */}
+      <div className={!isRegistered ? 'blur-sm pointer-events-none select-none' : ''}>
+        <RegionalPreviewContent 
+          content={content} 
+          regionCode={regionCode!}
+          isRegistered={isRegistered}
+          onRegister={handleRegistrationSuccess}
+        />
+      </div>
+    </>
+  );
 };
 
 export default RegionalPreviewModern;

@@ -54,9 +54,10 @@ const HOW_HEARD_OPTIONS = [
 interface RegionalRegistrationFormProps {
   content: RegionalContentType;
   regionCode: string;
+  onSuccess?: () => void;
 }
 
-const RegionalRegistrationForm = ({ content, regionCode }: RegionalRegistrationFormProps) => {
+const RegionalRegistrationForm = ({ content, regionCode, onSuccess }: RegionalRegistrationFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
@@ -116,6 +117,7 @@ const RegionalRegistrationForm = ({ content, regionCode }: RegionalRegistrationF
 
       setIsSuccess(true);
       toast.success('Registration successful!');
+      onSuccess?.();
     } catch (error) {
       console.error('Registration error:', error);
       toast.error('Something went wrong. Please try again.');
