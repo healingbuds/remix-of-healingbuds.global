@@ -1,5 +1,5 @@
 import hbLogoWhite from "@/assets/hb-logo-white-new.png";
-import drGreenLogo from "@/assets/drgreen-nft-logo.png";
+import drGreenLogo from "@/assets/drgreen-logo-white.png";
 import { Link } from "react-router-dom";
 import { Mail, MapPin, Leaf } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -148,8 +148,8 @@ const Footer = () => {
               <span className="font-body text-white/50 text-xs">Powered by</span>
               <img 
                 src={drGreenLogo} 
-                alt="Dr. Green Digital Key" 
-                className="h-5 w-auto object-contain"
+                alt="Dr. Green" 
+                className="h-6 w-auto object-contain"
               />
             </div>
           </div>

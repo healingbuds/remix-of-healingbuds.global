@@ -8,7 +8,7 @@ import PremiumGlobeIcon from '@/components/PremiumGlobeIcon';
 import RegionSlidePanel from '@/components/RegionSlidePanel';
 import TestRegionSwitcher from '@/components/TestRegionSwitcher';
 import hbLogoWhite from '@/assets/hb-logo-white-new.png';
-import drGreenLogo from '@/assets/drgreen-nft-logo.png';
+import drGreenLogo from '@/assets/drgreen-logo-white.png';
 import { countryKeyToRegionCode, RegionCode, detectRegionFromDomain } from '@/lib/domainDetection';
 
 // Map from InteractiveMap country keys to display info
@@ -184,8 +184,8 @@ export default function GlobalMapHub() {
             <span className="text-white/40 text-xs">Powered by</span>
             <img 
               src={drGreenLogo} 
-              alt="Dr. Green Digital Key" 
-              className="h-4 w-auto object-contain opacity-50"
+              alt="Dr. Green" 
+              className="h-5 w-auto object-contain opacity-60"
             />
           </div>
           
