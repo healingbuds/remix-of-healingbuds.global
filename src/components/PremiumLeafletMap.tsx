@@ -158,10 +158,10 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
   // Memoized map config based on screen size
   const mapConfig = useMemo(() => ({
     center: isMobile ? [5, 40] as [number, number] : [15, 25] as [number, number],
-    zoom: isMobile ? 1.5 : 2.2,
-    minZoom: isMobile ? 1 : 1.5,
+    zoom: isMobile ? 2 : 2.5,
+    minZoom: 2,
     maxZoom: 8,
-    flyToZoom: isMobile ? 3 : 4,
+    flyToZoom: isMobile ? 3.5 : 4,
   }), [isMobile]);
 
   // Stable callback ref to avoid recreation
@@ -190,7 +190,13 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       }
     );
 
-    // Initialize map
+    // World bounds to prevent infinite panning
+    const worldBounds = L.latLngBounds(
+      L.latLng(-60, -180),
+      L.latLng(75, 180)
+    );
+
+    // Initialize map with smooth, stable settings
     const map = L.map(mapContainerRef.current, {
       center: mapConfig.center,
       zoom: mapConfig.zoom,
@@ -198,8 +204,22 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       maxZoom: mapConfig.maxZoom,
       zoomControl: false,
       attributionControl: false,
-      worldCopyJump: true,
+      worldCopyJump: false,
       preferCanvas: true,
+      // Bounds restriction
+      maxBounds: worldBounds,
+      maxBoundsViscosity: 0.8,
+      // Smooth zoom settings
+      zoomSnap: 0.5,
+      zoomDelta: 0.5,
+      wheelDebounceTime: 100,
+      wheelPxPerZoomLevel: 120,
+      // Smooth pan settings
+      inertia: true,
+      inertiaDeceleration: 3000,
+      inertiaMaxSpeed: 1500,
+      // Disable bouncy zoom
+      bounceAtZoomLimits: false,
     });
 
     darkTiles.addTo(map);
@@ -305,7 +325,8 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
 
         if (isSelected && mapRef.current) {
           mapRef.current.flyTo(region.coordinates, mapConfig.flyToZoom, {
-            duration: 0.8,
+            duration: 1.2,
+            easeLinearity: 0.5,
           });
         }
       }
