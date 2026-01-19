@@ -149,16 +149,44 @@
   }
 }
 
-/* Smooth tile loading */
+/* Smooth tile loading with fade-in */
+@keyframes tile-fade-in {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
 .leaflet-tile {
-  transition: opacity 0.2s ease-out;
+  opacity: 0;
+  transition: opacity 0.4s ease-out, filter 0.3s ease-out;
 }
 
 .leaflet-tile-loaded {
   opacity: 1;
+  animation: tile-fade-in 0.5s ease-out forwards;
 }
 
-/* Hide tile loading gaps */
+/* Prevent tile flash during load */
+.leaflet-fade-anim .leaflet-tile {
+  will-change: opacity;
+}
+
+/* Hide tile loading gaps with smooth background */
 .leaflet-tile-container {
+  background: hsl(178, 48%, 6%);
+}
+
+/* Smooth pane transitions */
+.leaflet-tile-pane {
+  transition: opacity 0.3s ease-out;
+}
+
+/* Loading state for map container */
+.leaflet-container {
   background: hsl(178, 48%, 6%);
 }
