@@ -16,7 +16,7 @@ interface RegionSlidePanelProps {
   onClose: () => void;
   regionCode: RegionCode | null;
   countryName?: string;
-  countryStatus?: 'LIVE' | 'NEXT' | 'UPCOMING';
+  countryStatus?: 'LIVE' | 'HQ' | 'PRODUCTION' | 'NEXT';
 }
 
 const RegionSlidePanel = ({ 
@@ -24,7 +24,7 @@ const RegionSlidePanel = ({
   onClose, 
   regionCode,
   countryName,
-  countryStatus = 'UPCOMING',
+  countryStatus = 'NEXT',
 }: RegionSlidePanelProps) => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [content, setContent] = useState<RegionalContentType | null>(null);

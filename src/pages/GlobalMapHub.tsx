@@ -12,17 +12,18 @@ import hbLogoWhite from '@/assets/hb-logo-white-new.png';
 import drGreenLogo from '@/assets/drgreen-logo-white.png';
 import { countryKeyToRegionCode, RegionCode, detectRegionFromDomain } from '@/lib/domainDetection';
 
-const countryDisplayInfo: Record<string, { name: string; status: 'LIVE' | 'NEXT' | 'UPCOMING'; flag: string }> = {
+const countryDisplayInfo: Record<string, { name: string; status: 'LIVE' | 'HQ' | 'PRODUCTION' | 'NEXT'; flag: string }> = {
   southAfrica: { name: 'South Africa', status: 'LIVE', flag: '🇿🇦' },
-  thailand: { name: 'Thailand', status: 'LIVE', flag: '🇹🇭' },
+  portugal: { name: 'Portugal', status: 'HQ', flag: '🇵🇹' },
+  thailand: { name: 'Thailand', status: 'PRODUCTION', flag: '🇹🇭' },
   uk: { name: 'United Kingdom', status: 'NEXT', flag: '🇬🇧' },
-  portugal: { name: 'Portugal', status: 'UPCOMING', flag: '🇵🇹' },
 };
 
 const statusConfig = {
   LIVE: { label: 'Live', color: 'bg-emerald-500', textColor: 'text-emerald-400' },
+  HQ: { label: 'HQ', color: 'bg-purple-500', textColor: 'text-purple-400' },
+  PRODUCTION: { label: 'Production', color: 'bg-sky-500', textColor: 'text-sky-400' },
   NEXT: { label: 'Coming Soon', color: 'bg-amber-500', textColor: 'text-amber-400' },
-  UPCOMING: { label: 'Upcoming', color: 'bg-slate-500', textColor: 'text-slate-400' },
 };
 
 export default function GlobalMapHub() {
