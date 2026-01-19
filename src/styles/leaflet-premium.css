@@ -31,17 +31,17 @@
 
 .marker-ripple {
   position: absolute;
-  inset: 0;
   border-radius: 50%;
-  border: 2px solid hsl(175, 42%, 50%);
+  border: 2px solid;
+  border-color: inherit;
   animation: marker-ripple 2s ease-out infinite;
 }
 
 .marker-ripple-2 {
   position: absolute;
-  inset: 0;
   border-radius: 50%;
-  border: 1.5px solid hsl(175, 42%, 45%);
+  border: 1.5px solid;
+  border-color: inherit;
   animation: marker-ripple-delayed 2s ease-out infinite;
   animation-delay: 0.6s;
 }

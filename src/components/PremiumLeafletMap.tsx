@@ -7,14 +7,14 @@ interface RegionMarker {
   key: string;
   name: string;
   coordinates: [number, number];
-  status: 'LIVE' | 'NEXT' | 'UPCOMING';
+  status: 'LIVE' | 'HQ' | 'PRODUCTION' | 'NEXT';
 }
 
 const regions: RegionMarker[] = [
   { key: 'southAfrica', name: 'South Africa', coordinates: [-30.5595, 22.9375], status: 'LIVE' },
-  { key: 'thailand', name: 'Thailand', coordinates: [15.8700, 100.9925], status: 'LIVE' },
+  { key: 'thailand', name: 'Thailand', coordinates: [15.8700, 100.9925], status: 'PRODUCTION' },
+  { key: 'portugal', name: 'Portugal', coordinates: [39.3999, -8.2245], status: 'HQ' },
   { key: 'uk', name: 'United Kingdom', coordinates: [55.3781, -3.4360], status: 'NEXT' },
-  { key: 'portugal', name: 'Portugal', coordinates: [39.3999, -8.2245], status: 'UPCOMING' },
 ];
 
 // Define connections between regions (hub-and-spoke from Portugal as HQ)
@@ -36,35 +36,44 @@ const MARKER_COLORS = {
     glow: 'hsl(175, 42%, 40%)',
     border: 'rgba(255, 255, 255, 0.9)',
   },
+  HQ: {
+    gradient: 'linear-gradient(135deg, hsl(280, 60%, 55%), hsl(260, 50%, 45%))',
+    glow: 'hsl(280, 55%, 50%)',
+    border: 'rgba(255, 255, 255, 0.95)',
+  },
+  PRODUCTION: {
+    gradient: 'linear-gradient(135deg, hsl(200, 70%, 50%), hsl(210, 60%, 40%))',
+    glow: 'hsl(200, 65%, 45%)',
+    border: 'rgba(255, 255, 255, 0.85)',
+  },
   NEXT: {
     gradient: 'linear-gradient(135deg, hsl(45, 93%, 55%), hsl(38, 80%, 50%))',
     glow: 'hsl(45, 93%, 50%)',
     border: 'rgba(255, 255, 255, 0.9)',
   },
-  UPCOMING: {
-    gradient: 'linear-gradient(135deg, hsl(200, 15%, 50%), hsl(200, 15%, 40%))',
-    glow: 'hsl(200, 15%, 45%)',
-    border: 'rgba(255, 255, 255, 0.7)',
-  },
 } as const;
 
 const STATUS_LABELS = {
   LIVE: { bg: 'hsl(175, 42%, 35%)', text: 'Live Now' },
-  NEXT: { bg: 'hsl(45, 93%, 45%)', text: 'Coming Next' },
-  UPCOMING: { bg: 'hsl(200, 15%, 45%)', text: 'Upcoming' },
+  HQ: { bg: 'hsl(280, 55%, 45%)', text: 'Headquarters' },
+  PRODUCTION: { bg: 'hsl(200, 65%, 40%)', text: 'Production' },
+  NEXT: { bg: 'hsl(45, 93%, 45%)', text: 'Coming Soon' },
 } as const;
 
-// Create custom marker icon based on status with ripple effects for LIVE markers
-const createMarkerIcon = (status: 'LIVE' | 'NEXT' | 'UPCOMING', isSelected: boolean, isMobile: boolean) => {
+// Create custom marker icon based on status with ripple effects for LIVE/HQ markers
+const createMarkerIcon = (status: 'LIVE' | 'HQ' | 'PRODUCTION' | 'NEXT', isSelected: boolean, isMobile: boolean) => {
   const baseSize = isMobile ? 36 : 44;
   const size = isSelected ? baseSize * 1.2 : baseSize;
   const rippleSize = size * 1.8;
   const { gradient, glow, border } = MARKER_COLORS[status];
   
-  const pulseAnimation = status === 'LIVE' ? 'animation: marker-pulse 2s ease-in-out infinite;' : '';
+  const pulseAnimation = (status === 'LIVE' || status === 'HQ') ? 'animation: marker-pulse 2s ease-in-out infinite;' : '';
   
-  // Add ripple rings for LIVE markers
-  const rippleHtml = status === 'LIVE' ? `
+  // Add ripple rings for LIVE markers, HQ badge for headquarters
+  const rippleColor = status === 'HQ' ? 'hsl(280, 55%, 55%)' : 'hsl(175, 42%, 50%)';
+  const showRipple = status === 'LIVE' || status === 'HQ';
+  
+  const rippleHtml = showRipple ? `
     <div class="marker-ripple" style="
       position: absolute;
       top: 50%;
@@ -72,6 +81,7 @@ const createMarkerIcon = (status: 'LIVE' | 'NEXT' | 'UPCOMING', isSelected: bool
       width: ${rippleSize}px;
       height: ${rippleSize}px;
       transform: translate(-50%, -50%);
+      border-color: ${rippleColor};
     "></div>
     <div class="marker-ripple-2" style="
       position: absolute;
@@ -80,7 +90,26 @@ const createMarkerIcon = (status: 'LIVE' | 'NEXT' | 'UPCOMING', isSelected: bool
       width: ${rippleSize}px;
       height: ${rippleSize}px;
       transform: translate(-50%, -50%);
+      border-color: ${rippleColor};
     "></div>
+  ` : '';
+  
+  // HQ badge for Portugal
+  const hqBadge = status === 'HQ' ? `
+    <div style="
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: linear-gradient(135deg, hsl(45, 90%, 55%), hsl(38, 85%, 50%));
+      color: hsl(0, 0%, 15%);
+      font-size: 8px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      z-index: 20;
+    ">HQ</div>
   ` : '';
 
   return L.divIcon({
@@ -97,6 +126,7 @@ const createMarkerIcon = (status: 'LIVE' | 'NEXT' | 'UPCOMING', isSelected: bool
         justify-content: center;
       ">
         ${rippleHtml}
+        ${hqBadge}
         <div style="
           width: ${size}px;
           height: ${size}px;
