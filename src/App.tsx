@@ -39,7 +39,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const FranchiseOpportunities = lazy(() => import("./pages/FranchiseOpportunities"));
 const Dispensaries = lazy(() => import("./pages/Dispensaries"));
 const GlobalLanding = lazy(() => import("./pages/GlobalLanding"));
-const RegionalPreview = lazy(() => import("./pages/RegionalPreview"));
+const RegionalPreview = lazy(() => import("./pages/RegionalPreviewModern"));
 const RegionalRegistration = lazy(() => import("./pages/RegionalRegistration"));
 const DesignSystem = lazy(() => import("./pages/DesignSystem"));
 const queryClient = new QueryClient();

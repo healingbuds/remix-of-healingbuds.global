@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Check, Loader2, User, Mail, Phone, Heart, Bell } from 'lucide-react';
+import { Check, Loader2, User, Mail, Phone, Heart, Bell, Sparkles } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -131,237 +130,241 @@ const RegionalRegistrationForm = ({ content, regionCode }: RegionalRegistrationF
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
+        className="text-center py-8"
       >
-        <Card className="border-primary/20">
-          <CardContent className="p-8 text-center">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-              className="h-20 w-20 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6"
-            >
-              <Check className="h-10 w-10 text-primary" />
-            </motion.div>
-            
-            <h3 className="text-2xl font-bold mb-2">You're on the list!</h3>
-            <p className="text-4xl mb-4">{content.flag}</p>
-            <p className="text-muted-foreground mb-6">
-              Thank you for registering your interest in Healing Buds {content.name}. 
-              We'll notify you as soon as we launch in your region.
-            </p>
-            
-            <Button variant="outline" asChild>
-              <Link to="/">Return to Global</Link>
-            </Button>
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+          className="h-20 w-20 rounded-full bg-gradient-to-br from-primary/30 to-secondary/20 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/20"
+        >
+          <Sparkles className="h-10 w-10 text-primary" />
+        </motion.div>
+        
+        <h3 className="text-2xl font-bold mb-2">You're on the list!</h3>
+        <p className="text-5xl mb-4">{content.flag}</p>
+        <p className="text-muted-foreground mb-8 max-w-sm mx-auto">
+          Thank you for registering your interest in Healing Buds {content.name}. 
+          We'll notify you as soon as we launch.
+        </p>
+        
+        <Button variant="outline" asChild className="border-primary/30 hover:bg-primary/10">
+          <Link to="/">Return to Global</Link>
+        </Button>
       </motion.div>
     );
   }
 
   return (
-    <Card className="border-primary/20">
-      <CardContent className="p-6 md:p-8">
-        <div className="text-center mb-6">
-          <span className="text-4xl mb-3 block">{content.flag}</span>
-          <h2 className="text-2xl font-bold mb-2">Register Your Interest</h2>
-          <p className="text-muted-foreground text-sm">
-            Be the first to know when Healing Buds launches in {content.name}
-          </p>
+    <div>
+      {/* Header */}
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
+          <span className="text-2xl">{content.flag}</span>
+          <span className="text-sm font-medium text-primary">Coming Soon</span>
         </div>
+        <h2 className="text-2xl font-bold mb-2">Register Your Interest</h2>
+        <p className="text-muted-foreground text-sm">
+          Be the first to know when we launch in {content.name}
+        </p>
+      </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Personal Information */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 text-primary mb-3">
-              <User className="h-4 w-4" />
-              <h3 className="font-semibold text-sm">Personal Information</h3>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name *</Label>
-                <Input
-                  id="firstName"
-                  {...register('firstName')}
-                  placeholder="Enter your first name"
-                  className={errors.firstName ? 'border-destructive' : ''}
-                />
-                {errors.firstName && (
-                  <p className="text-sm text-destructive">{errors.firstName.message}</p>
-                )}
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name *</Label>
-                <Input
-                  id="lastName"
-                  {...register('lastName')}
-                  placeholder="Enter your last name"
-                  className={errors.lastName ? 'border-destructive' : ''}
-                />
-                {errors.lastName && (
-                  <p className="text-sm text-destructive">{errors.lastName.message}</p>
-                )}
-              </div>
-            </div>
-            
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Personal Information */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-primary mb-3">
+            <User className="h-4 w-4" />
+            <h3 className="font-semibold text-sm">Personal Information</h3>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                Email Address *
-              </Label>
+              <Label htmlFor="firstName">First Name *</Label>
               <Input
-                id="email"
-                type="email"
-                {...register('email')}
-                placeholder="Enter your email address"
-                className={errors.email ? 'border-destructive' : ''}
+                id="firstName"
+                {...register('firstName')}
+                placeholder="Enter your first name"
+                className={`bg-background/50 border-border/50 focus:border-primary/50 ${errors.firstName ? 'border-destructive' : ''}`}
               />
-              {errors.email && (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
+              {errors.firstName && (
+                <p className="text-sm text-destructive">{errors.firstName.message}</p>
               )}
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="phone" className="flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                Phone Number (optional)
-              </Label>
+              <Label htmlFor="lastName">Last Name *</Label>
               <Input
-                id="phone"
-                type="tel"
-                {...register('phone')}
-                placeholder="Enter your phone number"
+                id="lastName"
+                {...register('lastName')}
+                placeholder="Enter your last name"
+                className={`bg-background/50 border-border/50 focus:border-primary/50 ${errors.lastName ? 'border-destructive' : ''}`}
               />
+              {errors.lastName && (
+                <p className="text-sm text-destructive">{errors.lastName.message}</p>
+              )}
             </div>
           </div>
-
-          {/* Health Interests */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-primary">
-              <Heart className="h-4 w-4" />
-              <h3 className="font-semibold text-sm">Health Interests (optional)</h3>
-            </div>
-            
-            <p className="text-xs text-muted-foreground">
-              Which conditions are you interested in learning more about?
-            </p>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-              {CONDITIONS.map((condition) => (
-                <div
-                  key={condition}
-                  onClick={() => toggleCondition(condition)}
-                  className={`
-                    p-2.5 rounded-lg border cursor-pointer transition-all text-xs
-                    ${selectedConditions.includes(condition)
-                      ? 'border-primary bg-primary/10 text-primary'
-                      : 'border-border hover:border-primary/50'
-                    }
-                  `}
-                >
-                  <div className="flex items-center gap-2">
-                    <div className={`
-                      h-3.5 w-3.5 rounded border flex items-center justify-center flex-shrink-0
-                      ${selectedConditions.includes(condition)
-                        ? 'bg-primary border-primary'
-                        : 'border-muted-foreground'
-                      }
-                    `}>
-                      {selectedConditions.includes(condition) && (
-                        <Check className="h-2.5 w-2.5 text-primary-foreground" />
-                      )}
-                    </div>
-                    <span>{condition}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* How Did You Hear About Us */}
+          
           <div className="space-y-2">
-            <Label htmlFor="howHeard">How did you find us? (optional)</Label>
-            <Select onValueChange={(value) => setValue('howHeardAboutUs', value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select an option" />
-              </SelectTrigger>
-              <SelectContent>
-                {HOW_HEARD_OPTIONS.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {option}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Label htmlFor="email" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              Email Address *
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              {...register('email')}
+              placeholder="Enter your email address"
+              className={`bg-background/50 border-border/50 focus:border-primary/50 ${errors.email ? 'border-destructive' : ''}`}
+            />
+            {errors.email && (
+              <p className="text-sm text-destructive">{errors.email.message}</p>
+            )}
           </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="phone" className="flex items-center gap-2">
+              <Phone className="h-4 w-4" />
+              Phone Number (optional)
+            </Label>
+            <Input
+              id="phone"
+              type="tel"
+              {...register('phone')}
+              placeholder="Enter your phone number"
+              className="bg-background/50 border-border/50 focus:border-primary/50"
+            />
+          </div>
+        </div>
 
-          {/* Consent & Notifications */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-primary">
-              <Bell className="h-4 w-4" />
-              <h3 className="font-semibold text-sm">Consent & Notifications</h3>
-            </div>
-            
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <Checkbox
-                  id="consentMarketing"
-                  checked={consentMarketing}
-                  onCheckedChange={(checked) => setValue('consentMarketing', checked === true)}
-                />
-                <Label htmlFor="consentMarketing" className="text-xs leading-relaxed cursor-pointer">
-                  I would like to receive updates and marketing communications from Healing Buds about the {content.name} launch.
-                </Label>
-              </div>
-              
-              <div className="flex items-start gap-3">
-                <Checkbox
-                  id="consentTerms"
-                  checked={consentTerms}
-                  onCheckedChange={(checked) => setValue('consentTerms', checked === true)}
-                  className={errors.consentTerms ? 'border-destructive' : ''}
-                />
-                <div>
-                  <Label htmlFor="consentTerms" className="text-xs leading-relaxed cursor-pointer">
-                    I accept the{' '}
-                    <Link to="/terms-of-service" className="text-primary hover:underline" target="_blank">
-                      Terms of Service
-                    </Link>{' '}
-                    and{' '}
-                    <Link to="/privacy-policy" className="text-primary hover:underline" target="_blank">
-                      Privacy Policy
-                    </Link>{' '}
-                    *
-                  </Label>
-                  {errors.consentTerms && (
-                    <p className="text-xs text-destructive mt-1">{errors.consentTerms.message}</p>
-                  )}
+        {/* Health Interests */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-primary">
+            <Heart className="h-4 w-4" />
+            <h3 className="font-semibold text-sm">Health Interests (optional)</h3>
+          </div>
+          
+          <p className="text-xs text-muted-foreground">
+            Which conditions are you interested in learning more about?
+          </p>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            {CONDITIONS.map((condition) => (
+              <div
+                key={condition}
+                onClick={() => toggleCondition(condition)}
+                className={`
+                  p-2.5 rounded-xl border cursor-pointer transition-all duration-200 text-xs
+                  ${selectedConditions.includes(condition)
+                    ? 'border-primary/50 bg-primary/10 text-primary shadow-sm shadow-primary/10'
+                    : 'border-border/40 hover:border-primary/30 bg-background/30'
+                  }
+                `}
+              >
+                <div className="flex items-center gap-2">
+                  <div className={`
+                    h-3.5 w-3.5 rounded-md border flex items-center justify-center flex-shrink-0 transition-colors
+                    ${selectedConditions.includes(condition)
+                      ? 'bg-primary border-primary'
+                      : 'border-muted-foreground/50'
+                    }
+                  `}>
+                    {selectedConditions.includes(condition) && (
+                      <Check className="h-2.5 w-2.5 text-primary-foreground" />
+                    )}
+                  </div>
+                  <span>{condition}</span>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* How Did You Hear About Us */}
+        <div className="space-y-2">
+          <Label htmlFor="howHeard">How did you find us? (optional)</Label>
+          <Select onValueChange={(value) => setValue('howHeardAboutUs', value)}>
+            <SelectTrigger className="bg-background/50 border-border/50">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent className="bg-card/95 backdrop-blur-xl border-border/50">
+              {HOW_HEARD_OPTIONS.map((option) => (
+                <SelectItem key={option} value={option}>
+                  {option}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Consent & Notifications */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-primary">
+            <Bell className="h-4 w-4" />
+            <h3 className="font-semibold text-sm">Consent & Notifications</h3>
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex items-start gap-3 p-3 rounded-xl bg-background/30 border border-border/30">
+              <Checkbox
+                id="consentMarketing"
+                checked={consentMarketing}
+                onCheckedChange={(checked) => setValue('consentMarketing', checked === true)}
+                className="mt-0.5"
+              />
+              <Label htmlFor="consentMarketing" className="text-xs leading-relaxed cursor-pointer text-muted-foreground">
+                I would like to receive updates and marketing communications from Healing Buds about the {content.name} launch.
+              </Label>
+            </div>
+            
+            <div className="flex items-start gap-3 p-3 rounded-xl bg-background/30 border border-border/30">
+              <Checkbox
+                id="consentTerms"
+                checked={consentTerms}
+                onCheckedChange={(checked) => setValue('consentTerms', checked === true)}
+                className={`mt-0.5 ${errors.consentTerms ? 'border-destructive' : ''}`}
+              />
+              <div>
+                <Label htmlFor="consentTerms" className="text-xs leading-relaxed cursor-pointer text-muted-foreground">
+                  I accept the{' '}
+                  <Link to="/terms-of-service" className="text-primary hover:underline" target="_blank">
+                    Terms of Service
+                  </Link>{' '}
+                  and{' '}
+                  <Link to="/privacy-policy" className="text-primary hover:underline" target="_blank">
+                    Privacy Policy
+                  </Link>{' '}
+                  *
+                </Label>
+                {errors.consentTerms && (
+                  <p className="text-xs text-destructive mt-1">{errors.consentTerms.message}</p>
+                )}
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            size="lg"
-            className="w-full"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Registering...
-              </>
-            ) : (
-              'Register My Interest'
-            )}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+        {/* Submit Button */}
+        <Button
+          type="submit"
+          size="lg"
+          className="w-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Registering...
+            </>
+          ) : (
+            <>
+              <Sparkles className="h-4 w-4 mr-2" />
+              Register My Interest
+            </>
+          )}
+        </Button>
+      </form>
+    </div>
   );
 };
 
