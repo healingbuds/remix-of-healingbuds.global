@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
 interface MapCornerDecorationsProps {
   className?: string;
@@ -134,11 +135,28 @@ function OrganicBranchArt({ className = '' }: { className?: string }) {
 }
 
 export default function MapCornerDecorations({ className = '' }: MapCornerDecorationsProps) {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark' || theme === 'system';
+  
+  // Theme-aware opacities
+  const leafOpacity = isDark ? 'text-primary/30' : 'text-primary/20';
+  const leafOpacity2 = isDark ? 'text-primary/25' : 'text-primary/15';
+  const branchOpacity = isDark ? 'text-primary/20' : 'text-primary/12';
+  const branchOpacity2 = isDark ? 'text-primary/15' : 'text-primary/10';
+  
+  // Theme-aware orb colors
+  const orbBg1 = isDark 
+    ? 'radial-gradient(circle, hsl(175 42% 30% / 0.15) 0%, transparent 60%)'
+    : 'radial-gradient(circle, hsl(175 42% 50% / 0.06) 0%, transparent 60%)';
+  const orbBg2 = isDark 
+    ? 'radial-gradient(circle, hsl(175 42% 25% / 0.12) 0%, transparent 60%)'
+    : 'radial-gradient(circle, hsl(175 42% 45% / 0.05) 0%, transparent 60%)';
+  
   return (
     <div className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}>
       {/* Top-left corner */}
       <motion.div
-        className="absolute top-20 left-4 md:left-8 text-primary/30"
+        className={`absolute top-20 left-4 md:left-8 ${leafOpacity}`}
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1, duration: 0.8 }}
@@ -148,7 +166,7 @@ export default function MapCornerDecorations({ className = '' }: MapCornerDecora
       
       {/* Top-right corner */}
       <motion.div
-        className="absolute top-24 right-4 md:right-8 text-primary/25"
+        className={`absolute top-24 right-4 md:right-8 ${leafOpacity2}`}
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.2, duration: 0.8 }}
@@ -158,7 +176,7 @@ export default function MapCornerDecorations({ className = '' }: MapCornerDecora
       
       {/* Bottom-left branch */}
       <motion.div
-        className="absolute bottom-44 md:bottom-48 left-0 text-primary/20"
+        className={`absolute bottom-44 md:bottom-48 left-0 ${branchOpacity}`}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.4, duration: 0.8 }}
@@ -168,7 +186,7 @@ export default function MapCornerDecorations({ className = '' }: MapCornerDecora
       
       {/* Bottom-right branch */}
       <motion.div
-        className="absolute bottom-52 md:bottom-56 right-0 text-primary/15"
+        className={`absolute bottom-52 md:bottom-56 right-0 ${branchOpacity2}`}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.6, duration: 0.8 }}
@@ -178,16 +196,12 @@ export default function MapCornerDecorations({ className = '' }: MapCornerDecora
       
       {/* Subtle gradient orbs in corners */}
       <div 
-        className="absolute -top-20 -left-20 w-80 h-80 rounded-full opacity-30"
-        style={{
-          background: 'radial-gradient(circle, hsl(175 42% 30% / 0.15) 0%, transparent 60%)',
-        }}
+        className={`absolute -top-20 -left-20 w-80 h-80 rounded-full ${isDark ? 'opacity-30' : 'opacity-50'}`}
+        style={{ background: orbBg1 }}
       />
       <div 
-        className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full opacity-20"
-        style={{
-          background: 'radial-gradient(circle, hsl(175 42% 25% / 0.12) 0%, transparent 60%)',
-        }}
+        className={`absolute -bottom-32 -right-32 w-96 h-96 rounded-full ${isDark ? 'opacity-20' : 'opacity-40'}`}
+        style={{ background: orbBg2 }}
       />
     </div>
   );

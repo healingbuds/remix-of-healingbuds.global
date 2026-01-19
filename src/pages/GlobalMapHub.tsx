@@ -1,14 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Building2, ChevronRight, MapPin, Globe2, Sparkles } from 'lucide-react';
+import { ArrowRight, Building2, ChevronRight, MapPin, Globe2, Sparkles, Factory, Crown, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useTheme } from 'next-themes';
 import PremiumLeafletMap from '@/components/PremiumLeafletMap';
 import PremiumGlobeIcon from '@/components/PremiumGlobeIcon';
 import RegionSlidePanel from '@/components/RegionSlidePanel';
 import MapAmbientParticles from '@/components/MapAmbientParticles';
 import MapCornerDecorations from '@/components/MapCornerDecorations';
+import ThemeToggle from '@/components/ThemeToggle';
 import hbLogoWhite from '@/assets/hb-logo-white-new.png';
+import hbLogoDark from '@/assets/hb-logo-dark.png';
 import drGreenLogo from '@/assets/drgreen-logo-white.png';
 import { countryKeyToRegionCode, RegionCode, detectRegionFromDomain } from '@/lib/domainDetection';
 
@@ -20,10 +23,10 @@ const countryDisplayInfo: Record<string, { name: string; status: 'LIVE' | 'HQ' |
 };
 
 const statusConfig = {
-  LIVE: { label: 'Live', color: 'bg-emerald-500', textColor: 'text-emerald-400' },
-  HQ: { label: 'HQ', color: 'bg-purple-500', textColor: 'text-purple-400' },
-  PRODUCTION: { label: 'Production', color: 'bg-sky-500', textColor: 'text-sky-400' },
-  NEXT: { label: 'Coming Soon', color: 'bg-amber-500', textColor: 'text-amber-400' },
+  LIVE: { label: 'Live', color: 'bg-emerald-500', textColor: 'text-emerald-400', icon: 'pulse' },
+  HQ: { label: 'Headquarters', color: 'bg-purple-500', textColor: 'text-purple-400', icon: 'crown' },
+  PRODUCTION: { label: 'Production', color: 'bg-sky-500', textColor: 'text-sky-400', icon: 'factory' },
+  NEXT: { label: 'Coming Soon', color: 'bg-amber-500', textColor: 'text-amber-400', icon: 'clock' },
 };
 
 export default function GlobalMapHub() {
@@ -32,6 +35,8 @@ export default function GlobalMapHub() {
   const [selectedRegionCode, setSelectedRegionCode] = useState<RegionCode | null>(null);
   const [showWelcome, setShowWelcome] = useState(true);
   const [mapReady, setMapReady] = useState(false);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark' || theme === 'system';
   
   useEffect(() => {
     const detectedRegion = detectRegionFromDomain();
@@ -64,8 +69,19 @@ export default function GlobalMapHub() {
   
   const selectedCountryInfo = selectedCountry ? countryDisplayInfo[selectedCountry] : null;
   
+  // Theme-aware colors
+  const bgColor = isDark ? 'hsl(178, 48%, 6%)' : 'hsl(155, 12%, 97%)';
+  const vignetteGradient = isDark 
+    ? 'radial-gradient(ellipse at center, transparent 40%, hsl(178 48% 4% / 0.6) 100%)'
+    : 'radial-gradient(ellipse at center, transparent 50%, hsl(178 48% 20% / 0.08) 100%)';
+  const headerBg = isDark ? 'bg-black/30' : 'bg-white/70';
+  const headerBorder = isDark ? 'border-white/10' : 'border-black/10';
+  const bottomGradient = isDark 
+    ? `linear-gradient(to top, ${bgColor}, ${bgColor}cc, transparent)`
+    : `linear-gradient(to top, ${bgColor}, ${bgColor}ee, transparent)`;
+  
   return (
-    <div className="fixed inset-0 bg-[hsl(178,48%,6%)] overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden" style={{ backgroundColor: bgColor }}>
       {/* Full-screen Premium Leaflet Map */}
       <div className="absolute inset-0 z-0">
         {mapReady && (
@@ -84,9 +100,7 @@ export default function GlobalMapHub() {
       
       {/* Subtle vignette for depth */}
       <div className="absolute inset-0 pointer-events-none z-[5]" 
-        style={{ 
-          background: 'radial-gradient(ellipse at center, transparent 40%, hsl(178 48% 4% / 0.6) 100%)' 
-        }} 
+        style={{ background: vignetteGradient }} 
       />
       
       {/* Floating Header - Glassmorphism */}
@@ -97,12 +111,12 @@ export default function GlobalMapHub() {
         className="absolute top-0 left-0 right-0 z-30"
       >
         <div className="mx-4 mt-4 md:mx-6 md:mt-6">
-          <div className="flex items-center justify-between px-4 py-3 md:px-6 md:py-4 rounded-2xl bg-black/30 backdrop-blur-xl border border-white/10 shadow-2xl">
+          <div className={`flex items-center justify-between px-4 py-3 md:px-6 md:py-4 rounded-2xl ${headerBg} backdrop-blur-xl border ${headerBorder} shadow-2xl`}>
             {/* Logo */}
             <Link to="/home" className="flex items-center gap-2 md:gap-3 group">
               <PremiumGlobeIcon size="sm" animate />
               <img 
-                src={hbLogoWhite} 
+                src={isDark ? hbLogoWhite : hbLogoDark} 
                 alt="Healing Buds" 
                 className="h-6 md:h-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
               />
@@ -110,10 +124,11 @@ export default function GlobalMapHub() {
             
             {/* Actions */}
             <div className="flex items-center gap-2 md:gap-3">
+              <ThemeToggle variant="icon" className="mr-1" />
               <Button 
                 variant="ghost" 
                 size="sm"
-                className="hidden sm:flex text-white/70 hover:text-white hover:bg-white/10 text-sm"
+                className={`hidden sm:flex ${isDark ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-foreground/70 hover:text-foreground hover:bg-black/5'} text-sm`}
                 asChild
               >
                 <Link to="/home">
@@ -148,7 +163,10 @@ export default function GlobalMapHub() {
             className="absolute inset-0 z-20 flex items-center justify-center"
           >
             {/* Backdrop blur for welcome */}
-            <div className="absolute inset-0 bg-[hsl(178,48%,6%)]/60 backdrop-blur-sm" />
+            <div 
+              className="absolute inset-0 backdrop-blur-sm" 
+              style={{ backgroundColor: isDark ? 'hsla(178, 48%, 6%, 0.6)' : 'hsla(155, 12%, 97%, 0.7)' }}
+            />
             
             <motion.div
               initial={{ y: 40, opacity: 0, scale: 0.95 }}
@@ -170,10 +188,10 @@ export default function GlobalMapHub() {
                 <Globe2 className="w-16 h-16 md:w-20 md:h-20 mx-auto text-primary relative z-10" strokeWidth={1} />
               </motion.div>
               
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">
+              <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold ${isDark ? 'text-white' : 'text-foreground'} mb-3 tracking-tight`}>
                 Global Healthcare Network
               </h1>
-              <p className="text-base md:text-lg text-white/60 mb-8 max-w-sm mx-auto leading-relaxed">
+              <p className={`text-base md:text-lg ${isDark ? 'text-white/60' : 'text-muted-foreground'} mb-8 max-w-sm mx-auto leading-relaxed`}>
                 Explore our worldwide medical cannabis services. Select a region to begin.
               </p>
               
@@ -189,7 +207,7 @@ export default function GlobalMapHub() {
                 <Button 
                   size="lg"
                   variant="outline"
-                  className="border-white/20 text-white hover:bg-white/10 hover:border-white/30"
+                  className={isDark ? 'border-white/20 text-white hover:bg-white/10 hover:border-white/30' : 'border-black/20 text-foreground hover:bg-black/5 hover:border-black/30'}
                   asChild
                 >
                   <Link to="/home">
@@ -211,9 +229,9 @@ export default function GlobalMapHub() {
         className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
       >
         {/* Gradient fade */}
-        <div className="h-32 bg-gradient-to-t from-[hsl(178,48%,6%)] via-[hsl(178,48%,6%)]/80 to-transparent" />
+        <div className="h-32" style={{ background: bottomGradient }} />
         
-        <div className="bg-[hsl(178,48%,6%)] px-4 pb-4 md:px-6 md:pb-6 pointer-events-auto">
+        <div className="px-4 pb-4 md:px-6 md:pb-6 pointer-events-auto" style={{ backgroundColor: bgColor }}>
           {/* Region Pills */}
           <div className="flex items-center justify-center gap-2 md:gap-3 flex-wrap mb-4">
             {Object.entries(countryDisplayInfo).map(([key, info]) => {
@@ -231,7 +249,9 @@ export default function GlobalMapHub() {
                     flex items-center gap-2
                     ${isSelected 
                       ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-primary/50' 
-                      : 'bg-white/[0.08] text-white/80 hover:bg-white/[0.12] hover:text-white border border-white/10'
+                      : isDark 
+                        ? 'bg-white/[0.08] text-white/80 hover:bg-white/[0.12] hover:text-white border border-white/10'
+                        : 'bg-black/[0.06] text-foreground/80 hover:bg-black/[0.10] hover:text-foreground border border-black/10'
                     }
                   `}
                 >
@@ -257,11 +277,11 @@ export default function GlobalMapHub() {
           
           {/* Powered by Dr. Green */}
           <div className="flex items-center justify-center gap-2">
-            <span className="text-white/30 text-xs">Powered by</span>
+            <span className={`${isDark ? 'text-white/30' : 'text-foreground/40'} text-xs`}>Powered by</span>
             <img 
               src={drGreenLogo} 
               alt="Dr. Green" 
-              className="h-5 w-auto object-contain opacity-50"
+              className={`h-5 w-auto object-contain ${isDark ? 'opacity-50' : 'opacity-60 brightness-0'}`}
             />
           </div>
         </div>
@@ -277,15 +297,25 @@ export default function GlobalMapHub() {
             transition={{ delay: 0.3, duration: 0.4 }}
             className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 hidden md:block"
           >
-            <div className="bg-black/40 backdrop-blur-xl rounded-xl border border-white/10 p-3 space-y-2.5">
-              <div className="flex items-center gap-2 text-xs text-white/50 uppercase tracking-wider font-medium mb-2">
+            <div className={`${isDark ? 'bg-black/40' : 'bg-white/80'} backdrop-blur-xl rounded-xl border ${isDark ? 'border-white/10' : 'border-black/10'} p-3 space-y-2.5 shadow-lg`}>
+              <div className={`flex items-center gap-2 text-xs ${isDark ? 'text-white/50' : 'text-foreground/50'} uppercase tracking-wider font-medium mb-2`}>
                 <Sparkles className="w-3 h-3" />
                 Legend
               </div>
               {Object.entries(statusConfig).map(([status, config]) => (
-                <div key={status} className="flex items-center gap-2">
-                  <div className={`w-2.5 h-2.5 rounded-full ${config.color}`} />
-                  <span className="text-xs text-white/70">{config.label}</span>
+                <div key={status} className="flex items-center gap-2.5">
+                  <div className="relative flex items-center justify-center w-4 h-4">
+                    {config.icon === 'pulse' && (
+                      <>
+                        <span className="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400 opacity-75" />
+                        <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${config.color}`} />
+                      </>
+                    )}
+                    {config.icon === 'crown' && <Crown className="w-3.5 h-3.5 text-purple-400" />}
+                    {config.icon === 'factory' && <Factory className="w-3.5 h-3.5 text-sky-400" />}
+                    {config.icon === 'clock' && <Clock className="w-3.5 h-3.5 text-amber-400" />}
+                  </div>
+                  <span className={`text-xs ${isDark ? 'text-white/70' : 'text-foreground/70'}`}>{config.label}</span>
                 </div>
               ))}
             </div>
