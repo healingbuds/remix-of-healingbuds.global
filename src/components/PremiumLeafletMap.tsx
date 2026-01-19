@@ -54,42 +54,75 @@ const STATUS_LABELS = {
   UPCOMING: { bg: 'hsl(200, 15%, 45%)', text: 'Upcoming' },
 } as const;
 
-// Create custom marker icon based on status
+// Create custom marker icon based on status with ripple effects for LIVE markers
 const createMarkerIcon = (status: 'LIVE' | 'NEXT' | 'UPCOMING', isSelected: boolean, isMobile: boolean) => {
   const baseSize = isMobile ? 36 : 44;
   const size = isSelected ? baseSize * 1.2 : baseSize;
+  const rippleSize = size * 1.8;
   const { gradient, glow, border } = MARKER_COLORS[status];
   
   const pulseAnimation = status === 'LIVE' ? 'animation: marker-pulse 2s ease-in-out infinite;' : '';
+  
+  // Add ripple rings for LIVE markers
+  const rippleHtml = status === 'LIVE' ? `
+    <div class="marker-ripple" style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: ${rippleSize}px;
+      height: ${rippleSize}px;
+      transform: translate(-50%, -50%);
+    "></div>
+    <div class="marker-ripple-2" style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: ${rippleSize}px;
+      height: ${rippleSize}px;
+      transform: translate(-50%, -50%);
+    "></div>
+  ` : '';
 
   return L.divIcon({
     className: 'premium-marker',
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2],
+    iconSize: [rippleSize, rippleSize],
+    iconAnchor: [rippleSize / 2, rippleSize / 2],
     html: `
       <div style="
-        width: ${size}px;
-        height: ${size}px;
-        background: ${gradient};
-        border: 2.5px solid ${border};
-        border-radius: 50%;
-        box-shadow: 0 0 ${isSelected ? '30' : '20'}px ${glow},
-                    0 4px 12px rgba(0, 0, 0, 0.3);
+        position: relative;
+        width: ${rippleSize}px;
+        height: ${rippleSize}px;
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        ${isSelected ? 'transform: scale(1.15);' : ''}
-        ${pulseAnimation}
       ">
+        ${rippleHtml}
         <div style="
-          width: ${size * 0.35}px;
-          height: ${size * 0.35}px;
-          background: rgba(255, 255, 255, 0.9);
+          width: ${size}px;
+          height: ${size}px;
+          background: ${gradient};
+          border: 2.5px solid ${border};
           border-radius: 50%;
-          box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-        "></div>
+          box-shadow: 0 0 ${isSelected ? '30' : '20'}px ${glow},
+                      0 4px 12px rgba(0, 0, 0, 0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          z-index: 10;
+          ${isSelected ? 'transform: scale(1.15);' : ''}
+          ${pulseAnimation}
+        ">
+          <div style="
+            width: ${size * 0.35}px;
+            height: ${size * 0.35}px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+          "></div>
+        </div>
       </div>
     `,
   });
@@ -148,11 +181,41 @@ function createCurvedPath(from: [number, number], to: [number, number]): [number
   return points;
 }
 
+// Create animated energy dots along a path using SVG overlay
+function createEnergyFlowSVG(pathId: string, pathD: string): string {
+  return `
+    <svg class="energy-flow-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible;">
+      <defs>
+        <path id="${pathId}" d="${pathD}" fill="none" />
+      </defs>
+      <circle class="energy-dot energy-dot-1" r="3" fill="url(#energyGradient)">
+        <animateMotion dur="4s" repeatCount="indefinite" rotate="auto">
+          <mpath href="#${pathId}" />
+        </animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="4s" repeatCount="indefinite" />
+      </circle>
+      <circle class="energy-dot energy-dot-2" r="2.5" fill="url(#energyGradient)">
+        <animateMotion dur="4s" repeatCount="indefinite" rotate="auto" begin="1.3s">
+          <mpath href="#${pathId}" />
+        </animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="4s" repeatCount="indefinite" begin="1.3s" />
+      </circle>
+      <circle class="energy-dot energy-dot-3" r="2" fill="url(#energyGradient)">
+        <animateMotion dur="4s" repeatCount="indefinite" rotate="auto" begin="2.6s">
+          <mpath href="#${pathId}" />
+        </animateMotion>
+        <animate attributeName="opacity" values="0;1;1;0" dur="4s" repeatCount="indefinite" begin="2.6s" />
+      </circle>
+    </svg>
+  `;
+}
+
 export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: PremiumLeafletMapProps) {
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
   const polylinesRef = useRef<L.Polyline[]>([]);
+  const energyOverlayRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
 
   // Memoized map config based on screen size
@@ -334,10 +397,32 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
   }, [selectedCountry, isMobile, mapConfig.flyToZoom]);
 
   return (
-    <div 
-      ref={mapContainerRef} 
-      className="absolute inset-0 w-full h-full touch-pan-x touch-pan-y"
-      style={{ background: 'hsl(178, 48%, 6%)' }}
-    />
+    <div className="absolute inset-0 w-full h-full">
+      <div 
+        ref={mapContainerRef} 
+        className="absolute inset-0 w-full h-full touch-pan-x touch-pan-y"
+        style={{ background: 'hsl(178, 48%, 6%)' }}
+      />
+      {/* Energy flow SVG overlay */}
+      <svg 
+        className="absolute inset-0 w-full h-full pointer-events-none z-[5]"
+        style={{ overflow: 'visible' }}
+      >
+        <defs>
+          <radialGradient id="energyGradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(175, 60%, 65%)" />
+            <stop offset="50%" stopColor="hsl(175, 50%, 50%)" />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+          <filter id="energyGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+      </svg>
+    </div>
   );
 }

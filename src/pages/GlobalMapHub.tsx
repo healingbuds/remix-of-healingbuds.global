@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import PremiumLeafletMap from '@/components/PremiumLeafletMap';
 import PremiumGlobeIcon from '@/components/PremiumGlobeIcon';
 import RegionSlidePanel from '@/components/RegionSlidePanel';
+import MapAmbientParticles from '@/components/MapAmbientParticles';
+import MapCornerDecorations from '@/components/MapCornerDecorations';
 import hbLogoWhite from '@/assets/hb-logo-white-new.png';
 import drGreenLogo from '@/assets/drgreen-logo-white.png';
 import { countryKeyToRegionCode, RegionCode, detectRegionFromDomain } from '@/lib/domainDetection';
@@ -72,6 +74,12 @@ export default function GlobalMapHub() {
           />
         )}
       </div>
+      
+      {/* Ambient floating particles */}
+      <MapAmbientParticles particleCount={35} className="z-[3]" />
+      
+      {/* Corner botanical decorations */}
+      <MapCornerDecorations className="z-[4]" />
       
       {/* Subtle vignette for depth */}
       <div className="absolute inset-0 pointer-events-none z-[5]" 
