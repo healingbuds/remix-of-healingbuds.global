@@ -1,11 +1,12 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useMemo } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface RegionMarker {
   key: string;
   name: string;
-  coordinates: [number, number]; // [lat, lng]
+  coordinates: [number, number];
   status: 'LIVE' | 'NEXT' | 'UPCOMING';
 }
 
@@ -21,35 +22,38 @@ interface PremiumLeafletMapProps {
   onCountrySelect: (countryKey: string) => void;
 }
 
-// Create custom marker icon based on status
-const createMarkerIcon = (status: 'LIVE' | 'NEXT' | 'UPCOMING', isSelected: boolean) => {
-  const size = isSelected ? 52 : 44;
-  const colors = {
-    LIVE: {
-      gradient: 'linear-gradient(135deg, hsl(175, 42%, 45%), hsl(168, 38%, 35%))',
-      glow: 'hsl(175, 42%, 40%)',
-      border: 'rgba(255, 255, 255, 0.9)',
-    },
-    NEXT: {
-      gradient: 'linear-gradient(135deg, hsl(45, 93%, 55%), hsl(38, 80%, 50%))',
-      glow: 'hsl(45, 93%, 50%)',
-      border: 'rgba(255, 255, 255, 0.9)',
-    },
-    UPCOMING: {
-      gradient: 'linear-gradient(135deg, hsl(200, 15%, 50%), hsl(200, 15%, 40%))',
-      glow: 'hsl(200, 15%, 45%)',
-      border: 'rgba(255, 255, 255, 0.7)',
-    },
-  };
+// Marker color configurations
+const MARKER_COLORS = {
+  LIVE: {
+    gradient: 'linear-gradient(135deg, hsl(175, 42%, 45%), hsl(168, 38%, 35%))',
+    glow: 'hsl(175, 42%, 40%)',
+    border: 'rgba(255, 255, 255, 0.9)',
+  },
+  NEXT: {
+    gradient: 'linear-gradient(135deg, hsl(45, 93%, 55%), hsl(38, 80%, 50%))',
+    glow: 'hsl(45, 93%, 50%)',
+    border: 'rgba(255, 255, 255, 0.9)',
+  },
+  UPCOMING: {
+    gradient: 'linear-gradient(135deg, hsl(200, 15%, 50%), hsl(200, 15%, 40%))',
+    glow: 'hsl(200, 15%, 45%)',
+    border: 'rgba(255, 255, 255, 0.7)',
+  },
+} as const;
 
-  const { gradient, glow, border } = colors[status];
-  const pulseAnimation = status === 'LIVE' ? `
-    animation: marker-pulse 2s ease-in-out infinite;
-    @keyframes marker-pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-  ` : '';
+const STATUS_LABELS = {
+  LIVE: { bg: 'hsl(175, 42%, 35%)', text: 'Live Now' },
+  NEXT: { bg: 'hsl(45, 93%, 45%)', text: 'Coming Next' },
+  UPCOMING: { bg: 'hsl(200, 15%, 45%)', text: 'Upcoming' },
+} as const;
+
+// Create custom marker icon based on status
+const createMarkerIcon = (status: 'LIVE' | 'NEXT' | 'UPCOMING', isSelected: boolean, isMobile: boolean) => {
+  const baseSize = isMobile ? 36 : 44;
+  const size = isSelected ? baseSize * 1.2 : baseSize;
+  const { gradient, glow, border } = MARKER_COLORS[status];
+  
+  const pulseAnimation = status === 'LIVE' ? 'animation: marker-pulse 2s ease-in-out infinite;' : '';
 
   return L.divIcon({
     className: 'premium-marker',
@@ -86,13 +90,7 @@ const createMarkerIcon = (status: 'LIVE' | 'NEXT' | 'UPCOMING', isSelected: bool
 
 // Create popup content
 const createPopupContent = (region: RegionMarker) => {
-  const statusColors = {
-    LIVE: { bg: 'hsl(175, 42%, 35%)', text: 'Live Now' },
-    NEXT: { bg: 'hsl(45, 93%, 45%)', text: 'Coming Next' },
-    UPCOMING: { bg: 'hsl(200, 15%, 45%)', text: 'Upcoming' },
-  };
-
-  const { bg, text } = statusColors[region.status];
+  const { bg, text } = STATUS_LABELS[region.status];
 
   return `
     <div class="premium-popup-content">
@@ -121,81 +119,114 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
+  const isMobile = useIsMobile();
+
+  // Memoized map config based on screen size
+  const mapConfig = useMemo(() => ({
+    center: isMobile ? [10, 30] as [number, number] : [20, 20] as [number, number],
+    zoom: isMobile ? 1.8 : 2.5,
+    minZoom: isMobile ? 1 : 2,
+    maxZoom: 8,
+    flyToZoom: isMobile ? 3 : 4,
+  }), [isMobile]);
+
+  // Stable callback ref to avoid recreation
+  const onCountrySelectRef = useRef(onCountrySelect);
+  onCountrySelectRef.current = onCountrySelect;
 
   // Initialize map
   useEffect(() => {
-    if (!mapContainerRef.current || mapRef.current) return;
+    if (!mapContainerRef.current) return;
+    
+    // Cleanup existing map if any
+    if (mapRef.current) {
+      mapRef.current.remove();
+      mapRef.current = null;
+      markersRef.current.clear();
+    }
 
-    // CartoDB Dark Matter tiles - enterprise-grade dark theme
+    // CartoDB Dark Matter tiles
     const darkTiles = L.tileLayer(
       'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
       {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 19,
       }
     );
 
-    // Initialize map centered on Africa/Europe view
+    // Initialize map
     const map = L.map(mapContainerRef.current, {
-      center: [20, 20],
-      zoom: 2.5,
-      minZoom: 2,
-      maxZoom: 8,
+      center: mapConfig.center,
+      zoom: mapConfig.zoom,
+      minZoom: mapConfig.minZoom,
+      maxZoom: mapConfig.maxZoom,
       zoomControl: false,
       attributionControl: false,
       worldCopyJump: true,
+      preferCanvas: true, // Better performance
     });
 
     darkTiles.addTo(map);
 
-    // Add zoom control to bottom right
+    // Add zoom control (bottom right, hidden on very small screens via CSS)
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    // Add attribution to bottom left with custom styling
+    // Add minimal attribution
     L.control.attribution({ position: 'bottomleft', prefix: false }).addTo(map);
 
     mapRef.current = map;
 
-    // Add markers for each region
+    // Add markers
     regions.forEach((region) => {
       const marker = L.marker(region.coordinates, {
-        icon: createMarkerIcon(region.status, false),
+        icon: createMarkerIcon(region.status, false, isMobile),
       });
 
-      // Create popup with custom styling
       const popup = L.popup({
         className: 'premium-popup',
         closeButton: false,
-        offset: [0, -20],
+        offset: [0, -15],
+        autoPan: false,
       }).setContent(createPopupContent(region));
 
       marker.bindPopup(popup);
 
-      // Event handlers
       marker.on('click', () => {
-        onCountrySelect(region.key);
+        onCountrySelectRef.current(region.key);
       });
 
-      marker.on('mouseover', () => {
-        marker.openPopup();
-      });
-
-      marker.on('mouseout', () => {
-        marker.closePopup();
-      });
+      // Only show popups on hover for non-touch devices
+      if (!isMobile) {
+        marker.on('mouseover', () => marker.openPopup());
+        marker.on('mouseout', () => marker.closePopup());
+      }
 
       marker.addTo(map);
       markersRef.current.set(region.key, marker);
     });
 
-    // Cleanup
+    // Handle resize
+    const handleResize = () => {
+      if (mapRef.current) {
+        mapRef.current.invalidateSize();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    
+    // Initial size invalidation after mount
+    setTimeout(handleResize, 100);
+
     return () => {
-      map.remove();
-      mapRef.current = null;
+      window.removeEventListener('resize', handleResize);
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
       markersRef.current.clear();
     };
-  }, [onCountrySelect]);
+  }, [isMobile, mapConfig]);
 
   // Update marker icons when selection changes
   useEffect(() => {
@@ -203,22 +234,21 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       const region = regions.find(r => r.key === key);
       if (region) {
         const isSelected = key === selectedCountry;
-        marker.setIcon(createMarkerIcon(region.status, isSelected));
+        marker.setIcon(createMarkerIcon(region.status, isSelected, isMobile));
 
-        // Pan to selected marker
         if (isSelected && mapRef.current) {
-          mapRef.current.flyTo(region.coordinates, 4, {
+          mapRef.current.flyTo(region.coordinates, mapConfig.flyToZoom, {
             duration: 0.8,
           });
         }
       }
     });
-  }, [selectedCountry]);
+  }, [selectedCountry, isMobile, mapConfig.flyToZoom]);
 
   return (
     <div 
       ref={mapContainerRef} 
-      className="absolute inset-0 w-full h-full"
+      className="absolute inset-0 w-full h-full touch-pan-x touch-pan-y"
       style={{ background: 'hsl(178, 48%, 6%)' }}
     />
   );

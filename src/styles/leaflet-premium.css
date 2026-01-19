@@ -1,5 +1,18 @@
 /* Premium Leaflet Map Styles */
 
+/* Marker pulse animation */
+@keyframes marker-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Hide zoom controls on very small screens */
+@media (max-width: 480px) {
+  .leaflet-control-zoom {
+    display: none !important;
+  }
+}
+
 /* Hide default Leaflet attribution styling, make it subtle */
 .leaflet-control-attribution {
   background: transparent !important;
