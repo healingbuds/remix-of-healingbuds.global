@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Building2, ChevronRight, MapPin, Globe2, Sparkles, Factory, Crown, Clock } from 'lucide-react';
+import { ArrowRight, Building2, ChevronRight, MapPin, Globe2, Sparkles, Factory, Crown, Clock, Keyboard } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
@@ -10,6 +10,7 @@ import RegionSlidePanel from '@/components/RegionSlidePanel';
 import MapAmbientParticles from '@/components/MapAmbientParticles';
 import MapCornerDecorations from '@/components/MapCornerDecorations';
 import ThemeToggle from '@/components/ThemeToggle';
+import useMapKeyboardNavigation from '@/hooks/useMapKeyboardNavigation';
 import hbLogoWhite from '@/assets/hb-logo-white-new.png';
 import hbLogoDark from '@/assets/hb-logo-dark.png';
 import drGreenLogo from '@/assets/drgreen-logo-white.png';
@@ -21,6 +22,13 @@ const countryDisplayInfo: Record<string, { name: string; status: 'LIVE' | 'HQ' |
   thailand: { name: 'Thailand', status: 'PRODUCTION', flag: '🇹🇭' },
   uk: { name: 'United Kingdom', status: 'NEXT', flag: '🇬🇧' },
 };
+
+// Region array for keyboard navigation (ordered for arrow key traversal)
+const regionKeys = ['southAfrica', 'portugal', 'thailand', 'uk'] as const;
+const regionsForNav = regionKeys.map(key => ({ 
+  key, 
+  name: countryDisplayInfo[key].name 
+}));
 
 const statusConfig = {
   LIVE: { label: 'Live', color: 'bg-emerald-500', textColor: 'text-emerald-400', icon: 'pulse' },
@@ -35,6 +43,7 @@ export default function GlobalMapHub() {
   const [selectedRegionCode, setSelectedRegionCode] = useState<RegionCode | null>(null);
   const [showWelcome, setShowWelcome] = useState(true);
   const [mapReady, setMapReady] = useState(false);
+  const [showKeyboardHint, setShowKeyboardHint] = useState(false);
   const { theme } = useTheme();
   const isDark = theme === 'dark' || theme === 'system';
   
@@ -65,7 +74,20 @@ export default function GlobalMapHub() {
   
   const handleExploreMap = useCallback(() => {
     setShowWelcome(false);
+    // Show keyboard hint briefly after welcome dismissal
+    setShowKeyboardHint(true);
+    setTimeout(() => setShowKeyboardHint(false), 5000);
   }, []);
+  
+  // Initialize keyboard navigation
+  useMapKeyboardNavigation({
+    regions: regionsForNav,
+    selectedCountry,
+    onCountrySelect: handleCountrySelect,
+    isPanelOpen,
+    onPanelClose: handlePanelClose,
+    isEnabled: !showWelcome,
+  });
   
   const selectedCountryInfo = selectedCountry ? countryDisplayInfo[selectedCountry] : null;
   
@@ -318,6 +340,41 @@ export default function GlobalMapHub() {
                   <span className={`text-xs ${isDark ? 'text-white/70' : 'text-foreground/70'}`}>{config.label}</span>
                 </div>
               ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Keyboard Navigation Hint */}
+      <AnimatePresence>
+        {showKeyboardHint && !isPanelOpen && (
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 10, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 hidden md:block"
+          >
+            <div className={`${isDark ? 'bg-black/60' : 'bg-white/90'} backdrop-blur-xl rounded-xl border ${isDark ? 'border-white/10' : 'border-black/10'} p-3 shadow-lg max-w-[180px]`}>
+              <div className={`flex items-center gap-2 text-xs ${isDark ? 'text-white/60' : 'text-foreground/60'} font-medium mb-2`}>
+                <Keyboard className="w-3.5 h-3.5" />
+                Keyboard Nav
+              </div>
+              <div className={`text-[11px] space-y-1.5 ${isDark ? 'text-white/50' : 'text-foreground/50'}`}>
+                <div className="flex items-center gap-2">
+                  <kbd className={`px-1.5 py-0.5 rounded text-[10px] font-mono ${isDark ? 'bg-white/10' : 'bg-black/10'}`}>←</kbd>
+                  <kbd className={`px-1.5 py-0.5 rounded text-[10px] font-mono ${isDark ? 'bg-white/10' : 'bg-black/10'}`}>→</kbd>
+                  <span>Navigate</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <kbd className={`px-1.5 py-0.5 rounded text-[10px] font-mono ${isDark ? 'bg-white/10' : 'bg-black/10'}`}>Enter</kbd>
+                  <span>Open panel</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <kbd className={`px-1.5 py-0.5 rounded text-[10px] font-mono ${isDark ? 'bg-white/10' : 'bg-black/10'}`}>Esc</kbd>
+                  <span>Close panel</span>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
