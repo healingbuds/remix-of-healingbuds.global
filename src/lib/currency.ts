@@ -50,6 +50,28 @@ export function formatPrice(
   }
 }
 
+/**
+ * Format a price with a specific currency code (e.g., 'EUR', 'GBP')
+ */
+export function formatCurrency(
+  amount: number,
+  currencyCode: string = 'EUR'
+): string {
+  const symbol = getCurrencySymbol(currencyCode);
+  
+  try {
+    const formatter = new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: currencyCode,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+    return formatter.format(amount);
+  } catch {
+    return `${symbol}${amount.toLocaleString()}`;
+  }
+}
+
 function getLocaleForCountry(countryCode: string): string {
   const localeMap: Record<string, string> = {
     PT: 'pt-PT',
