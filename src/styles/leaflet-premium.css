@@ -6,6 +6,25 @@
   50% { transform: scale(1.05); }
 }
 
+/* Flight path animation */
+@keyframes flight-dash {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+.flight-path {
+  animation: flight-dash 1.5s linear infinite;
+}
+
+.flight-path-0 { animation-delay: 0s; }
+.flight-path-1 { animation-delay: 0.5s; }
+.flight-path-2 { animation-delay: 1s; }
+
+.flight-path-glow {
+  filter: blur(2px);
+}
+
 /* Hide zoom controls on very small screens */
 @media (max-width: 480px) {
   .leaflet-control-zoom {
