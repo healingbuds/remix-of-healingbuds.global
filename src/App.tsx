@@ -40,6 +40,7 @@ const FranchiseOpportunities = lazy(() => import("./pages/FranchiseOpportunities
 const Dispensaries = lazy(() => import("./pages/Dispensaries"));
 const GlobalLanding = lazy(() => import("./pages/GlobalLanding"));
 const RegionalPreview = lazy(() => import("./pages/RegionalPreview"));
+const RegionalRegistration = lazy(() => import("./pages/RegionalRegistration"));
 const DesignSystem = lazy(() => import("./pages/DesignSystem"));
 const queryClient = new QueryClient();
 
@@ -71,6 +72,7 @@ const AnimatedRoutes = () => {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/design-system" element={<DesignSystem />} />
           <Route path="/preview/:regionCode" element={<RegionalPreview />} />
+          <Route path="/register/:regionCode" element={<RegionalRegistration />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

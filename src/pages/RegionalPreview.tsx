@@ -97,11 +97,10 @@ const RegionalPreview = () => {
               {content.hero.subtitle}
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" variant="secondary">
-                {content.hero.cta}
-              </Button>
-              <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                Learn More
+              <Button size="lg" variant="secondary" asChild>
+                <Link to={`/register/${regionCode}`}>
+                  {content.hero.cta}
+                </Link>
               </Button>
             </div>
           </motion.div>

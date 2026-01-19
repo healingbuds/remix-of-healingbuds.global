@@ -42,7 +42,7 @@ export const regionalContent: Record<string, RegionalContentType> = {
     hero: {
       title: 'Medical Cannabis for South Africa',
       subtitle: 'Bringing EU GMP-certified cannabis therapy to Southern Africa. Access world-class medical cannabis treatments with local clinical support.',
-      cta: 'Start Your Journey',
+      cta: 'Register Your Interest',
     },
     clinic: {
       name: 'Healing Buds Sandton',
@@ -77,7 +77,7 @@ export const regionalContent: Record<string, RegionalContentType> = {
     hero: {
       title: 'Cannabis Medicinal para Portugal',
       subtitle: 'Soluções de canábis medicinal certificadas pela UE GMP. Aceda a tratamentos de canábis medicinal de classe mundial com apoio clínico local.',
-      cta: 'Iniciar Tratamento',
+      cta: 'Registar Interesse',
     },
     clinic: {
       name: 'Healing Buds Lisboa',
@@ -112,7 +112,7 @@ export const regionalContent: Record<string, RegionalContentType> = {
     hero: {
       title: 'Medical Cannabis for the UK',
       subtitle: 'Access EU GMP-certified medical cannabis treatments through our Harley Street clinic. Expert care from UK-registered specialists.',
-      cta: 'Book Consultation',
+      cta: 'Register Your Interest',
     },
     clinic: {
       name: 'Healing Buds Harley Street',
@@ -147,7 +147,7 @@ export const regionalContent: Record<string, RegionalContentType> = {
     hero: {
       title: 'Medical Cannabis for Thailand',
       subtitle: 'Combining traditional Thai medicine with modern EU GMP-certified cannabis treatments. Experience holistic healing in Bangkok.',
-      cta: 'Begin Treatment',
+      cta: 'Register Your Interest',
     },
     clinic: {
       name: 'Healing Buds Bangkok',

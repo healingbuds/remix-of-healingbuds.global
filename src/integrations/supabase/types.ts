@@ -38,6 +38,63 @@ export type Database = {
         }
         Relationships: []
       }
+      regional_registrations: {
+        Row: {
+          consent_marketing: boolean | null
+          consent_terms: boolean
+          created_at: string | null
+          email: string
+          first_name: string
+          how_heard_about_us: string | null
+          id: string
+          interested_conditions: string[] | null
+          language: string | null
+          last_name: string
+          notification_preferences: Json | null
+          phone: string | null
+          region_code: string
+          region_name: string
+          source_page: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          consent_marketing?: boolean | null
+          consent_terms?: boolean
+          created_at?: string | null
+          email: string
+          first_name: string
+          how_heard_about_us?: string | null
+          id?: string
+          interested_conditions?: string[] | null
+          language?: string | null
+          last_name: string
+          notification_preferences?: Json | null
+          phone?: string | null
+          region_code: string
+          region_name: string
+          source_page?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          consent_marketing?: boolean | null
+          consent_terms?: boolean
+          created_at?: string | null
+          email?: string
+          first_name?: string
+          how_heard_about_us?: string | null
+          id?: string
+          interested_conditions?: string[] | null
+          language?: string | null
+          last_name?: string
+          notification_preferences?: Json | null
+          phone?: string | null
+          region_code?: string
+          region_name?: string
+          source_page?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       strains: {
         Row: {
           availability: boolean
