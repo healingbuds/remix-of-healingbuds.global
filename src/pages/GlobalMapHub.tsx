@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Building2, ChevronRight, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import InteractiveMap from '@/components/InteractiveMap';
+import PremiumLeafletMap from '@/components/PremiumLeafletMap';
 import PremiumGlobeIcon from '@/components/PremiumGlobeIcon';
 import RegionSlidePanel from '@/components/RegionSlidePanel';
 import TestRegionSwitcher from '@/components/TestRegionSwitcher';
@@ -55,16 +55,15 @@ export default function GlobalMapHub() {
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-[hsl(178,48%,8%)] via-[hsl(178,48%,10%)] to-[hsl(175,35%,6%)] relative overflow-hidden">
-      {/* Full-screen Map Background */}
+      {/* Full-screen Premium Leaflet Map */}
       <div className="absolute inset-0">
-        <InteractiveMap 
+        <PremiumLeafletMap 
           selectedCountry={selectedCountry}
           onCountrySelect={handleCountrySelect}
         />
         
-        {/* Dark overlay gradient for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(178,48%,8%)]/90 via-transparent to-[hsl(178,48%,8%)]/60 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(178,48%,8%)]/50 via-transparent to-[hsl(178,48%,8%)]/50 pointer-events-none" />
+        {/* Single light gradient for text readability - map tiles remain visible */}
+        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-[hsl(178,48%,8%)]/80 to-transparent pointer-events-none z-10" />
       </div>
       
       {/* Floating Header */}
