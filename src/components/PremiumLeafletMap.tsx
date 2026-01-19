@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -15,6 +15,13 @@ const regions: RegionMarker[] = [
   { key: 'thailand', name: 'Thailand', coordinates: [15.8700, 100.9925], status: 'LIVE' },
   { key: 'uk', name: 'United Kingdom', coordinates: [55.3781, -3.4360], status: 'NEXT' },
   { key: 'portugal', name: 'Portugal', coordinates: [39.3999, -8.2245], status: 'UPCOMING' },
+];
+
+// Define connections between regions (hub-and-spoke from Portugal as HQ)
+const connections: [string, string][] = [
+  ['portugal', 'uk'],
+  ['portugal', 'southAfrica'],
+  ['portugal', 'thailand'],
 ];
 
 interface PremiumLeafletMapProps {
@@ -115,10 +122,37 @@ const createPopupContent = (region: RegionMarker) => {
   `;
 };
 
+// Helper function to create a curved path between two points
+function createCurvedPath(from: [number, number], to: [number, number]): [number, number][] {
+  const points: [number, number][] = [];
+  const numPoints = 50;
+  
+  const midLat = (from[0] + to[0]) / 2;
+  const midLng = (from[1] + to[1]) / 2;
+  
+  const dx = to[1] - from[1];
+  const dy = to[0] - from[0];
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  
+  const curveOffset = dist * 0.15;
+  const offsetLat = midLat + (dx / dist) * curveOffset;
+  const offsetLng = midLng - (dy / dist) * curveOffset;
+  
+  for (let i = 0; i <= numPoints; i++) {
+    const t = i / numPoints;
+    const lat = (1 - t) * (1 - t) * from[0] + 2 * (1 - t) * t * offsetLat + t * t * to[0];
+    const lng = (1 - t) * (1 - t) * from[1] + 2 * (1 - t) * t * offsetLng + t * t * to[1];
+    points.push([lat, lng]);
+  }
+  
+  return points;
+}
+
 export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: PremiumLeafletMapProps) {
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
+  const polylinesRef = useRef<L.Polyline[]>([]);
   const isMobile = useIsMobile();
 
   // Memoized map config based on screen size
@@ -143,6 +177,7 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       mapRef.current.remove();
       mapRef.current = null;
       markersRef.current.clear();
+      polylinesRef.current = [];
     }
 
     // CartoDB Dark Matter tiles
@@ -164,18 +199,51 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       zoomControl: false,
       attributionControl: false,
       worldCopyJump: true,
-      preferCanvas: true, // Better performance
+      preferCanvas: true,
     });
 
     darkTiles.addTo(map);
 
-    // Add zoom control (bottom right, hidden on very small screens via CSS)
+    // Add zoom control
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     // Add minimal attribution
     L.control.attribution({ position: 'bottomleft', prefix: false }).addTo(map);
 
     mapRef.current = map;
+
+    // Add animated connection lines FIRST (so they render behind markers)
+    connections.forEach(([fromKey, toKey], index) => {
+      const fromRegion = regions.find(r => r.key === fromKey);
+      const toRegion = regions.find(r => r.key === toKey);
+      
+      if (fromRegion && toRegion) {
+        const latlngs = createCurvedPath(fromRegion.coordinates, toRegion.coordinates);
+        
+        // Background glow line
+        const glowLine = L.polyline(latlngs, {
+          color: 'hsl(175, 42%, 40%)',
+          weight: isMobile ? 2 : 3,
+          opacity: 0.15,
+          smoothFactor: 1,
+          className: 'flight-path-glow',
+        });
+        glowLine.addTo(map);
+        polylinesRef.current.push(glowLine);
+        
+        // Animated dashed line
+        const dashLine = L.polyline(latlngs, {
+          color: 'hsl(175, 42%, 50%)',
+          weight: isMobile ? 1 : 1.5,
+          opacity: 0.6,
+          dashArray: '8, 12',
+          smoothFactor: 1,
+          className: `flight-path flight-path-${index}`,
+        });
+        dashLine.addTo(map);
+        polylinesRef.current.push(dashLine);
+      }
+    });
 
     // Add markers
     regions.forEach((region) => {
@@ -214,8 +282,6 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
     };
 
     window.addEventListener('resize', handleResize);
-    
-    // Initial size invalidation after mount
     setTimeout(handleResize, 100);
 
     return () => {
@@ -225,6 +291,7 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
         mapRef.current = null;
       }
       markersRef.current.clear();
+      polylinesRef.current = [];
     };
   }, [isMobile, mapConfig]);
 
