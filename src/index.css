@@ -146,6 +146,37 @@ All colors MUST be HSL.
     --header-offset: 0.5rem;         /* 8px - top offset on sm+ screens */
   }
 
+  /* Dark Tech Aesthetic - Inspired by 1910.ai */
+  .theme-dark-tech {
+    --background: 220 15% 4%;               /* Near black with blue undertone */
+    --foreground: 210 15% 95%;              /* Soft cool white */
+    
+    --card: 220 12% 8%;                     /* Dark surface */
+    --card-foreground: 210 15% 95%;
+    
+    --primary: 172 66% 50%;                 /* Neon cyan-teal */
+    --primary-foreground: 220 15% 4%;
+    
+    --secondary: 280 65% 60%;               /* Electric purple */
+    --secondary-foreground: 0 0% 100%;
+    
+    --accent: 84 70% 55%;                   /* Lime green accent */
+    --accent-foreground: 220 15% 4%;
+    
+    --muted: 220 12% 12%;
+    --muted-foreground: 210 10% 60%;
+    
+    --border: 220 12% 15%;
+    --input: 220 12% 10%;
+    --ring: 172 66% 50%;
+    
+    /* Neon glow colors */
+    --neon-cyan: 180 100% 50%;
+    --neon-purple: 280 100% 60%;
+    --neon-lime: 84 100% 55%;
+    --neon-pink: 330 100% 60%;
+  }
+
   .dark {
     /* MEDICAL DARK THEME - Improved hierarchy with sage undertones */
     /* Base: warm charcoal with subtle sage undertone */
