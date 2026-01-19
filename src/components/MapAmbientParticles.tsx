@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useMemo } from 'react';
+import { useTheme } from 'next-themes';
 
 interface MapAmbientParticlesProps {
   particleCount?: number;
@@ -20,17 +21,24 @@ export default function MapAmbientParticles({
   particleCount = 40, 
   className = '' 
 }: MapAmbientParticlesProps) {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark' || theme === 'system';
+  
+  // Theme-aware colors
+  const particleColor = isDark ? 'hsl(175, 42%, 50%)' : 'hsl(178, 48%, 35%)';
+  const orbColor = isDark ? 'hsl(175, 42%, 30%, 0.15)' : 'hsl(175, 42%, 50%, 0.06)';
+  
   const particles = useMemo<Particle[]>(() => {
     return Array.from({ length: particleCount }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: Math.random() * 3 + 1,
-      opacity: Math.random() * 0.4 + 0.1,
+      opacity: isDark ? (Math.random() * 0.4 + 0.1) : (Math.random() * 0.25 + 0.08),
       duration: Math.random() * 20 + 15,
       delay: Math.random() * 10,
     }));
-  }, [particleCount]);
+  }, [particleCount, isDark]);
 
   return (
     <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
@@ -43,7 +51,7 @@ export default function MapAmbientParticles({
             top: `${particle.y}%`,
             width: particle.size,
             height: particle.size,
-            background: `radial-gradient(circle, hsl(175, 42%, 50%) 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${particleColor} 0%, transparent 70%)`,
           }}
           initial={{ 
             opacity: 0,
@@ -74,13 +82,13 @@ export default function MapAmbientParticles({
             top: `${30 + (i % 3) * 20}%`,
             width: 80 + i * 20,
             height: 80 + i * 20,
-            background: `radial-gradient(circle, hsl(175, 42%, 30%, 0.15) 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${orbColor} 0%, transparent 70%)`,
           }}
           animate={{
             x: [0, 30 * (i % 2 === 0 ? 1 : -1), 0],
             y: [0, 20 * (i % 2 === 0 ? -1 : 1), 0],
             scale: [1, 1.1, 1],
-            opacity: [0.3, 0.5, 0.3],
+            opacity: isDark ? [0.3, 0.5, 0.3] : [0.15, 0.25, 0.15],
           }}
           transition={{
             duration: 15 + i * 3,

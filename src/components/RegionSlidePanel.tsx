@@ -136,8 +136,30 @@ const RegionSlidePanel = ({
           
           {/* Action Buttons or Registration Form */}
           <div className="space-y-4 pt-4 border-t border-border/50">
-            {isLive && externalUrl ? (
-              // Live region - show visit and preview buttons
+            {isLive && externalUrl && regionCode === 'za' ? (
+              // South Africa specific - eligibility focused
+              <>
+                <Button 
+                  size="lg" 
+                  className="w-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
+                  onClick={() => window.open('https://healingbuds.co.za/eligibility', '_blank')}
+                >
+                  <Shield className="w-4 h-4 mr-2" />
+                  Check Eligibility
+                </Button>
+                
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="w-full border-primary/30 hover:bg-primary/10"
+                  onClick={() => window.open(externalUrl, '_blank')}
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  Visit South Africa Site
+                </Button>
+              </>
+            ) : isLive && externalUrl ? (
+              // Other live regions - show visit and preview buttons
               <>
                 <Button 
                   size="lg" 

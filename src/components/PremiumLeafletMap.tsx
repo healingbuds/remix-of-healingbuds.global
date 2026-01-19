@@ -2,6 +2,7 @@ import { useEffect, useRef, useMemo } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useTheme } from 'next-themes';
 
 interface RegionMarker {
   key: string;
@@ -60,18 +61,24 @@ const STATUS_LABELS = {
   NEXT: { bg: 'hsl(45, 93%, 45%)', text: 'Coming Soon' },
 } as const;
 
-// Create custom marker icon based on status with ripple effects for LIVE/HQ markers
+// Create custom marker icon based on status with ripple effects for LIVE/HQ/PRODUCTION markers
 const createMarkerIcon = (status: 'LIVE' | 'HQ' | 'PRODUCTION' | 'NEXT', isSelected: boolean, isMobile: boolean) => {
   const baseSize = isMobile ? 36 : 44;
   const size = isSelected ? baseSize * 1.2 : baseSize;
   const rippleSize = size * 1.8;
   const { gradient, glow, border } = MARKER_COLORS[status];
   
-  const pulseAnimation = (status === 'LIVE' || status === 'HQ') ? 'animation: marker-pulse 2s ease-in-out infinite;' : '';
+  const pulseAnimation = (status === 'LIVE' || status === 'HQ' || status === 'PRODUCTION') ? 'animation: marker-pulse 2s ease-in-out infinite;' : '';
   
-  // Add ripple rings for LIVE markers, HQ badge for headquarters
-  const rippleColor = status === 'HQ' ? 'hsl(280, 55%, 55%)' : 'hsl(175, 42%, 50%)';
-  const showRipple = status === 'LIVE' || status === 'HQ';
+  // Add ripple rings for LIVE, HQ, and PRODUCTION markers
+  const rippleColors: Record<string, string> = {
+    LIVE: 'hsl(175, 42%, 50%)',
+    HQ: 'hsl(280, 55%, 55%)',
+    PRODUCTION: 'hsl(200, 65%, 50%)',
+    NEXT: 'hsl(45, 93%, 50%)',
+  };
+  const rippleColor = rippleColors[status];
+  const showRipple = status === 'LIVE' || status === 'HQ' || status === 'PRODUCTION';
   
   const rippleHtml = showRipple ? `
     <div class="marker-ripple" style="
@@ -112,6 +119,32 @@ const createMarkerIcon = (status: 'LIVE' | 'HQ' | 'PRODUCTION' | 'NEXT', isSelec
     ">HQ</div>
   ` : '';
 
+  // Production/Manufacturing badge for Thailand
+  const productionBadge = status === 'PRODUCTION' ? `
+    <div style="
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: linear-gradient(135deg, hsl(200, 70%, 50%), hsl(210, 60%, 40%));
+      color: white;
+      font-size: 7px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 4px;
+      letter-spacing: 0.3px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    ">
+      <svg viewBox="0 0 24 24" width="8" height="8" fill="currentColor">
+        <path d="M22 22H2v-2h20v2zM10 2H7v16h3V2zm7 6h-3v10h3V8z"/>
+      </svg>
+      MFG
+    </div>
+  ` : '';
+
   return L.divIcon({
     className: 'premium-marker',
     iconSize: [rippleSize, rippleSize],
@@ -127,6 +160,7 @@ const createMarkerIcon = (status: 'LIVE' | 'HQ' | 'PRODUCTION' | 'NEXT', isSelec
       ">
         ${rippleHtml}
         ${hqBadge}
+        ${productionBadge}
         <div style="
           width: ${size}px;
           height: ${size}px;
@@ -247,6 +281,8 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
   const polylinesRef = useRef<L.Polyline[]>([]);
   const energyOverlayRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useIsMobile();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark' || theme === 'system';
 
   // Memoized map config based on screen size
   const mapConfig = useMemo(() => ({
@@ -273,15 +309,16 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       polylinesRef.current = [];
     }
 
-    // CartoDB Dark Matter tiles
-    const darkTiles = L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-      {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19,
-      }
-    );
+    // Theme-aware map tiles
+    const tileUrl = isDark 
+      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.basemaps.cartocdn.com/voyager/{z}/{x}/{y}{r}.png';
+    
+    const tiles = L.tileLayer(tileUrl, {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19,
+    });
 
     // World bounds to prevent infinite panning
     const worldBounds = L.latLngBounds(
@@ -315,7 +352,7 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       bounceAtZoomLimits: false,
     });
 
-    darkTiles.addTo(map);
+    tiles.addTo(map);
 
     // Add zoom control
     L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -333,11 +370,17 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       if (fromRegion && toRegion) {
         const latlngs = createCurvedPath(fromRegion.coordinates, toRegion.coordinates);
         
+        // Theme-aware line colors
+        const glowColor = isDark ? 'hsl(175, 42%, 40%)' : 'hsl(175, 42%, 50%)';
+        const lineColor = isDark ? 'hsl(175, 42%, 50%)' : 'hsl(175, 42%, 35%)';
+        const glowOpacity = isDark ? 0.15 : 0.12;
+        const lineOpacity = isDark ? 0.6 : 0.7;
+        
         // Background glow line
         const glowLine = L.polyline(latlngs, {
-          color: 'hsl(175, 42%, 40%)',
+          color: glowColor,
           weight: isMobile ? 2 : 3,
-          opacity: 0.15,
+          opacity: glowOpacity,
           smoothFactor: 1,
           className: 'flight-path-glow',
         });
@@ -346,9 +389,9 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
         
         // Animated dashed line
         const dashLine = L.polyline(latlngs, {
-          color: 'hsl(175, 42%, 50%)',
+          color: lineColor,
           weight: isMobile ? 1 : 1.5,
-          opacity: 0.6,
+          opacity: lineOpacity,
           dashArray: '8, 12',
           smoothFactor: 1,
           className: `flight-path flight-path-${index}`,
@@ -406,7 +449,7 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       markersRef.current.clear();
       polylinesRef.current = [];
     };
-  }, [isMobile, mapConfig]);
+  }, [isMobile, mapConfig, isDark]);
 
   // Update marker icons when selection changes
   useEffect(() => {
@@ -426,12 +469,15 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
     });
   }, [selectedCountry, isMobile, mapConfig.flyToZoom]);
 
+  // Theme-aware background
+  const mapBg = isDark ? 'hsl(178, 48%, 6%)' : 'hsl(155, 12%, 97%)';
+  
   return (
     <div className="absolute inset-0 w-full h-full">
       <div 
         ref={mapContainerRef} 
         className="absolute inset-0 w-full h-full touch-pan-x touch-pan-y"
-        style={{ background: 'hsl(178, 48%, 6%)' }}
+        style={{ background: mapBg }}
       />
       {/* Energy flow SVG overlay */}
       <svg 
