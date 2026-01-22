@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import ScrollToTop from "@/components/ScrollToTop";
 import RouteProgress from "@/components/RouteProgress";
 import CursorFollower from "@/components/CursorFollower";
+import SmoothScroll from "@/components/SmoothScroll";
 import PageLoadingSkeleton from "@/components/PageLoadingSkeleton";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import SkipLinks from "@/components/SkipLinks";
@@ -98,19 +99,21 @@ const App = () => (
             <QueryClientProvider client={queryClient}>
             <TooltipProvider>
               <CursorFollower>
-                <KeyboardUserDetector>
-                  <Toaster />
-                  <Sonner />
-                  <BrowserRouter>
-                    <SkipLinks />
-                    <ScrollToTop />
-                    <RouteProgress />
-                    <main id="main-content" className="outline-none" tabIndex={-1}>
-                      <AnimatedRoutes />
-                    </main>
-                    <CookieConsent />
-                  </BrowserRouter>
-                </KeyboardUserDetector>
+                <SmoothScroll>
+                  <KeyboardUserDetector>
+                    <Toaster />
+                    <Sonner />
+                    <BrowserRouter>
+                      <SkipLinks />
+                      <ScrollToTop />
+                      <RouteProgress />
+                      <main id="main-content" className="outline-none" tabIndex={-1}>
+                        <AnimatedRoutes />
+                      </main>
+                      <CookieConsent />
+                    </BrowserRouter>
+                  </KeyboardUserDetector>
+                </SmoothScroll>
               </CursorFollower>
             </TooltipProvider>
             </QueryClientProvider>
