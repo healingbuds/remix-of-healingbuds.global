@@ -370,7 +370,7 @@ const RegionalPreviewContent = ({ content, regionCode }: { content: RegionalCont
         </div>
       </section>
 
-      {/* Pricing Section */}
+      {/* Operations & Services Section */}
       <section className="py-12 bg-muted/30">
         <div className="container mx-auto px-4">
           <motion.div
@@ -379,43 +379,36 @@ const RegionalPreviewContent = ({ content, regionCode }: { content: RegionalCont
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <h2 className="text-2xl font-bold mb-3">Pricing in {content.currency.code}</h2>
-            <p className="text-muted-foreground text-sm">Transparent pricing for medical cannabis treatment</p>
+            <h2 className="text-2xl font-bold mb-3">Our Operations in {content.name}</h2>
+            <p className="text-muted-foreground text-sm">{content.operations.type}</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <Card className="border-2 border-primary/20">
+          <div className="max-w-2xl mx-auto">
+            <Card className="border-2 border-primary/20 mb-6">
               <CardContent className="p-6">
-                <div className="text-center">
-                  <h3 className="text-sm font-semibold text-muted-foreground mb-2">Initial Consultation</h3>
-                  <p className="text-3xl font-bold text-primary mb-3">
-                    {formatPrice(content.pricing.consultation)}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    One-time consultation with a specialist to assess your eligibility.
-                  </p>
-                </div>
+                <p className="text-center text-foreground">{content.operations.description}</p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-primary/20">
-              <CardContent className="p-6">
-                <div className="text-center">
-                  <h3 className="text-sm font-semibold text-muted-foreground mb-2">Monthly Treatment</h3>
-                  <p className="text-3xl font-bold text-primary mb-3">
-                    {formatPrice(content.pricing.treatmentMin)} - {formatPrice(content.pricing.treatmentMax)}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Depending on your prescribed treatment plan.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="grid md:grid-cols-2 gap-4">
+              {content.services.map((service, index) => (
+                <Card key={index} className="border border-primary/10">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-4 h-4 text-primary" />
+                      </div>
+                      <span className="text-sm font-medium">{service}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Clinic Location */}
+      {/* Compliance Section */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <motion.div
@@ -428,36 +421,20 @@ const RegionalPreviewContent = ({ content, regionCode }: { content: RegionalCont
               <CardContent className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <MapPin className="h-5 w-5 text-primary" />
+                    <Shield className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold">{content.clinic.name}</h3>
-                    <p className="text-sm text-muted-foreground">Our {content.name} Clinic</p>
+                    <h3 className="text-lg font-bold">{content.compliance.body}</h3>
+                    <p className="text-sm text-muted-foreground">Regulatory Compliance</p>
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
-                    <div>
-                      <p className="text-sm font-medium">{content.clinic.address}</p>
-                      <p className="text-sm text-muted-foreground">{content.clinic.city}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
-                    <a href={`tel:${content.clinic.phone}`} className="text-sm hover:text-primary transition-colors">
-                      {content.clinic.phone}
-                    </a>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <Mail className="h-4 w-4 text-muted-foreground" />
-                    <a href={`mailto:${content.clinic.email}`} className="text-sm hover:text-primary transition-colors">
-                      {content.clinic.email}
-                    </a>
-                  </div>
+                <div className="flex flex-wrap gap-2">
+                  {content.compliance.certifications.map((cert, index) => (
+                    <span key={index} className="text-sm px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
+                      {cert}
+                    </span>
+                  ))}
                 </div>
               </CardContent>
             </Card>

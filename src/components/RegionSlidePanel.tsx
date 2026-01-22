@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Eye, MapPin, Building2, Shield, CheckCircle2 } from 'lucide-react';
+import { X, ExternalLink, Eye, MapPin, Building2, Shield, CheckCircle2, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
@@ -92,26 +92,48 @@ const RegionSlidePanel = ({
         </SheetHeader>
         
         <div className="py-6 space-y-6">
-          {/* Quick Stats */}
+          {/* Operations Overview */}
           {content && (
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
-                <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                  <Building2 className="w-4 h-4" />
-                  <span className="text-xs font-medium uppercase tracking-wide">Clinic</span>
-                </div>
-                <p className="text-sm font-semibold text-foreground">{content.clinic.name}</p>
-                <p className="text-xs text-muted-foreground">{content.clinic.city}</p>
+            <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
+              <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                <Building2 className="w-4 h-4" />
+                <span className="text-xs font-medium uppercase tracking-wide">{content.operations.type}</span>
               </div>
-              
-              <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
-                <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                  <MapPin className="w-4 h-4" />
-                  <span className="text-xs font-medium uppercase tracking-wide">Consultation</span>
-                </div>
-                <p className="text-sm font-semibold text-foreground">
-                  From {formatCurrency(content.pricing.consultation, content.currency.code)}
-                </p>
+              <p className="text-sm text-foreground leading-relaxed">{content.operations.description}</p>
+            </div>
+          )}
+
+          {/* Services Available */}
+          {content?.services && content.services.length > 0 && regionCode !== 'pt' && (
+            <div className="space-y-3">
+              <h4 className="text-sm font-semibold text-foreground uppercase tracking-wide">What's Available</h4>
+              <div className="grid gap-2">
+                {content.services.map((service, index) => (
+                  <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-primary" />
+                    </div>
+                    <span className="text-sm text-foreground">{service}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Compliance */}
+          {content?.compliance && regionCode !== 'pt' && (
+            <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
+              <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                <Shield className="w-4 h-4" />
+                <span className="text-xs font-medium uppercase tracking-wide">Compliance</span>
+              </div>
+              <p className="text-sm font-semibold text-foreground mb-2">{content.compliance.body} Regulated</p>
+              <div className="flex flex-wrap gap-2">
+                {content.compliance.certifications.map((cert, index) => (
+                  <span key={index} className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary">
+                    {cert}
+                  </span>
+                ))}
               </div>
             </div>
           )}
