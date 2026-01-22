@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Eye, MapPin, Building2, Shield, CheckCircle2, Check } from 'lucide-react';
+import { X, ExternalLink, Eye, MapPin, Building2, Shield, CheckCircle2, Check, Factory, Rocket, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
@@ -70,13 +70,28 @@ const RegionSlidePanel = ({
                 {content?.name || countryName}
               </SheetTitle>
               <div className="flex items-center gap-2 mt-2">
-                {isLive ? (
-                  <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
+                {/* Status Badge based on region status */}
+                {content?.status === 'LIVE' && (
+                  <Badge className="bg-success/20 text-success border-success/30">
                     <CheckCircle2 className="w-3 h-3 mr-1" />
                     Live
                   </Badge>
-                ) : (
-                  <Badge variant="secondary" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                )}
+                {content?.status === 'HQ' && (
+                  <Badge className="bg-primary/20 text-primary border-primary/30">
+                    <Crown className="w-3 h-3 mr-1" />
+                    Global HQ
+                  </Badge>
+                )}
+                {content?.status === 'PRODUCTION' && (
+                  <Badge className="bg-info/20 text-info border-info/30">
+                    <Factory className="w-3 h-3 mr-1" />
+                    Manufacturing
+                  </Badge>
+                )}
+                {content?.status === 'NEXT' && (
+                  <Badge className="bg-warning/20 text-warning border-warning/30">
+                    <Rocket className="w-3 h-3 mr-1" />
                     Coming Soon
                   </Badge>
                 )}
