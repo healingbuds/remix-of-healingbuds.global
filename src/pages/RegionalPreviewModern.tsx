@@ -422,7 +422,7 @@ const RegionalPreviewContent = ({ content, regionCode, isRegistered, onRegister 
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* Services */}
       <section className="py-16 relative">
         <div className="container mx-auto px-4">
           <motion.div
@@ -432,30 +432,22 @@ const RegionalPreviewContent = ({ content, regionCode, isRegistered, onRegister 
             className="text-center mb-12"
           >
             <h2 className="text-2xl md:text-3xl font-bold mb-3">
-              Transparent Pricing
+              {content.operations.type}
             </h2>
-            <p className="text-muted-foreground">In {content.currency.code}</p>
+            <p className="text-muted-foreground max-w-xl mx-auto">{content.operations.description}</p>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <GlassCard>
-              <div className="text-center">
-                <p className="text-sm text-muted-foreground mb-2">Initial Consultation</p>
-                <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  {formatPrice(content.pricing.consultation)}
-                </p>
-                <p className="text-xs text-muted-foreground mt-3">One-time specialist assessment</p>
-              </div>
-            </GlassCard>
-            <GlassCard delay={0.1}>
-              <div className="text-center">
-                <p className="text-sm text-muted-foreground mb-2">Monthly Treatment</p>
-                <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  {formatPrice(content.pricing.treatmentMin)} - {formatPrice(content.pricing.treatmentMax)}
-                </p>
-                <p className="text-xs text-muted-foreground mt-3">Based on treatment plan</p>
-              </div>
-            </GlassCard>
+            {content.services.map((service, index) => (
+              <GlassCard key={index} delay={index * 0.05}>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Check className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">{service}</span>
+                </div>
+              </GlassCard>
+            ))}
           </div>
         </div>
       </section>

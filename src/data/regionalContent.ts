@@ -7,26 +7,26 @@ export interface RegionalContentType {
     code: string;
     symbol: string;
   };
+  status: 'LIVE' | 'HQ' | 'PRODUCTION' | 'NEXT';
+  statusDescription: string;
   hero: {
     title: string;
     subtitle: string;
     cta: string;
   };
-  clinic: {
-    name: string;
-    address: string;
-    city: string;
-    phone: string;
-    email: string;
+  operations: {
+    type: string;
+    description: string;
+  };
+  services: string[];
+  compliance: {
+    body: string;
+    certifications: string[];
   };
   features: string[];
   legalNote: string;
-  pricing: {
-    consultation: number;
-    treatmentMin: number;
-    treatmentMax: number;
-  };
   regulatoryBody: string;
+  externalUrl?: string;
 }
 
 export const regionalContent: Record<string, RegionalContentType> = {
@@ -39,31 +39,36 @@ export const regionalContent: Record<string, RegionalContentType> = {
       code: 'ZAR',
       symbol: 'R',
     },
+    status: 'LIVE',
+    statusDescription: 'Operational',
     hero: {
       title: 'Medical Cannabis for South Africa',
       subtitle: 'Bringing EU GMP-certified cannabis therapy to Southern Africa. Access world-class medical cannabis treatments with local clinical support.',
-      cta: 'Register Your Interest',
+      cta: 'Check Eligibility',
     },
-    clinic: {
-      name: 'Healing Buds Sandton',
-      address: '123 Sandton Drive',
-      city: 'Sandton, Johannesburg 2196',
-      phone: '+27 11 123 4567',
-      email: 'info@healingbuds.co.za',
+    operations: {
+      type: 'Medical Clinic Network',
+      description: 'Licensed medical cannabis consultations and prescription services through our South African clinic network.',
+    },
+    services: [
+      'Online eligibility assessment',
+      'Medical consultations',
+      'Prescription fulfillment',
+      'Patient support',
+    ],
+    compliance: {
+      body: 'SAHPRA',
+      certifications: ['EU GMP Products', 'Seed-to-Sale Tracking', 'Blockchain Traceability'],
     },
     features: [
-      'SAHPRA Compliant',
+      'SAHPRA Compliant Operations',
       'EU GMP Certified Products',
-      'Local South African Clinicians',
-      'Secure Prescription Delivery',
+      'Licensed South African Clinicians',
+      'Blockchain Traceability',
     ],
-    legalNote: 'All products and services are approved under SAHPRA (South African Health Products Regulatory Authority) regulations. A valid prescription is required for all medical cannabis products.',
-    pricing: {
-      consultation: 2500,
-      treatmentMin: 4500,
-      treatmentMax: 8000,
-    },
+    legalNote: 'All products and services comply with SAHPRA (South African Health Products Regulatory Authority) regulations. A valid prescription is required for all medical cannabis products.',
     regulatoryBody: 'SAHPRA',
+    externalUrl: 'https://healingbuds.co.za',
   },
   pt: {
     code: 'PT',
@@ -74,30 +79,34 @@ export const regionalContent: Record<string, RegionalContentType> = {
       code: 'EUR',
       symbol: '€',
     },
+    status: 'HQ',
+    statusDescription: 'Global Headquarters',
     hero: {
       title: 'Cannabis Medicinal para Portugal',
-      subtitle: 'Soluções de canábis medicinal certificadas pela UE GMP. Aceda a tratamentos de canábis medicinal de classe mundial com apoio clínico local.',
-      cta: 'Registar Interesse',
+      subtitle: 'Sede global da Healing Buds com instalações de cultivo certificadas EU GMP e parcerias de investigação com universidades de referência mundial.',
+      cta: 'Saber Mais',
     },
-    clinic: {
-      name: 'Healing Buds Lisboa',
-      address: 'Avenida da Liberdade, 245',
-      city: 'Lisboa 1250-143',
-      phone: '+351 21 123 4567',
-      email: 'info@healingbuds.pt',
+    operations: {
+      type: 'Cultivation & Research Hub',
+      description: 'EU GMP certified cultivation facility spanning over 18,000m² with pharmaceutical-grade processing and global distribution capabilities.',
+    },
+    services: [
+      'EU GMP cultivation',
+      'Pharmaceutical processing',
+      'Global distribution',
+      'Research partnerships',
+    ],
+    compliance: {
+      body: 'INFARMED',
+      certifications: ['EU GMP Manufacturing', 'Pharmaceutical License', 'GACP Certification'],
     },
     features: [
-      'Aprovado pelo INFARMED',
-      'Certificação EU GMP',
-      'Médicos Portugueses Especializados',
-      'Entrega Segura de Prescrições',
+      'EU GMP Certified Headquarters',
+      '18,000m² Cultivation Facility',
+      'Research with Imperial College London',
+      'Global Distribution Network',
     ],
-    legalNote: 'Todos os produtos e serviços são aprovados pelo INFARMED (Autoridade Nacional do Medicamento e Produtos de Saúde). É necessária uma prescrição válida para todos os produtos de canábis medicinal.',
-    pricing: {
-      consultation: 150,
-      treatmentMin: 250,
-      treatmentMax: 450,
-    },
+    legalNote: 'All operations are regulated by INFARMED (Autoridade Nacional do Medicamento e Produtos de Saúde). Healing Buds Portugal serves as the global cultivation and distribution headquarters.',
     regulatoryBody: 'INFARMED',
   },
   gb: {
@@ -109,30 +118,34 @@ export const regionalContent: Record<string, RegionalContentType> = {
       code: 'GBP',
       symbol: '£',
     },
+    status: 'NEXT',
+    statusDescription: 'Coming Soon',
     hero: {
       title: 'Medical Cannabis for the UK',
-      subtitle: 'Access EU GMP-certified medical cannabis treatments through our Harley Street clinic. Expert care from UK-registered specialists.',
-      cta: 'Register Your Interest',
+      subtitle: 'Private specialist medical cannabis consultations coming soon. Register your interest to be notified when our UK services launch.',
+      cta: 'Register Interest',
     },
-    clinic: {
-      name: 'Healing Buds Harley Street',
-      address: '10 Harley Street',
-      city: 'London W1G 9PF',
-      phone: '+44 20 7123 4567',
-      email: 'info@healingbuds.co.uk',
+    operations: {
+      type: 'Private Clinic Network',
+      description: 'Specialist medical cannabis consultations through our planned UK private clinic network, launching soon.',
+    },
+    services: [
+      'Private specialist consultations',
+      'Prescription services',
+      'Patient care coordination',
+      'Ongoing support',
+    ],
+    compliance: {
+      body: 'CQC / MHRA',
+      certifications: ['CQC Registration (Planned)', 'MHRA Compliance', 'EU GMP Products'],
     },
     features: [
-      'CQC Registered Clinic',
-      'EU GMP Certified Products',
+      'CQC & MHRA Framework',
       'UK Registered Specialists',
       'Private Prescription Service',
+      'Harley Street Network (Planned)',
     ],
-    legalNote: 'All products and services comply with UK regulations for medical cannabis. Treatment is available for qualifying conditions as determined by a registered specialist. A private prescription is required.',
-    pricing: {
-      consultation: 150,
-      treatmentMin: 200,
-      treatmentMax: 400,
-    },
+    legalNote: 'UK services are currently in development. All future products and services will comply with UK regulations for medical cannabis as determined by the CQC and MHRA.',
     regulatoryBody: 'CQC / MHRA',
   },
   th: {
@@ -144,30 +157,34 @@ export const regionalContent: Record<string, RegionalContentType> = {
       code: 'THB',
       symbol: '฿',
     },
+    status: 'PRODUCTION',
+    statusDescription: 'Manufacturing Operations',
     hero: {
       title: 'Medical Cannabis for Thailand',
-      subtitle: 'Combining traditional Thai medicine with modern EU GMP-certified cannabis treatments. Experience holistic healing in Bangkok.',
-      cta: 'Register Your Interest',
+      subtitle: 'Combining traditional Thai medicine with modern EU GMP-certified cannabis treatments. Manufacturing and clinic operations in Bangkok.',
+      cta: 'Register Interest',
     },
-    clinic: {
-      name: 'Healing Buds Bangkok',
-      address: '55 Sukhumvit Road, Khlong Toei',
-      city: 'Bangkok 10110',
-      phone: '+66 2 123 4567',
-      email: 'info@healingbuds.co.th',
+    operations: {
+      type: 'Production & Clinic Network',
+      description: 'Thai FDA approved manufacturing facility with integrated clinic operations, combining traditional medicine with modern cannabis therapeutics.',
+    },
+    services: [
+      'Manufacturing operations',
+      'Medical consultations',
+      'Traditional medicine integration',
+      'Regional distribution',
+    ],
+    compliance: {
+      body: 'Thai FDA',
+      certifications: ['Thai FDA Approved', 'EU GMP Standards', 'Traditional Medicine License'],
     },
     features: [
-      'Thai FDA Approved',
-      'EU GMP Products',
+      'Thai FDA Approved Operations',
+      'Manufacturing Facility',
       'Bilingual Medical Staff',
       'Traditional Medicine Integration',
     ],
     legalNote: 'All products and services are approved by the Thai Food and Drug Administration (FDA). Medical cannabis is legal in Thailand for approved therapeutic uses.',
-    pricing: {
-      consultation: 3000,
-      treatmentMin: 5000,
-      treatmentMax: 10000,
-    },
     regulatoryBody: 'Thai FDA',
   },
 };
