@@ -116,8 +116,60 @@ const RegionSlidePanel = ({
             </div>
           )}
           
-          {/* Features */}
-          {content?.features && content.features.length > 0 && (
+          {/* Portugal HQ - About Our Operations Section */}
+          {regionCode === 'pt' && (
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold text-foreground uppercase tracking-wide">About Our Operations</h4>
+              
+              {/* Cultivation Facility */}
+              <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-primary/20">
+                    <Building2 className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">EU GMP Cultivation Facility</h5>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Our state-of-the-art facility spans over 18,000m² in Portugal, featuring climate-controlled greenhouses and pharmaceutical-grade processing capabilities.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Research Partnerships */}
+              <div className="p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-blue-500/20">
+                    <Shield className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">Research Partnerships</h5>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Collaborating with <span className="text-foreground font-medium">Imperial College London</span> and the <span className="text-foreground font-medium">University of Pennsylvania</span> to advance medical cannabis science and develop innovative therapeutic applications.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Global Distribution */}
+              <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-emerald-500/20">
+                    <MapPin className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">Global Distribution Network</h5>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      From our Portuguese headquarters, we coordinate EU GMP-certified product distribution to licensed partners across South Africa, Thailand, and the United Kingdom.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Features - Show for non-HQ regions */}
+          {content?.features && content.features.length > 0 && regionCode !== 'pt' && (
             <div className="space-y-3">
               <h4 className="text-sm font-semibold text-foreground uppercase tracking-wide">Key Features</h4>
               <div className="grid gap-2">
