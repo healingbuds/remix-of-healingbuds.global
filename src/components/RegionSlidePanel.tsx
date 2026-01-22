@@ -205,6 +205,110 @@ const RegionSlidePanel = ({
             </div>
           )}
 
+          {/* Thailand - Manufacturing Hub Section */}
+          {regionCode === 'th' && (
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold text-foreground uppercase tracking-wide">About Our Operations</h4>
+              
+              {/* Manufacturing Facility */}
+              <div className="p-4 rounded-xl bg-gradient-to-br from-info/10 to-info/5 border border-info/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-info/20">
+                    <Factory className="w-5 h-5 text-info" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">Thai FDA Licensed Manufacturing</h5>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Our Thai manufacturing facility operates under full Thai FDA licensing, producing pharmaceutical-grade cannabis products for the Southeast Asian market.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Traditional Medicine Integration */}
+              <div className="p-4 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-amber-500/20">
+                    <Shield className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">Traditional Medicine Integration</h5>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Working with the <span className="text-foreground font-medium">Department of Thai Traditional and Alternative Medicine</span> to integrate cannabis into Thailand's rich traditional medicine heritage.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Regional Supply */}
+              <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-emerald-500/20">
+                    <MapPin className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">ASEAN Distribution Hub</h5>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Positioned as the regional manufacturing and distribution hub for Southeast Asia, supporting licensed medical cannabis programs across the ASEAN region.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* South Africa - Clinic Network Section */}
+          {regionCode === 'za' && (
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold text-foreground uppercase tracking-wide">About Our Operations</h4>
+              
+              {/* Clinic Network */}
+              <div className="p-4 rounded-xl bg-gradient-to-br from-success/10 to-success/5 border border-success/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-success/20">
+                    <Building2 className="w-5 h-5 text-success" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">National Clinic Network</h5>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Operating SAHPRA-licensed clinics across South Africa, providing patient consultations, eligibility assessments, and prescription services for medical cannabis.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Patient Care */}
+              <div className="p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-blue-500/20">
+                    <CheckCircle2 className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">End-to-End Patient Care</h5>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      From initial eligibility screening through ongoing treatment management, our clinical team provides comprehensive support throughout your medical cannabis journey.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Online Pharmacy */}
+              <div className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-purple-500/5 border border-purple-500/20">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-purple-500/20">
+                    <ExternalLink className="w-5 h-5 text-purple-400" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">Integrated Online Pharmacy</h5>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Licensed online pharmacy with nationwide delivery, offering a curated selection of EU GMP-certified medical cannabis products imported from our Portuguese facility.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Features - Show for non-HQ regions */}
           {content?.features && content.features.length > 0 && regionCode !== 'pt' && (
             <div className="space-y-3">
