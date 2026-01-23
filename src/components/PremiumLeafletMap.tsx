@@ -1,8 +1,9 @@
-import { useEffect, useRef, useMemo } from 'react';
+import { useEffect, useRef, useMemo, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useTheme } from 'next-themes';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface RegionMarker {
   key: string;
@@ -283,6 +284,11 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
   const isMobile = useIsMobile();
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
+  
+  // Animation state
+  const [mapReady, setMapReady] = useState(false);
+  const [markersAnimated, setMarkersAnimated] = useState(false);
+  const [pathsAnimated, setPathsAnimated] = useState(false);
 
   // Memoized map config based on screen size
   const mapConfig = useMemo(() => ({
@@ -361,8 +367,12 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
     L.control.attribution({ position: 'bottomleft', prefix: false }).addTo(map);
 
     mapRef.current = map;
+    
+    // Mark map as ready for animations
+    setTimeout(() => setMapReady(true), 300);
 
     // Add animated connection lines FIRST (so they render behind markers)
+    // These will be animated via CSS classes
     connections.forEach(([fromKey, toKey], index) => {
       const fromRegion = regions.find(r => r.key === fromKey);
       const toRegion = regions.find(r => r.key === toKey);
@@ -387,25 +397,43 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
         glowLine.addTo(map);
         polylinesRef.current.push(glowLine);
         
-        // Animated dashed line
+        // Animated dashed line with 3D animation class
         const dashLine = L.polyline(latlngs, {
           color: lineColor,
           weight: isMobile ? 1 : 1.5,
           opacity: lineOpacity,
           dashArray: '8, 12',
           smoothFactor: 1,
-          className: `flight-path flight-path-${index}`,
+          className: `flight-path flight-path-${index} flight-path-3d`,
         });
         dashLine.addTo(map);
         polylinesRef.current.push(dashLine);
       }
     });
 
-    // Add markers
+    // Add markers with staggered entrance animations
+    const markerDelays = {
+      portugal: 0,      // HQ first
+      southAfrica: 0.3, // Live second
+      thailand: 0.5,    // Production third
+      uk: 0.7,          // Coming Soon last
+    };
+    
     regions.forEach((region) => {
+      const delay = markerDelays[region.key as keyof typeof markerDelays] || 0;
+      
+      // Create marker with entrance animation class
       const marker = L.marker(region.coordinates, {
         icon: createMarkerIcon(region.status, false, isMobile),
       });
+
+      // Apply entrance animation with delay
+      setTimeout(() => {
+        const markerElement = marker.getElement();
+        if (markerElement) {
+          markerElement.classList.add('marker-entrance', `marker-delay-${Math.floor(delay * 10)}`);
+        }
+      }, 100);
 
       const popup = L.popup({
         className: 'premium-popup',
@@ -429,6 +457,10 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       marker.addTo(map);
       markersRef.current.set(region.key, marker);
     });
+    
+    // Trigger animations after markers are added
+    setTimeout(() => setMarkersAnimated(true), 800);
+    setTimeout(() => setPathsAnimated(true), 1500);
 
     // Handle resize
     const handleResize = () => {

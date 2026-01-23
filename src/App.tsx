@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, LayoutGroup } from "framer-motion";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ScrollToTop from "@/components/ScrollToTop";
 import RouteProgress from "@/components/RouteProgress";
@@ -17,6 +17,7 @@ import CookieConsent from "@/components/CookieConsent";
 import { CursorProvider } from "@/context/CursorContext";
 import { NewsRegionProvider } from "@/context/NewsRegionContext";
 import { TestRegionProvider } from "@/context/TestRegionContext";
+import { SharedLayoutProvider } from "@/context/SharedLayoutContext";
 import { useKeyboardUser } from "@/hooks/useKeyboardUser";
 
 // Lazy load pages for better performance
@@ -96,27 +97,31 @@ const App = () => (
       <CursorProvider>
         <NewsRegionProvider>
           <TestRegionProvider>
-            <QueryClientProvider client={queryClient}>
-            <TooltipProvider>
-              <CursorFollower>
-                <SmoothScroll>
-                  <KeyboardUserDetector>
-                    <Toaster />
-                    <Sonner />
-                    <BrowserRouter>
-                      <SkipLinks />
-                      <ScrollToTop />
-                      <RouteProgress />
-                      <main id="main-content" className="outline-none" tabIndex={-1}>
-                        <AnimatedRoutes />
-                      </main>
-                      <CookieConsent />
-                    </BrowserRouter>
-                  </KeyboardUserDetector>
-                </SmoothScroll>
-              </CursorFollower>
-            </TooltipProvider>
-            </QueryClientProvider>
+            <SharedLayoutProvider>
+              <QueryClientProvider client={queryClient}>
+                <TooltipProvider>
+                  <CursorFollower>
+                    <SmoothScroll>
+                      <KeyboardUserDetector>
+                        <LayoutGroup>
+                          <Toaster />
+                          <Sonner />
+                          <BrowserRouter>
+                            <SkipLinks />
+                            <ScrollToTop />
+                            <RouteProgress />
+                            <main id="main-content" className="outline-none" tabIndex={-1}>
+                              <AnimatedRoutes />
+                            </main>
+                            <CookieConsent />
+                          </BrowserRouter>
+                        </LayoutGroup>
+                      </KeyboardUserDetector>
+                    </SmoothScroll>
+                  </CursorFollower>
+                </TooltipProvider>
+              </QueryClientProvider>
+            </SharedLayoutProvider>
           </TestRegionProvider>
         </NewsRegionProvider>
       </CursorProvider>

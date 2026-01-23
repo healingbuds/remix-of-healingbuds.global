@@ -73,6 +73,33 @@
         }
       }
     </script>
+    
+    <!-- Inline preloader styles to prevent FOUC -->
+    <style>
+      /* Prevent content flash before React loads */
+      #root:empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: hsl(178, 48%, 8%);
+      }
+      
+      @media (prefers-color-scheme: light) {
+        #root:empty {
+          background: hsl(155, 12%, 97%);
+        }
+      }
+      
+      /* Reduced motion support */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
 </head>
 
 <body>
