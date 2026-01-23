@@ -10,6 +10,7 @@ import BackToTop from "@/components/BackToTop";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import TextReveal from "@/components/TextReveal";
 import SplitText from "@/components/SplitText";
+import { useSharedLayout } from "@/context/SharedLayoutContext";
 
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -140,7 +141,16 @@ const TheWire = () => {
                 >
                   <Link to={`/the-wire/${article.id}`}>
                     <Card className="group overflow-hidden hover:shadow-xl transition-all duration-500 border-border/50 rounded-2xl cursor-pointer h-full flex flex-col bg-card">
-                      <div className="relative h-56 overflow-hidden bg-muted">
+                      {/* Shared Image Element */}
+                      <motion.div 
+                        className="relative h-56 overflow-hidden bg-muted"
+                        layoutId={`article-image-${article.id}`}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 300,
+                          damping: 30,
+                        }}
+                      >
                         <motion.img
                           src={article.image}
                           alt={article.title}
@@ -151,7 +161,7 @@ const TheWire = () => {
                         />
                         {/* Gradient overlay on hover */}
                         <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </div>
+                      </motion.div>
                       <div className="p-6 flex flex-col flex-grow">
                         <div className="flex flex-wrap gap-2 mb-3">
                           {article.tags.map((tag, tagIndex) => (
@@ -164,9 +174,18 @@ const TheWire = () => {
                             </Badge>
                           ))}
                         </div>
-                        <h3 className="font-geist text-lg font-semibold text-foreground mb-2 leading-tight group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                        {/* Shared Title Element */}
+                        <motion.h3 
+                          className="font-geist text-lg font-semibold text-foreground mb-2 leading-tight group-hover:text-primary transition-colors duration-300 line-clamp-2"
+                          layoutId={`article-title-${article.id}`}
+                          transition={{
+                            type: 'spring',
+                            stiffness: 300,
+                            damping: 30,
+                          }}
+                        >
                           {article.title}
-                        </h3>
+                        </motion.h3>
                         <p className="font-geist text-muted-foreground text-sm line-clamp-3 leading-relaxed flex-grow">
                           {article.description}
                         </p>

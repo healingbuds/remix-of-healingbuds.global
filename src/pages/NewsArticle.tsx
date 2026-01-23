@@ -95,13 +95,16 @@ const NewsArticle = () => {
             </div>
           </motion.div>
 
-          {/* Hero Image with Ken Burns */}
+          {/* Hero Image with Ken Burns - Shared Element */}
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-8">
             <motion.div 
               className="relative h-[300px] sm:h-[400px] md:h-[500px] rounded-3xl overflow-hidden"
-              initial={{ opacity: 0, scale: 1.02 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              layoutId={`article-image-${articleId}`}
+              transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 30,
+              }}
             >
               <ImageReveal
                 src={article.image}
@@ -129,11 +132,18 @@ const NewsArticle = () => {
                     </Badge>
                   ))}
                 </motion.div>
-                <TextReveal delay={0.4} as="h1">
-                  <span className="font-pharma text-2xl sm:text-4xl md:text-5xl text-white font-bold leading-tight max-w-4xl block">
-                    {article.title}
-                  </span>
-                </TextReveal>
+                {/* Shared Title Element */}
+                <motion.h1
+                  className="font-pharma text-2xl sm:text-4xl md:text-5xl text-white font-bold leading-tight max-w-4xl"
+                  layoutId={`article-title-${articleId}`}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 30,
+                  }}
+                >
+                  {article.title}
+                </motion.h1>
               </div>
             </motion.div>
           </div>
