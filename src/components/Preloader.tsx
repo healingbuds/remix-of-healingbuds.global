@@ -5,7 +5,9 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import hbLogoIcon from '@/assets/hb-logo-icon.png';
+import { useTheme } from 'next-themes';
+import hbLogoIconWhite from '@/assets/hb-logo-icon.png';
+import hbLogoIconGreen from '@/assets/hb-logo-icon-green.png';
 
 interface PreloaderProps {
   onComplete?: () => void;
@@ -15,6 +17,9 @@ interface PreloaderProps {
 const Preloader = ({ onComplete, minimumDuration = 2400 }: PreloaderProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [phase, setPhase] = useState<'icon' | 'wordmark' | 'tagline' | 'exit'>('icon');
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+  const logoIcon = isDark ? hbLogoIconWhite : hbLogoIconGreen;
 
   useEffect(() => {
     // Check for reduced motion preference
@@ -120,7 +125,7 @@ const Preloader = ({ onComplete, minimumDuration = 2400 }: PreloaderProps) => {
               
               {/* Logo icon */}
               <motion.img
-                src={hbLogoIcon}
+                src={logoIcon}
                 alt="Healing Buds"
                 className="w-24 h-24 md:w-32 md:h-32 relative z-10"
                 initial={{ rotate: -5 }}
