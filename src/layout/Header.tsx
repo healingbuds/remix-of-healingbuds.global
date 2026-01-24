@@ -26,8 +26,10 @@ import { cn } from "@/lib/utils";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import hbLogoWhite from "@/assets/hb-logo-white-new.png";
+import hbLogoGreen from "@/assets/hb-logo-green-full.png";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useTheme } from "next-themes";
 import NavigationMenu from "@/components/NavigationMenu";
 import NavigationOverlay from "@/components/NavigationOverlay";
 
@@ -41,6 +43,8 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
   const location = useLocation();
   const { t } = useTranslation('common');
   const headerRef = useRef<HTMLElement>(null);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   
   // Scroll progress tracking
   const { scrollYProgress } = useScroll();
@@ -117,7 +121,7 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
               className="flex items-center flex-shrink-0 group justify-self-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-lg"
             >
               <img 
-                src={hbLogoWhite} 
+                src={isDark ? hbLogoWhite : hbLogoGreen} 
                 alt="Healing Buds Logo" 
                 className={cn(
                   "w-auto min-w-[140px] sm:min-w-[160px] md:min-w-[180px] object-contain transition-all duration-500 ease-out group-hover:scale-105",
