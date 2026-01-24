@@ -16,8 +16,8 @@
   <meta name="theme-color" content="#1a2a27" media="(prefers-color-scheme: dark)" />
 
   <!-- Touch Icons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="./favicon.png" />
-  <link rel="icon" href="./favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
 
   <title>Healing Buds | Shaping the Future of Cannabis</title>
   <meta name="description"
@@ -36,7 +36,7 @@
     rel="stylesheet">
 
   <!-- Geist Font - Custom Brand Typography -->
-  <link rel="stylesheet" href="./fonts/geist.css">
+  <link rel="stylesheet" href="/fonts/geist.css">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
@@ -73,8 +73,35 @@
         }
       }
     </script>
-  <script type="module" crossorigin src="./assets/index-Pl4T6QVk.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DmXR5reJ.css">
+    
+    <!-- Inline preloader styles to prevent FOUC -->
+    <style>
+      /* Prevent content flash before React loads */
+      #root:empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: hsl(178, 48%, 8%);
+      }
+      
+      @media (prefers-color-scheme: light) {
+        #root:empty {
+          background: hsl(155, 12%, 97%);
+        }
+      }
+      
+      /* Reduced motion support */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  <script type="module" crossorigin src="/assets/index-sBcKO0B9.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-G4GKuzZX.css">
 </head>
 
 <body>

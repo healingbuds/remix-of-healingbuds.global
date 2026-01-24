@@ -126,14 +126,17 @@ const languageToCountry: Record<string, string> = {
   'th-TH': 'TH',
 };
 
-// Detect country from domain - UK is default for lovable.app and unknown domains
+// Detect country from domain - DEFAULT (Portugal HQ) for .global and unknown domains
 const getCountryFromDomain = (): string | null => {
   if (typeof window === 'undefined') return null;
   
   const hostname = window.location.hostname;
   
-  // Lovable staging/preview domains → use DEFAULT (GB)
+  // Lovable staging/preview domains → use DEFAULT (Portugal Global HQ)
   if (hostname.includes('lovable.app') || hostname.includes('lovable.dev')) return null;
+  
+  // .global domain → use DEFAULT (Portugal Global HQ)
+  if (hostname.endsWith('.global') || hostname.includes('.global.')) return null;
   
   // Check specific country TLDs BEFORE generic .com
   if (hostname.endsWith('.pt') || hostname.includes('.pt.')) return 'PT';
