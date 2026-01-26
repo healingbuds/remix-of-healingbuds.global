@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Building2, ChevronRight, MapPin, Globe2, Sparkles, Factory, Crown, Clock, Keyboard } from 'lucide-react';
+import { ArrowRight, ChevronRight, MapPin, Globe2, Sparkles, Factory, Crown, Clock, Keyboard } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
 import PremiumLeafletMap from '@/components/PremiumLeafletMap';
-import PremiumGlobeIcon from '@/components/PremiumGlobeIcon';
 import RegionSlidePanel from '@/components/RegionSlidePanel';
 import MapAmbientParticles from '@/components/MapAmbientParticles';
 import MapCornerDecorations from '@/components/MapCornerDecorations';
@@ -135,8 +134,7 @@ export default function GlobalMapHub() {
         <div className="mx-4 mt-4 md:mx-6 md:mt-6">
           <div className={`flex items-center justify-between px-4 py-3 md:px-6 md:py-4 rounded-2xl ${headerBg} backdrop-blur-xl border ${headerBorder} shadow-2xl`}>
             {/* Logo */}
-            <Link to="/home" className="flex items-center gap-2 md:gap-3 group">
-              <PremiumGlobeIcon size="sm" animate />
+            <Link to="/home" className="flex items-center group">
               <img 
                 src={isDark ? hbLogoWhite : hbLogoGreen} 
                 alt="Healing Buds" 
@@ -156,17 +154,6 @@ export default function GlobalMapHub() {
                 <Link to="/home">
                   Enter Site
                   <ChevronRight className="ml-1 w-4 h-4" />
-                </Link>
-              </Button>
-              <Button 
-                size="sm"
-                className="bg-primary/90 text-primary-foreground hover:bg-primary shadow-lg shadow-primary/20"
-                asChild
-              >
-                <Link to="/franchise-opportunities">
-                  <Building2 className="mr-1.5 w-4 h-4" />
-                  <span className="hidden sm:inline">Franchise</span>
-                  <span className="sm:hidden">Partner</span>
                 </Link>
               </Button>
             </div>

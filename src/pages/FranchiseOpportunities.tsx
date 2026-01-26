@@ -165,8 +165,8 @@ ${data.message || 'Not provided'}
   return (
     <PageTransition>
       <SEOHead 
-        title="Franchise Opportunities | Healing Buds Global"
-        description="Join the Healing Buds franchise network. Partner with an established EU GMP certified medical cannabis company and enter the growing healthcare market."
+        title="Partners | Healing Buds Global"
+        description="Join the Healing Buds partner network. Partner with an established EU GMP certified medical cannabis company and enter the growing healthcare market."
       />
       <div className="min-h-screen bg-background pb-24 lg:pb-0">
         <Header onMenuStateChange={setMenuOpen} />
@@ -183,10 +183,10 @@ ${data.message || 'Not provided'}
                     Partner With Us
                   </span>
                   <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 tracking-tight leading-[1.1]">
-                    Franchise Opportunities
+                    Partners
                   </h1>
                   <p className="text-xl md:text-2xl text-muted-foreground/80 max-w-3xl font-light">
-                    Join the Healing Buds network and bring regulated medical cannabis healthcare to your region.
+                    Join the Healing Buds partner network and bring regulated medical cannabis healthcare to your region.
                   </p>
                 </div>
               </ScrollAnimation>

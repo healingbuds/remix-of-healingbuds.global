@@ -33,7 +33,7 @@
     "theWire": "Notícias",
     "aboutUs": "Sobre Nós",
     "contactUs": "Contacte-nos",
-    "franchise": "Franquia",
+    "franchise": "Parceiros",
     "shop": "Dispensário",
     "checkEligibility": "Verificar Elegibilidade",
     "patientLogin": "Login do Paciente",
@@ -52,7 +52,9 @@
     "aboutHealing": "Sobre a Healing Buds",
     "aboutHealingDesc": "A nossa história, valores e instalações",
     "blockchain": "Tecnologia Blockchain",
-    "blockchainDesc": "Rastreabilidade da semente ao paciente"
+    "blockchainDesc": "Rastreabilidade da semente ao paciente",
+    "partners": "Parceiros",
+    "partnersDesc": "Parceria global connosco"
   },
   "footer": {
     "tagline": "Moldando o futuro da cannabis através da investigação e excelência.",
@@ -64,7 +66,7 @@
     "resources": "Recursos",
     "dispensaries": "Dispensários",
     "conditionsTreated": "Condições Tratadas",
-    "franchiseOpportunities": "Oportunidades de Franquia",
+    "franchiseOpportunities": "Parceiros",
     "legal": "Legal",
     "privacyPolicy": "Política de Privacidade",
     "termsOfService": "Termos de Serviço",
@@ -79,6 +81,6 @@
     "feature1": "Operações Prontas",
     "feature2": "Expertise Global",
     "feature3": "Suporte Regulatório",
-    "cta": "Explorar Oportunidades de Franquia"
+    "cta": "Torne-se Parceiro"
   }
 }

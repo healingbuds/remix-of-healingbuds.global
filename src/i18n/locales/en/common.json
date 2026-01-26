@@ -33,7 +33,7 @@
     "theWire": "The Wire",
     "aboutUs": "About Us",
     "contactUs": "Contact Us",
-    "franchise": "Franchise",
+    "franchise": "Partners",
     "shop": "Dispensary",
     "checkEligibility": "Check Eligibility",
     "patientLogin": "Patient Login",
@@ -52,7 +52,9 @@
     "aboutHealing": "About Healing Buds",
     "aboutHealingDesc": "Our story, values & facilities",
     "blockchain": "Blockchain Technology",
-    "blockchainDesc": "Seed-to-patient traceability"
+    "blockchainDesc": "Seed-to-patient traceability",
+    "partners": "Partners",
+    "partnersDesc": "Partner with us globally"
   },
   "footer": {
     "tagline": "Shaping the future of cannabis through research and excellence.",
@@ -64,7 +66,7 @@
     "resources": "Resources",
     "dispensaries": "Dispensaries",
     "conditionsTreated": "Conditions Treated",
-    "franchiseOpportunities": "Franchise Opportunities",
+    "franchiseOpportunities": "Partners",
     "legal": "Legal",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
@@ -79,6 +81,6 @@
     "feature1": "Turnkey Operations",
     "feature2": "Global Expertise",
     "feature3": "Regulatory Support",
-    "cta": "Explore Franchise Opportunities"
+    "cta": "Become a Partner"
   }
 }
