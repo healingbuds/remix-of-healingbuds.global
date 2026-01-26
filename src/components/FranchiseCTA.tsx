@@ -80,16 +80,17 @@ const FranchiseCTA = () => {
             ))}
           </motion.div>
 
-          {/* CTA Button */}
+          {/* CTA Button - Enhanced for mobile */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.4 }}
+            className="px-4 sm:px-0"
           >
             <Link
               to="/franchise-opportunities"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-primary font-semibold rounded-full shadow-lg hover:shadow-2xl hover:shadow-white/20 transition-all duration-300 hover:scale-105"
+              className="group inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 bg-white text-primary font-semibold rounded-full shadow-lg hover:shadow-2xl hover:shadow-white/20 transition-all duration-300 hover:scale-105 active:scale-[0.98] touch-manipulation min-h-[56px]"
             >
               {t('franchiseCTA.cta')}
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />

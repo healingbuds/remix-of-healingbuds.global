@@ -104,22 +104,24 @@ const StatCard = ({ stat, index }: StatCardProps) => {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 60, scale: 0.8 }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ 
-        duration: 0.8, 
-        delay: index * 0.15, 
+        duration: 0.6, 
+        delay: index * 0.1, 
         ease: [0.25, 0.4, 0.25, 1],
-        scale: { type: "spring", stiffness: 200, damping: 20 }
       }}
-      className="relative group perspective-1000"
-      style={{ perspective: 1000 }}
+      className="relative group touch-feedback"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       <motion.div 
-        className="relative h-full"
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className="relative h-full md:perspective-1000"
+        style={{ 
+          rotateX: typeof window !== 'undefined' && window.innerWidth >= 768 ? rotateX : 0, 
+          rotateY: typeof window !== 'undefined' && window.innerWidth >= 768 ? rotateY : 0, 
+          transformStyle: "preserve-3d" 
+        }}
       >
         {/* Animated glow background */}
         <motion.div
@@ -132,7 +134,7 @@ const StatCard = ({ stat, index }: StatCardProps) => {
         />
         
         {/* Card */}
-        <div className="relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10 hover:border-white/30 transition-all duration-500 overflow-hidden group-hover:shadow-2xl">
+        <div className="relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 border border-white/10 hover:border-white/30 transition-all duration-300 overflow-hidden group-hover:shadow-2xl active:scale-[0.98] touch-manipulation">
           {/* Animated gradient border on hover */}
           <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
           

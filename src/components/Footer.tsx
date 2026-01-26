@@ -55,24 +55,24 @@ const Footer = () => {
                   <Leaf size={14} className="text-primary flex-shrink-0" />
                   {t('footer.company')}
                 </h4>
-                <ul className="space-y-3">
+                <ul className="space-y-1 sm:space-y-3">
                   <li>
-                    <Link to="/about-us" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block hover:translate-x-1 transform duration-200">
+                    <Link to="/about-us" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-flex items-center min-h-[44px] sm:min-h-0 hover:translate-x-1 transform duration-200 touch-manipulation">
                       {t('footer.aboutUs')}
                     </Link>
                   </li>
                   <li>
-                    <Link to="/what-we-do" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block hover:translate-x-1 transform duration-200">
+                    <Link to="/what-we-do" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-flex items-center min-h-[44px] sm:min-h-0 hover:translate-x-1 transform duration-200 touch-manipulation">
                       {t('footer.ourStandards')}
                     </Link>
                   </li>
                   <li>
-                    <Link to="/research" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block hover:translate-x-1 transform duration-200">
+                    <Link to="/research" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-flex items-center min-h-[44px] sm:min-h-0 hover:translate-x-1 transform duration-200 touch-manipulation">
                       {t('footer.research')}
                     </Link>
                   </li>
                   <li>
-                    <Link to="/the-wire" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block hover:translate-x-1 transform duration-200">
+                    <Link to="/the-wire" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-flex items-center min-h-[44px] sm:min-h-0 hover:translate-x-1 transform duration-200 touch-manipulation">
                       {t('footer.theWire')}
                     </Link>
                   </li>
@@ -85,19 +85,19 @@ const Footer = () => {
                   <Leaf size={14} className="text-primary flex-shrink-0" />
                   {t('footer.resources')}
                 </h4>
-                <ul className="space-y-3">
+                <ul className="space-y-1 sm:space-y-3">
                   <li>
-                    <Link to="/dispensaries" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block hover:translate-x-1 transform duration-200">
+                    <Link to="/dispensaries" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-flex items-center min-h-[44px] sm:min-h-0 hover:translate-x-1 transform duration-200 touch-manipulation">
                       {t('footer.dispensaries')}
                     </Link>
                   </li>
                   <li>
-                    <Link to="/conditions" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block hover:translate-x-1 transform duration-200">
+                    <Link to="/conditions" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-flex items-center min-h-[44px] sm:min-h-0 hover:translate-x-1 transform duration-200 touch-manipulation">
                       {t('footer.conditionsTreated')}
                     </Link>
                   </li>
                   <li>
-                    <Link to="/franchise-opportunities" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block hover:translate-x-1 transform duration-200">
+                    <Link to="/franchise-opportunities" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-flex items-center min-h-[44px] sm:min-h-0 hover:translate-x-1 transform duration-200 touch-manipulation">
                       {t('footer.franchiseOpportunities')}
                     </Link>
                   </li>
@@ -110,19 +110,19 @@ const Footer = () => {
                   <Leaf size={14} className="text-primary flex-shrink-0" />
                   {t('footer.legal')}
                 </h4>
-                <ul className="space-y-3">
+                <ul className="space-y-1 sm:space-y-3">
                   <li>
-                    <Link to="/privacy-policy" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block hover:translate-x-1 transform duration-200">
+                    <Link to="/privacy-policy" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-flex items-center min-h-[44px] sm:min-h-0 hover:translate-x-1 transform duration-200 touch-manipulation">
                       {t('footer.privacyPolicy')}
                     </Link>
                   </li>
                   <li>
-                    <Link to="/terms-of-service" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block hover:translate-x-1 transform duration-200">
+                    <Link to="/terms-of-service" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-flex items-center min-h-[44px] sm:min-h-0 hover:translate-x-1 transform duration-200 touch-manipulation">
                       {t('footer.termsOfService')}
                     </Link>
                   </li>
                   <li>
-                    <Link to="/contact" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-block hover:translate-x-1 transform duration-200">
+                    <Link to="/contact" className="font-body text-sm text-white/60 hover:text-white transition-colors inline-flex items-center min-h-[44px] sm:min-h-0 hover:translate-x-1 transform duration-200 touch-manipulation">
                       {t('footer.compliance')}
                     </Link>
                   </li>

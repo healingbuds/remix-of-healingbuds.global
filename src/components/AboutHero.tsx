@@ -121,7 +121,8 @@ const AboutHero = () => {
     offset: ["start end", "end start"]
   });
   
-  const imageY = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+  // Reduced parallax offset to prevent image overflow on mobile
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
   
   return (
     <motion.section 
@@ -164,7 +165,7 @@ const AboutHero = () => {
               style={{ y: imageY }}
               src={aboutHero} 
               alt="Cannabis cultivation facility with rows of plants" 
-              className="rounded-2xl w-full h-auto scale-110"
+              className="rounded-2xl w-full h-auto scale-[1.04] will-change-transform"
             />
             {/* Botanical decorative elements */}
             <BotanicalMotif 

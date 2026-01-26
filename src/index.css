@@ -1,6 +1,7 @@
 @import './styles/theme.css';
 @import './styles/navigation.css';
 @import './styles/leaflet-premium.css';
+@import './styles/mobile-enhancements.css';
 
 @tailwind base;
 @tailwind components;

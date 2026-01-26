@@ -78,22 +78,24 @@ const News = () => {
           </Link>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {displayedArticles.map((item, index) => (
             <motion.div 
               key={item.id}
               variants={cardVariants}
-              whileHover={{ y: -12, transition: { duration: 0.3, ease: "easeOut" } }}
+              whileHover={{ y: -8, transition: { duration: 0.25, ease: "easeOut" } }}
+              whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
+              className="touch-feedback"
             >
               <Link to={`/the-wire/${item.id}`}>
-                <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 border-border/50 rounded-2xl cursor-pointer h-full flex flex-col">
-                  <div className="relative h-56 overflow-hidden">
+                <Card className="group overflow-hidden hover:shadow-xl active:shadow-lg transition-all duration-200 border-border/50 rounded-xl sm:rounded-2xl cursor-pointer h-full flex flex-col">
+                  <div className="relative h-48 sm:h-56 overflow-hidden">
                     <motion.img
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-full object-cover"
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.5 }}
+                      className="w-full h-full object-cover will-change-transform"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.4 }}
                     />
                     {item.featured && (
                       <div className="absolute inset-0 bg-gradient-to-t from-sage-dark/90 to-sage-dark/40 flex items-center justify-center">

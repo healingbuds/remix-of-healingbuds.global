@@ -13,7 +13,8 @@ const Cultivation = () => {
     offset: ["start end", "end start"]
   });
   
-  const imageY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+  // Reduced parallax for mobile to prevent overflow
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
   
   // Section reveal animation variants
   const containerVariants = {
@@ -59,7 +60,7 @@ const Cultivation = () => {
             style={{ y: imageY }}
             src={cultivationImage} 
             alt="Indoor cannabis cultivation facility with advanced lighting" 
-            className="w-full h-[450px] sm:h-[400px] md:h-[500px] object-cover object-center transition-transform duration-700 group-hover:scale-105 scale-110"
+            className="w-full h-[350px] sm:h-[400px] md:h-[500px] object-cover object-center transition-transform duration-700 group-hover:scale-[1.02] scale-[1.04] will-change-transform"
           />
           {/* Enhanced multi-layer gradient for maximum contrast */}
           <div className="absolute inset-0 bg-gradient-to-r from-[#1A3C3A]/95 via-[#1A3C3A]/75 to-transparent" />
