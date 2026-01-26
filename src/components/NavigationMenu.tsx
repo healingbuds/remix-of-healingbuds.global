@@ -38,7 +38,7 @@ const NavigationMenu = ({ scrolled, onCloseAllDropdowns }: NavigationMenuProps) 
   // Active state detection
   const isActive = (path: string) => location.pathname === path;
   const isWhatWeDoActive = ['/what-we-do', '/cultivating-processing', '/manufacture-distribution', '/medical-clinics'].includes(location.pathname);
-  const isAboutUsActive = ['/about-us', '/blockchain-technology'].includes(location.pathname);
+  const isAboutUsActive = ['/about-us', '/blockchain-technology', '/franchise-opportunities'].includes(location.pathname);
 
   // Click outside handler
   const handleClickOutside = useCallback((event: MouseEvent | TouchEvent) => {
@@ -247,7 +247,8 @@ const NavigationMenu = ({ scrolled, onCloseAllDropdowns }: NavigationMenuProps) 
               
               {[
                 { to: '/about-us', label: 'aboutHealing', desc: 'aboutHealingDesc' },
-                { to: '/blockchain-technology', label: 'blockchain', desc: 'blockchainDesc' }
+                { to: '/blockchain-technology', label: 'blockchain', desc: 'blockchainDesc' },
+                { to: '/franchise-opportunities', label: 'partners', desc: 'partnersDesc' }
               ].map(({ to, label, desc }, index, arr) => (
                 <Link
                   key={to}
@@ -282,9 +283,6 @@ const NavigationMenu = ({ scrolled, onCloseAllDropdowns }: NavigationMenuProps) 
         </AnimatePresence>
       </div>
 
-      <Link to="/franchise-opportunities" className={getNavItemStyles(isActive("/franchise-opportunities"))}>
-        {t('nav.franchise')}
-      </Link>
       
       <Link to="/contact" className={getNavItemStyles(isActive("/contact"))}>
         {t('nav.contactUs')}
