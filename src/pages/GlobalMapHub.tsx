@@ -12,7 +12,7 @@ import MapCornerDecorations from '@/components/MapCornerDecorations';
 import ThemeToggle from '@/components/ThemeToggle';
 import useMapKeyboardNavigation from '@/hooks/useMapKeyboardNavigation';
 import hbLogoWhite from '@/assets/hb-logo-white-new.png';
-import hbLogoDark from '@/assets/hb-logo-dark.png';
+import hbLogoGreen from '@/assets/hb-logo-green-full.png';
 import drGreenLogo from '@/assets/drgreen-logo-white.png';
 import { countryKeyToRegionCode, RegionCode, detectRegionFromDomain } from '@/lib/domainDetection';
 
@@ -138,7 +138,7 @@ export default function GlobalMapHub() {
             <Link to="/home" className="flex items-center gap-2 md:gap-3 group">
               <PremiumGlobeIcon size="sm" animate />
               <img 
-                src={isDark ? hbLogoWhite : hbLogoDark} 
+                src={isDark ? hbLogoWhite : hbLogoGreen} 
                 alt="Healing Buds" 
                 className="h-6 md:h-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
               />

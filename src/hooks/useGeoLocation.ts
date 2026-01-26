@@ -30,7 +30,7 @@ const locationConfigs: Record<string, LocationConfig> = {
     postalCodePlaceholder: '1000-001',
     postalCodePattern: '^\\d{4}-\\d{3}$',
     dateFormat: 'dd/MM/yyyy',
-    email: 'info@healingbuds.pt',
+    email: 'info@healingbuds.global',
     phone: '+351 210 123 456',
     address: 'Avenida D. João II, 98 A',
     city: '1990-100 Lisboa, Portugal',
@@ -95,7 +95,7 @@ const locationConfigs: Record<string, LocationConfig> = {
     address: '123 Fifth Avenue',
     city: 'New York, NY 10001, USA',
   },
-  // DEFAULT is Portugal for the .global site
+  // DEFAULT is Portugal Global HQ for the .global site and .pt
   DEFAULT: {
     countryCode: 'GLOBAL',
     countryName: 'Global',
@@ -106,7 +106,7 @@ const locationConfigs: Record<string, LocationConfig> = {
     postalCodePlaceholder: '1000-001',
     postalCodePattern: '^[A-Z0-9\\s-]{3,10}$',
     dateFormat: 'dd/MM/yyyy',
-    email: 'info@healingbuds.pt',
+    email: 'info@healingbuds.global',
     phone: '+351 210 123 456',
     address: 'Avenida D. João II, 98 A',
     city: '1990-100 Lisboa, Portugal',
