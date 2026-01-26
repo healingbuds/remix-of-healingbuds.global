@@ -501,6 +501,15 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
     });
   }, [selectedCountry, isMobile, mapConfig.flyToZoom]);
 
+  // Force map invalidation on mount to ensure tiles render
+  useEffect(() => {
+    if (mapRef.current && mapReady) {
+      setTimeout(() => {
+        mapRef.current?.invalidateSize();
+      }, 500);
+    }
+  }, [mapReady]);
+
   // Theme-aware background
   const mapBg = isDark ? 'hsl(178, 48%, 6%)' : 'hsl(155, 12%, 97%)';
   

@@ -95,8 +95,7 @@ export default function GlobalMapHub() {
   const vignetteGradient = isDark 
     ? 'radial-gradient(ellipse at center, transparent 40%, hsl(178 48% 4% / 0.6) 100%)'
     : 'radial-gradient(ellipse at center, transparent 50%, hsl(178 48% 20% / 0.08) 100%)';
-  const headerBg = isDark ? 'bg-black/30' : 'bg-white/70';
-  const headerBorder = isDark ? 'border-white/10' : 'border-black/10';
+  // Header uses fixed dark teal styling (matching main site)
   const bottomGradient = isDark 
     ? `linear-gradient(to top, ${bgColor}, ${bgColor}cc, transparent)`
     : `linear-gradient(to top, ${bgColor}, ${bgColor}ee, transparent)`;
@@ -132,11 +131,11 @@ export default function GlobalMapHub() {
         className="absolute top-0 left-0 right-0 z-30"
       >
         <div className="mx-4 mt-4 md:mx-6 md:mt-6">
-          <div className={`flex items-center justify-between px-4 py-3 md:px-6 md:py-4 rounded-2xl ${headerBg} backdrop-blur-xl border ${headerBorder} shadow-2xl`}>
+          <div className="flex items-center justify-between px-4 py-3 md:px-6 md:py-4 rounded-2xl bg-[hsl(178,48%,21%)] backdrop-blur-xl border border-white/10 shadow-2xl">
             {/* Logo */}
             <Link to="/home" className="flex items-center group">
               <img 
-                src={isDark ? hbLogoWhite : hbLogoGreen} 
+                src={hbLogoWhite} 
                 alt="Healing Buds" 
                 className="h-6 md:h-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
               />
@@ -148,7 +147,7 @@ export default function GlobalMapHub() {
               <Button 
                 variant="ghost" 
                 size="sm"
-                className={`hidden sm:flex ${isDark ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-foreground/70 hover:text-foreground hover:bg-black/5'} text-sm`}
+                className="hidden sm:flex text-white/70 hover:text-white hover:bg-white/10 text-sm"
                 asChild
               >
                 <Link to="/home">
