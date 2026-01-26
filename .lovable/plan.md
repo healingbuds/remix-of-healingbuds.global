@@ -1,127 +1,131 @@
 
-# Fix Map Visibility and London Address Issues
+
+# Fix GlobalMapHub Header and Map Tile Visibility
 
 ## Summary
-Two critical issues need to be resolved:
-1. Map tiles not rendering on the GlobalMapHub page
-2. London (UK) address incorrectly showing on .global home page instead of Portugal HQ
+Two issues need to be fixed on the GlobalMapHub page (the map/regional landing at `/`):
+1. **Header needs dark teal styling** (matching the main site) instead of white glassmorphism
+2. **Map tiles not visible in light mode** - tiles are loading but blending with the background
 
 ---
 
-## Issue 1: Map Not Visible
+## Issue 1: Header Styling on GlobalMapHub
 
-### Root Cause
-The Leaflet map tiles are not loading properly. Looking at the user's screenshot, the connection lines and region buttons are visible, but the map tiles themselves are blank/missing.
+### Current Behavior
+The GlobalMapHub page has a glassmorphism header that changes based on theme:
+- Light mode: `bg-white/70` with green logo
+- Dark mode: `bg-black/30` with white logo
 
-### Diagnosis
-The map uses CARTO tile provider (`basemaps.cartocdn.com`). Possible causes:
-- Tile loading CSS transition causing initial blank state
-- Z-index layering issues
-- Tile provider connection issues
+### Desired Behavior
+Use the same dark teal header styling as the main site - consistent branding regardless of theme mode.
 
-### Solution
-1. **Update tile loading CSS** in `src/styles/leaflet-premium.css`:
-   - Remove the opacity transition that starts tiles at opacity 0
-   - Ensure tiles are visible immediately on load
+### Changes Required
 
-2. **Improve map container reliability** in `src/components/PremiumLeafletMap.tsx`:
-   - Add explicit size check before initializing map
-   - Force map invalidation after render
+**File:** `src/pages/GlobalMapHub.tsx`
 
-### Files to Modify
-| File | Change |
-|------|--------|
-| `src/styles/leaflet-premium.css` | Lines 436-448 - Fix tile opacity/visibility |
-| `src/components/PremiumLeafletMap.tsx` | Add container size validation |
+| Line | Current | Change To |
+|------|---------|-----------|
+| 98-99 | Theme-adaptive header bg | Fixed dark teal header |
+| 135 | `${headerBg} backdrop-blur-xl border ${headerBorder}` | `bg-[hsl(178,48%,21%)] border-white/10` |
+| 139 | `isDark ? hbLogoWhite : hbLogoGreen` | `hbLogoWhite` (always white) |
+| 151 | Theme-adaptive button colors | White text for dark header |
 
----
+**Detailed Changes:**
 
-## Issue 2: London Address on .global Domain
-
-### Root Cause
-The `useGeoLocation` hook in `src/hooks/useGeoLocation.ts` has this logic:
-
-1. First, it checks domain-based detection (line 161)
-2. For Lovable preview domains, it returns `null` (line 136)
-3. It then falls back to language-based detection (lines 168-174)
-4. The language mapping on line 121 sets `en: 'GB'`
-
-This means any English-speaking browser on the Lovable preview (or .global domain) defaults to UK/London.
-
-### Solution
-Update the `languageToCountry` mapping to map generic `en` to the global DEFAULT (Portugal HQ) instead of UK:
-
+1. **Line 98-99** - Remove theme-adaptive header colors:
 ```typescript
-const languageToCountry: Record<string, string> = {
-  pt: 'PT',
-  'pt-PT': 'PT',
-  'pt-BR': 'PT',
-  // Generic English → DEFAULT (Portugal Global HQ)
-  en: 'DEFAULT',  // Changed from 'GB'
-  'en-GB': 'GB',  // Specific UK English still maps to UK
-  'en-US': 'US',
-  'en-ZA': 'ZA',
-  th: 'TH',
-  'th-TH': 'TH',
-};
+// REMOVE these lines:
+const headerBg = isDark ? 'bg-black/30' : 'bg-white/70';
+const headerBorder = isDark ? 'border-white/10' : 'border-black/10';
 ```
 
-### Files to Modify
-| File | Change |
-|------|--------|
-| `src/hooks/useGeoLocation.ts` | Line 121 - Change `en: 'GB'` to `en: 'DEFAULT'` |
+2. **Line 135** - Use fixed dark teal header:
+```typescript
+// FROM:
+className={`flex items-center justify-between px-4 py-3 md:px-6 md:py-4 rounded-2xl ${headerBg} backdrop-blur-xl border ${headerBorder} shadow-2xl`}
+
+// TO:
+className="flex items-center justify-between px-4 py-3 md:px-6 md:py-4 rounded-2xl bg-[hsl(178,48%,21%)] backdrop-blur-xl border border-white/10 shadow-2xl"
+```
+
+3. **Line 139** - Always use white logo:
+```typescript
+// FROM:
+src={isDark ? hbLogoWhite : hbLogoGreen}
+
+// TO:
+src={hbLogoWhite}
+```
+
+4. **Lines 148-157** - Update button colors for dark header:
+```typescript
+// FROM:
+className={`hidden sm:flex ${isDark ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-foreground/70 hover:text-foreground hover:bg-black/5'} text-sm`}
+
+// TO:
+className="hidden sm:flex text-white/70 hover:text-white hover:bg-white/10 text-sm"
+```
 
 ---
 
-## Technical Details
+## Issue 2: Map Tiles Not Visible in Light Mode
 
-### CSS Fix for Tile Loading
+### Root Cause Analysis
+Looking at the user's screenshot, the map tiles aren't rendering. Possible causes:
+1. Tile loading issue - tiles may not be fetching
+2. Z-index layering - overlays may be covering tiles
+3. Background matching tile colors making them invisible
+
+### Solution
+Add explicit visibility and z-index fixes to ensure tiles render properly:
+
+**File:** `src/styles/leaflet-premium.css`
+
+Add explicit visibility rules for the tile pane and ensure proper z-index stacking:
+
 ```css
-/* Current problematic code (lines 436-448) */
-.leaflet-tile {
-  opacity: 0;  /* <- Tiles start invisible */
-  transition: opacity 0.4s ease-out, filter 0.3s ease-out;
+/* Ensure tile pane is always visible */
+.leaflet-tile-pane {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-.leaflet-tile-loaded {
-  opacity: 1;
-  animation: tile-fade-in 0.5s ease-out forwards;
-}
-
-/* Fixed version */
-.leaflet-tile {
-  opacity: 1;  /* <- Tiles visible immediately */
-}
-
-.leaflet-tile-loaded {
-  opacity: 1;
+/* Ensure tiles have proper z-index */
+.leaflet-layer {
+  z-index: 1;
 }
 ```
 
-### GeoLocation Language Mapping Fix
+**File:** `src/components/PremiumLeafletMap.tsx`
+
+Add a check to invalidate map size after container is mounted (lines 465-473):
+
 ```typescript
-// Line 121 - Before:
-en: 'GB',
-
-// Line 121 - After:
-en: 'DEFAULT',
+// Force map invalidation on mount
+useEffect(() => {
+  if (mapRef.current && mapReady) {
+    setTimeout(() => {
+      mapRef.current?.invalidateSize();
+    }, 500);
+  }
+}, [mapReady]);
 ```
+
+---
+
+## Files to Modify
+
+| File | Lines | Change Description |
+|------|-------|-------------------|
+| `src/pages/GlobalMapHub.tsx` | 98-99, 135, 139, 151 | Fixed dark teal header, white logo, white button text |
+| `src/styles/leaflet-premium.css` | 467-475 | Add explicit tile visibility rules |
+| `src/components/PremiumLeafletMap.tsx` | After line 483 | Add invalidateSize call after map ready |
 
 ---
 
 ## Expected Result
 
 After these changes:
-1. **Map tiles will load immediately** without the opacity transition causing blank states
-2. **Global/preview domains** will show Portugal HQ address (Avenida D. Joao II, Lisboa)
-3. **UK-specific English** (en-GB) still correctly shows London address
-4. **Other regional domains** (.co.za, .co.uk, .co.th) continue working as before
+1. **Header** - GlobalMapHub will have the same dark teal header as the main site (white logo, consistent branding)
+2. **Map tiles** - Will render correctly in both light and dark modes with explicit visibility rules
 
----
-
-## Files Summary
-
-| File | Lines | Change Description |
-|------|-------|-------------------|
-| `src/styles/leaflet-premium.css` | 436-448 | Remove opacity transition on tiles |
-| `src/hooks/useGeoLocation.ts` | 121 | Change `en: 'GB'` to `en: 'DEFAULT'` |
