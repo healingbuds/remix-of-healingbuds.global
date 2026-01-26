@@ -283,12 +283,12 @@ export default function GlobalMapHub() {
           </div>
           
           {/* Powered by Dr. Green */}
-          <div className="flex items-center justify-center gap-2">
-            <span className={`${isDark ? 'text-white/30' : 'text-foreground/40'} text-xs`}>Powered by</span>
+          <div className="flex items-center justify-center gap-2 sm:gap-3">
+            <span className={`${isDark ? 'text-white/40' : 'text-foreground/50'} text-xs sm:text-sm`}>Powered by</span>
             <img 
               src={drGreenLogo} 
               alt="Dr. Green" 
-              className={`h-5 w-auto object-contain ${isDark ? 'opacity-50' : 'opacity-60 brightness-0'}`}
+              className={`h-7 sm:h-8 w-auto object-contain ${isDark ? 'opacity-70' : 'opacity-80 brightness-0'}`}
             />
           </div>
         </div>
