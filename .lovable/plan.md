@@ -1,55 +1,54 @@
 
 
-# Remove Preloader/Loading Screen
+# Increase Dr. Green Logo Size on Global Healthcare Network Page
 
-## Summary
-Remove the cinematic preloader animation that displays the Healing Buds logo with animated dots before the main app loads. This will make the site load immediately without any artificial delay.
+## Current State
+The Dr. Green logo at the bottom of the GlobalMapHub page currently uses `h-5` (20px height), which makes it appear quite small and hard to read.
 
----
+## Proposed Change
 
-## Changes Required
+**File:** `src/pages/GlobalMapHub.tsx` (lines 286-293)
 
-**File:** `src/main.tsx`
+Update the "Powered by Dr. Green" section to increase logo visibility:
 
-The current implementation wraps the entire app in a preloader state machine that:
-1. Shows a loading screen with the logo for 2.4-3 seconds
-2. Only renders the App component after the preloader completes
+```text
+Current:
+├── Text: text-xs (12px)
+├── Logo: h-5 (20px height)
+└── Gap: gap-2 (8px)
 
-### What Will Be Removed
-- The `isPreloaderComplete` state
-- The `fontsLoaded` state
-- The font loading useEffect
-- The Preloader component import and usage
-- The conditional rendering logic
-
-### New Simplified Code
-
-```typescript
-import { createRoot } from "react-dom/client";
-import { HelmetProvider } from "react-helmet-async";
-import App from "./App.tsx";
-import "./index.css";
-import "./i18n";
-
-createRoot(document.getElementById("root")!).render(
-  <HelmetProvider>
-    <App />
-  </HelmetProvider>
-);
+Proposed:
+├── Text: text-xs sm:text-sm (12px → 14px on larger screens)
+├── Logo: h-7 sm:h-8 (28px → 32px height, responsive)
+└── Gap: gap-2 sm:gap-3 (8px → 12px on larger screens)
+└── Opacity: Increased from 50%/60% to 70%/80% for better visibility
 ```
 
----
+### Code Change
 
-## Cleanup (Optional)
+Update lines 286-293:
 
-The `src/components/Preloader.tsx` file can optionally be deleted since it will no longer be used. This is a nice-to-have cleanup step.
+```tsx
+{/* Powered by Dr. Green */}
+<div className="flex items-center justify-center gap-2 sm:gap-3">
+  <span className={`${isDark ? 'text-white/40' : 'text-foreground/50'} text-xs sm:text-sm`}>Powered by</span>
+  <img 
+    src={drGreenLogo} 
+    alt="Dr. Green" 
+    className={`h-7 sm:h-8 w-auto object-contain ${isDark ? 'opacity-70' : 'opacity-80 brightness-0'}`}
+  />
+</div>
+```
 
----
+## Summary of Changes
 
-## Expected Result
+| Property | Before | After |
+|----------|--------|-------|
+| Logo height | `h-5` (20px) | `h-7 sm:h-8` (28-32px) |
+| Text size | `text-xs` | `text-xs sm:text-sm` |
+| Gap | `gap-2` | `gap-2 sm:gap-3` |
+| Dark opacity | `opacity-50` | `opacity-70` |
+| Light opacity | `opacity-60` | `opacity-80` |
 
-After this change:
-- The site will load immediately without any loading animation
-- No artificial 2.4-3 second delay before content appears
-- Cleaner, faster user experience
+This will make the Dr. Green logo approximately 40-60% larger and more visible while maintaining responsive scaling for mobile devices.
 
