@@ -11,7 +11,6 @@ import MapCornerDecorations from '@/components/MapCornerDecorations';
 import ThemeToggle from '@/components/ThemeToggle';
 import useMapKeyboardNavigation from '@/hooks/useMapKeyboardNavigation';
 import hbLogoWhite from '@/assets/hb-logo-white-new.png';
-import hbLogoGreen from '@/assets/hb-logo-green-full.png';
 import drGreenLogo from '@/assets/drgreen-logo-white.png';
 import { countryKeyToRegionCode, RegionCode, detectRegionFromDomain } from '@/lib/domainDetection';
 
