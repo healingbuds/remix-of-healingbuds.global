@@ -302,9 +302,9 @@ export default function GlobalMapHub() {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -20, opacity: 0 }}
             transition={{ delay: 0.3, duration: 0.4 }}
-            className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 hidden md:block"
+            className="absolute left-4 md:left-6 bottom-36 md:bottom-44 z-20 hidden md:block"
           >
-            <div className={`${isDark ? 'bg-black/40' : 'bg-white/80'} backdrop-blur-xl rounded-xl border ${isDark ? 'border-white/10' : 'border-black/10'} p-3 space-y-2.5 shadow-lg`}>
+            <div className={`${isDark ? 'bg-black/40' : 'bg-white/95'} backdrop-blur-xl rounded-xl border ${isDark ? 'border-white/10' : 'border-black/15'} p-3 space-y-2.5 ${isDark ? 'shadow-lg' : 'shadow-xl shadow-black/10'}`}>
               <div className={`flex items-center gap-2 text-xs ${isDark ? 'text-white/50' : 'text-foreground/50'} uppercase tracking-wider font-medium mb-2`}>
                 <Sparkles className="w-3 h-3" />
                 Legend
