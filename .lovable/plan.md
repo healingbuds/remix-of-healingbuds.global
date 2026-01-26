@@ -1,305 +1,127 @@
 
-# Fix Map Visibility, Navigation, and Branding Issues
+# Fix Map Visibility and London Address Issues
 
 ## Summary
-This plan addresses four key issues:
-1. **Map not visible** on the GlobalMapHub page (root `/` route)
-2. **Remove globe icon** from the GlobalMapHub header
-3. **Remove standalone Franchise button** from navigation (keep it in About Us dropdown only)
-4. **Rename "Franchise Opportunities" to "Partners"** throughout the site
+Two critical issues need to be resolved:
+1. Map tiles not rendering on the GlobalMapHub page
+2. London (UK) address incorrectly showing on .global home page instead of Portugal HQ
 
 ---
 
-## Issues Analysis
+## Issue 1: Map Not Visible
 
-### Issue 1: Map Not Visible
-The GlobalMapHub page loads the map with a delay (`setTimeout(() => setMapReady(true), 100)`). The map component appears correctly structured, but the issue may be related to:
-- Leaflet CSS not loading properly in light mode
-- The welcome overlay blocking interaction
-- Theme-related visibility issues
+### Root Cause
+The Leaflet map tiles are not loading properly. Looking at the user's screenshot, the connection lines and region buttons are visible, but the map tiles themselves are blank/missing.
 
-After reviewing the code, the map tiles and container should render. The most likely cause is that the map container needs explicit height, or there's a CSS conflict. The `PremiumLeafletMap` uses `mapContainerRef` with the parent having `absolute inset-0`, which should work.
+### Diagnosis
+The map uses CARTO tile provider (`basemaps.cartocdn.com`). Possible causes:
+- Tile loading CSS transition causing initial blank state
+- Z-index layering issues
+- Tile provider connection issues
 
-### Issue 2: Globe Icon in Header
-The `GlobalMapHub.tsx` header (lines 138-145) includes a `PremiumGlobeIcon` next to the logo. This needs to be removed.
+### Solution
+1. **Update tile loading CSS** in `src/styles/leaflet-premium.css`:
+   - Remove the opacity transition that starts tiles at opacity 0
+   - Ensure tiles are visible immediately on load
 
-### Issue 3: Franchise Button in Navigation
-Currently, there's a standalone "Franchise" link in:
-- `NavigationMenu.tsx` (line 285-287) - Desktop
-- `NavigationOverlay.tsx` (lines 385-401) - Mobile
+2. **Improve map container reliability** in `src/components/PremiumLeafletMap.tsx`:
+   - Add explicit size check before initializing map
+   - Force map invalidation after render
 
-These should be removed since the previous plan was to move Franchise into the About Us dropdown.
-
-### Issue 4: Rename to "Partners"
-All references to "Franchise Opportunities" should become "Partners":
-- Page title and breadcrumbs
-- Navigation labels
-- Footer links
-- FranchiseCTA component
-- Translation files (both EN and PT)
-- Route can stay `/franchise-opportunities` or change to `/partners`
+### Files to Modify
+| File | Change |
+|------|--------|
+| `src/styles/leaflet-premium.css` | Lines 436-448 - Fix tile opacity/visibility |
+| `src/components/PremiumLeafletMap.tsx` | Add container size validation |
 
 ---
 
-## Changes Required
+## Issue 2: London Address on .global Domain
 
-### 1. Fix Map Visibility (`src/pages/GlobalMapHub.tsx`)
-Ensure the map container has proper dimensions and z-index ordering. The issue may be in the stacking context.
+### Root Cause
+The `useGeoLocation` hook in `src/hooks/useGeoLocation.ts` has this logic:
 
-**Change lines 107-115:**
-```tsx
-{/* Full-screen Premium Leaflet Map */}
-<div className="absolute inset-0 z-0" style={{ minHeight: '100vh' }}>
-  {mapReady && (
-    <PremiumLeafletMap 
-      selectedCountry={selectedCountry}
-      onCountrySelect={handleCountrySelect}
-    />
-  )}
-</div>
+1. First, it checks domain-based detection (line 161)
+2. For Lovable preview domains, it returns `null` (line 136)
+3. It then falls back to language-based detection (lines 168-174)
+4. The language mapping on line 121 sets `en: 'GB'`
+
+This means any English-speaking browser on the Lovable preview (or .global domain) defaults to UK/London.
+
+### Solution
+Update the `languageToCountry` mapping to map generic `en` to the global DEFAULT (Portugal HQ) instead of UK:
+
+```typescript
+const languageToCountry: Record<string, string> = {
+  pt: 'PT',
+  'pt-PT': 'PT',
+  'pt-BR': 'PT',
+  // Generic English → DEFAULT (Portugal Global HQ)
+  en: 'DEFAULT',  // Changed from 'GB'
+  'en-GB': 'GB',  // Specific UK English still maps to UK
+  'en-US': 'US',
+  'en-ZA': 'ZA',
+  th: 'TH',
+  'th-TH': 'TH',
+};
 ```
 
-Also verify the map container in `PremiumLeafletMap.tsx` has proper height.
+### Files to Modify
+| File | Change |
+|------|--------|
+| `src/hooks/useGeoLocation.ts` | Line 121 - Change `en: 'GB'` to `en: 'DEFAULT'` |
 
 ---
 
-### 2. Remove Globe Icon from Header (`src/pages/GlobalMapHub.tsx`)
+## Technical Details
 
-**Current (lines 138-145):**
-```tsx
-<Link to="/home" className="flex items-center gap-2 md:gap-3 group">
-  <PremiumGlobeIcon size="sm" animate />
-  <img 
-    src={isDark ? hbLogoWhite : hbLogoGreen} 
-    alt="Healing Buds" 
-    className="h-6 md:h-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
-  />
-</Link>
-```
+### CSS Fix for Tile Loading
+```css
+/* Current problematic code (lines 436-448) */
+.leaflet-tile {
+  opacity: 0;  /* <- Tiles start invisible */
+  transition: opacity 0.4s ease-out, filter 0.3s ease-out;
+}
 
-**Change to:**
-```tsx
-<Link to="/home" className="flex items-center group">
-  <img 
-    src={isDark ? hbLogoWhite : hbLogoGreen} 
-    alt="Healing Buds" 
-    className="h-6 md:h-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
-  />
-</Link>
-```
+.leaflet-tile-loaded {
+  opacity: 1;
+  animation: tile-fade-in 0.5s ease-out forwards;
+}
 
-Also remove the import for `PremiumGlobeIcon` if no longer used elsewhere.
+/* Fixed version */
+.leaflet-tile {
+  opacity: 1;  /* <- Tiles visible immediately */
+}
 
----
-
-### 3. Remove Franchise Button from Map Header (`src/pages/GlobalMapHub.tsx`)
-
-**Current (lines 161-170):**
-```tsx
-<Button 
-  size="sm"
-  className="bg-primary/90 text-primary-foreground hover:bg-primary shadow-lg shadow-primary/20"
-  asChild
->
-  <Link to="/franchise-opportunities">
-    <Building2 className="mr-1.5 w-4 h-4" />
-    <span className="hidden sm:inline">Franchise</span>
-    <span className="sm:hidden">Partner</span>
-  </Link>
-</Button>
-```
-
-**Remove this entire button block.**
-
----
-
-### 4. Remove Standalone Franchise Links from Navigation
-
-**Desktop (`src/components/NavigationMenu.tsx`):**
-
-Delete lines 285-287:
-```tsx
-<Link to="/franchise-opportunities" className={getNavItemStyles(isActive("/franchise-opportunities"))}>
-  {t('nav.franchise')}
-</Link>
-```
-
-**Mobile (`src/components/NavigationOverlay.tsx`):**
-
-Delete lines 385-401 (the franchise-opportunities Link block).
-
----
-
-### 5. Add Partners to About Us Dropdown
-
-**Desktop (`src/components/NavigationMenu.tsx`):**
-
-Update the About Us dropdown array (lines 248-251):
-```tsx
-{[
-  { to: '/about-us', label: 'aboutHealing', desc: 'aboutHealingDesc' },
-  { to: '/blockchain-technology', label: 'blockchain', desc: 'blockchainDesc' },
-  { to: '/franchise-opportunities', label: 'partners', desc: 'partnersDesc' }
-].map(...)}
-```
-
-Update active state detection (line 41):
-```tsx
-const isAboutUsActive = ['/about-us', '/blockchain-technology', '/franchise-opportunities'].includes(location.pathname);
-```
-
-**Mobile (`src/components/NavigationOverlay.tsx`):**
-
-Update the About Us dropdown array (lines 359-362):
-```tsx
-{[
-  { to: '/about-us', label: 'aboutHealing' },
-  { to: '/blockchain-technology', label: 'blockchain' },
-  { to: '/franchise-opportunities', label: 'partners' }
-].map(...)}
-```
-
-Update active state detection (line 50):
-```tsx
-const isAboutUsActive = ['/about-us', '/blockchain-technology', '/franchise-opportunities'].includes(location.pathname);
-```
-
----
-
-### 6. Update Translation Files
-
-**English (`src/i18n/locales/en/common.json`):**
-
-Add to dropdown section:
-```json
-"dropdown": {
-  ...
-  "partners": "Partners",
-  "partnersDesc": "Partner with us globally"
+.leaflet-tile-loaded {
+  opacity: 1;
 }
 ```
 
-Update nav section:
-```json
-"nav": {
-  ...
-  "franchise": "Partners"
-}
-```
+### GeoLocation Language Mapping Fix
+```typescript
+// Line 121 - Before:
+en: 'GB',
 
-Update footer section:
-```json
-"footer": {
-  ...
-  "franchiseOpportunities": "Partners"
-}
-```
-
-Update franchiseCTA section:
-```json
-"franchiseCTA": {
-  "badge": "B2B Partnership Opportunity",
-  "headline": "Join the Medical Cannabis Revolution",
-  "subheadline": "Partner with an EU GMP-certified leader to bring pharmaceutical-grade medical cannabis to your market.",
-  "feature1": "Turnkey Operations",
-  "feature2": "Global Expertise",
-  "feature3": "Regulatory Support",
-  "cta": "Become a Partner"
-}
-```
-
-**Portuguese (`src/i18n/locales/pt/common.json`):**
-
-Add to dropdown section:
-```json
-"dropdown": {
-  ...
-  "partners": "Parceiros",
-  "partnersDesc": "Parceria global connosco"
-}
-```
-
-Update nav section:
-```json
-"nav": {
-  ...
-  "franchise": "Parceiros"
-}
-```
-
-Update footer section:
-```json
-"footer": {
-  ...
-  "franchiseOpportunities": "Parceiros"
-}
-```
-
-Update franchiseCTA section:
-```json
-"franchiseCTA": {
-  "badge": "Oportunidade de Parceria B2B",
-  "headline": "Junte-se à Revolução da Cannabis Medicinal",
-  "subheadline": "Parceria com um líder certificado EU GMP para trazer cannabis medicinal de grau farmacêutico ao seu mercado.",
-  "feature1": "Operações Prontas",
-  "feature2": "Expertise Global",
-  "feature3": "Suporte Regulatório",
-  "cta": "Torne-se Parceiro"
-}
+// Line 121 - After:
+en: 'DEFAULT',
 ```
 
 ---
 
-### 7. Update FranchiseOpportunities Page (`src/pages/FranchiseOpportunities.tsx`)
-
-Update page title and headings (lines 185-189):
-```tsx
-<h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 tracking-tight leading-[1.1]">
-  Partners
-</h1>
-<p className="text-xl md:text-2xl text-muted-foreground/80 max-w-3xl font-light">
-  Join the Healing Buds network and bring regulated medical cannabis healthcare to your region.
-</p>
-```
-
-Update SEO title (lines 167-170):
-```tsx
-<SEOHead 
-  title="Partners | Healing Buds Global"
-  description="Join the Healing Buds partner network. Partner with an established EU GMP certified medical cannabis company and enter the growing healthcare market."
-/>
-```
-
----
-
-### 8. Update FranchiseCTA Component (`src/components/FranchiseCTA.tsx`)
-
-The CTA button link stays the same (`/franchise-opportunities`), but text comes from translations which will now say "Partners".
-
----
-
-## Files Modified
-
-| File | Changes |
-|------|---------|
-| `src/pages/GlobalMapHub.tsx` | Remove globe icon, remove franchise button, fix map z-index |
-| `src/components/NavigationMenu.tsx` | Remove standalone franchise link, add to About dropdown, update active states |
-| `src/components/NavigationOverlay.tsx` | Remove standalone franchise link, add to About dropdown, update active states |
-| `src/i18n/locales/en/common.json` | Add partners translations, update franchise → partners |
-| `src/i18n/locales/pt/common.json` | Add Portuguese partners translations |
-| `src/pages/FranchiseOpportunities.tsx` | Update page title and SEO to "Partners" |
-
----
-
-## Result
+## Expected Result
 
 After these changes:
-- The map will be visible with proper z-index ordering
-- No globe icon next to the logo in the GlobalMapHub header
-- No Franchise button in the GlobalMapHub header actions
-- "Partners" replaces "Franchise Opportunities" in:
-  - Navigation dropdown (under About Us)
-  - Footer
-  - FranchiseCTA component
-  - Page title and SEO
-- Route stays `/franchise-opportunities` for backward compatibility (can be changed to `/partners` if preferred)
+1. **Map tiles will load immediately** without the opacity transition causing blank states
+2. **Global/preview domains** will show Portugal HQ address (Avenida D. Joao II, Lisboa)
+3. **UK-specific English** (en-GB) still correctly shows London address
+4. **Other regional domains** (.co.za, .co.uk, .co.th) continue working as before
+
+---
+
+## Files Summary
+
+| File | Lines | Change Description |
+|------|-------|-------------------|
+| `src/styles/leaflet-premium.css` | 436-448 | Remove opacity transition on tiles |
+| `src/hooks/useGeoLocation.ts` | 121 | Change `en: 'GB'` to `en: 'DEFAULT'` |
