@@ -121,7 +121,7 @@ const Header = ({ onMenuStateChange }: HeaderProps) => {
               className="flex items-center flex-shrink-0 group justify-self-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-lg"
             >
               <img 
-                src={isDark ? hbLogoWhite : hbLogoGreen} 
+                src={hbLogoWhite} 
                 alt="Healing Buds Logo" 
                 className={cn(
                   "w-auto min-w-[140px] sm:min-w-[160px] md:min-w-[180px] object-contain transition-all duration-500 ease-out group-hover:scale-105",
