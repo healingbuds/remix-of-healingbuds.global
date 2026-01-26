@@ -320,15 +320,18 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       polylinesRef.current = [];
     }
 
-    // Theme-aware map tiles
+    // Theme-aware map tiles - use non-retina URLs to avoid loading issues
+    // CARTO CDN URLs: dark_all for dark mode, rastertiles/voyager for light
     const tileUrl = isDark 
-      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-      : 'https://{s}.basemaps.cartocdn.com/voyager/{z}/{x}/{y}{r}.png';
+      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+      : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png';
     
     const tiles = L.tileLayer(tileUrl, {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
       subdomains: 'abcd',
       maxZoom: 19,
+      crossOrigin: 'anonymous',
+      errorTileUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
     });
 
     // World bounds to prevent infinite panning
