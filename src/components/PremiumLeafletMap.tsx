@@ -306,6 +306,11 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
   // Initialize map
   useEffect(() => {
     if (!mapContainerRef.current) return;
+
+    // Reset animation + ready flags so downstream effects re-run on theme / layout changes
+    setMapReady(false);
+    setMarkersAnimated(false);
+    setPathsAnimated(false);
     
     // Cleanup existing map if any
     if (mapRef.current) {
@@ -501,12 +506,19 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
     });
   }, [selectedCountry, isMobile, mapConfig.flyToZoom]);
 
-  // Force map invalidation on mount to ensure tiles render
+  // Force map invalidation on mount/theme change to ensure tiles render (Leaflet can miss first paint
+  // when the container is transitioning or when we recreate the map on theme toggle)
   useEffect(() => {
     if (mapRef.current && mapReady) {
-      setTimeout(() => {
-        mapRef.current?.invalidateSize();
-      }, 500);
+      const t1 = window.setTimeout(() => mapRef.current?.invalidateSize(), 100);
+      const t2 = window.setTimeout(() => mapRef.current?.invalidateSize(), 400);
+      const t3 = window.setTimeout(() => mapRef.current?.invalidateSize(), 900);
+
+      return () => {
+        window.clearTimeout(t1);
+        window.clearTimeout(t2);
+        window.clearTimeout(t3);
+      };
     }
   }, [mapReady]);
 

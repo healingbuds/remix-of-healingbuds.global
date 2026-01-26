@@ -471,7 +471,13 @@
   visibility: visible !important;
 }
 
-/* Ensure tiles have proper z-index */
-.leaflet-layer {
-  z-index: 1;
+/* Safety: ensure tile/layer panes are never hidden by global transitions */
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-map-pane,
+.leaflet-layer,
+.leaflet-tile,
+.leaflet-tile-container {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
