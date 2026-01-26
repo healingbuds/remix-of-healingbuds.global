@@ -2,7 +2,24 @@
  * Mobile Enhancements
  * Premium mobile-first interactions, animations, and touch optimizations
  * Designed for "wow factor" on iPhone and Android devices
+ * App-like experience with native feel
  */
+
+/* ===== APP-LIKE CONTAINER ===== */
+
+/* Full-bleed app container */
+.app-container {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
+  overscroll-behavior-y: contain; /* Prevent pull-to-refresh browser default */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* App main content area */
+.app-main {
+  position: relative;
+  isolation: isolate;
+}
 
 /* ===== MOBILE VIEWPORT SAFEGUARDS ===== */
 
@@ -10,6 +27,7 @@
 html, body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: none;
 }
 
 /* Safe area insets for notched devices */
@@ -20,6 +38,10 @@ html, body {
   
   .safe-area-top {
     padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-all {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
 }
 
@@ -422,4 +444,198 @@ img {
 
 .contain-layout {
   contain: layout;
+}
+
+/* ===== APP-LIKE ENHANCEMENTS ===== */
+
+/* Elastic overscroll feel */
+@media (max-width: 768px) {
+  html {
+    overscroll-behavior: none;
+  }
+  
+  body {
+    overscroll-behavior-y: contain;
+  }
+}
+
+/* App-like section spacing */
+@media (max-width: 640px) {
+  section {
+    scroll-margin-top: 80px;
+  }
+}
+
+/* Bottom navigation safe area */
+.bottom-nav {
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+/* Sticky elements with safe area */
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+/* ===== NATIVE-LIKE TRANSITIONS ===== */
+
+/* Page enter/exit animations */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageExit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.page-enter {
+  animation: pageEnter 0.3s var(--ease-out-expo) forwards;
+}
+
+.page-exit {
+  animation: pageExit 0.2s var(--ease-out-expo) forwards;
+}
+
+/* ===== HAPTIC-LIKE FEEDBACK ===== */
+
+@media (max-width: 768px) {
+  /* Subtle scale on tap for interactive elements */
+  .haptic-tap {
+    transition: transform 0.1s ease-out;
+  }
+  
+  .haptic-tap:active {
+    transform: scale(0.97);
+  }
+  
+  /* Springy bounce effect */
+  .haptic-bounce:active {
+    animation: hapticBounce 0.3s ease-out;
+  }
+}
+
+@keyframes hapticBounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(0.95); }
+  60% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* ===== SWIPE GESTURE HINTS ===== */
+
+/* Horizontal swipe indicator */
+.swipe-hint {
+  position: relative;
+  overflow: hidden;
+}
+
+.swipe-hint::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  background: linear-gradient(to left, hsl(var(--background)), transparent);
+  pointer-events: none;
+}
+
+/* ===== MOMENTUM SCROLL AREAS ===== */
+
+.momentum-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+/* Horizontal scroll with momentum */
+.momentum-scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 1rem;
+}
+
+.momentum-scroll-x > * {
+  scroll-snap-align: start;
+}
+
+/* ===== LOADING STATES ===== */
+
+/* Pull-to-refresh loading indicator */
+.refresh-indicator {
+  position: fixed;
+  top: env(safe-area-inset-top, 0);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
+/* ===== FOCUS STATES FOR ACCESSIBILITY ===== */
+
+@media (max-width: 768px) {
+  /* Larger focus rings on mobile */
+  :focus-visible {
+    outline: 3px solid hsl(var(--primary) / 0.5);
+    outline-offset: 3px;
+  }
+  
+  /* Remove focus ring on tap (but keep for keyboard) */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+/* ===== SECTION TRANSITIONS ===== */
+
+/* Smooth reveal as sections come into view */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
+}
+
+.section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== FLOATING ACTION BUTTON ===== */
+
+@media (max-width: 768px) {
+  .fab {
+    position: fixed;
+    bottom: max(20px, env(safe-area-inset-bottom, 20px));
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+  
+  .fab:active {
+    transform: scale(0.92);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
 }
