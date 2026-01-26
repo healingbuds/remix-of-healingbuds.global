@@ -136,7 +136,7 @@ export default function GlobalMapHub() {
               <img 
                 src={hbLogoWhite} 
                 alt="Healing Buds" 
-                className="h-6 md:h-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                className="h-12 sm:h-14 md:h-16 w-auto min-w-[140px] sm:min-w-[160px] object-contain opacity-90 group-hover:opacity-100 transition-opacity"
               />
             </Link>
             
