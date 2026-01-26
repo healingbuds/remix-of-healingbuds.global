@@ -118,7 +118,7 @@ const languageToCountry: Record<string, string> = {
   pt: 'PT',
   'pt-PT': 'PT',
   'pt-BR': 'PT',
-  en: 'GB',
+  en: 'DEFAULT',
   'en-GB': 'GB',
   'en-US': 'US',
   'en-ZA': 'ZA',
