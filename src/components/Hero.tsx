@@ -23,11 +23,12 @@ const Hero = () => {
   // Smoother spring-based parallax
   const smoothProgress = useSpring(scrollYProgress, { damping: 30, stiffness: 100 });
   
-  const videoY = useTransform(smoothProgress, [0, 1], ["0%", "25%"]);
-  const videoScale = useTransform(smoothProgress, [0, 1], [1, 1.1]);
-  const contentY = useTransform(smoothProgress, [0, 1], ["0%", "40%"]);
-  const logoY = useTransform(smoothProgress, [0, 1], ["0%", "15%"]);
-  const logoScale = useTransform(smoothProgress, [0, 0.5], [1, 1.15]);
+  // Reduced parallax for mobile to prevent overflow
+  const videoY = useTransform(smoothProgress, [0, 1], ["0%", "15%"]);
+  const videoScale = useTransform(smoothProgress, [0, 1], [1, 1.02]);
+  const contentY = useTransform(smoothProgress, [0, 1], ["0%", "25%"]);
+  const logoY = useTransform(smoothProgress, [0, 1], ["0%", "10%"]);
+  const logoScale = useTransform(smoothProgress, [0, 0.5], [1, 1.05]);
   const opacity = useTransform(smoothProgress, [0, 0.6], [1, 0]);
   const blur = useTransform(smoothProgress, [0, 0.5], [0, 8]);
 
@@ -71,17 +72,17 @@ const Hero = () => {
         {/* Premium particle overlay */}
         <ParticleField particleCount={50} className="z-10" />
         
-        {/* Static image fallback with Ken Burns effect */}
+        {/* Static image fallback with Ken Burns effect - reduced scale for mobile */}
         <motion.img
           src={heroVideoBg}
           alt=""
-          initial={{ opacity: 0, scale: 1.15 }}
+          initial={{ opacity: 0, scale: 1.02 }}
           animate={{ 
             opacity: videoEnded ? 1 : 0, 
-            scale: videoEnded ? 1.05 : 1.15 
+            scale: videoEnded ? 1 : 1.02 
           }}
           transition={{ duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover will-change-transform"
         />
         
         {/* Video with smooth fade */}

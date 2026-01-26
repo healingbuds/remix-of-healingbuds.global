@@ -1,0 +1,425 @@
+/**
+ * Mobile Enhancements
+ * Premium mobile-first interactions, animations, and touch optimizations
+ * Designed for "wow factor" on iPhone and Android devices
+ */
+
+/* ===== MOBILE VIEWPORT SAFEGUARDS ===== */
+
+/* Prevent horizontal scroll caused by scaled elements */
+html, body {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* ===== TOUCH INTERACTION ENHANCEMENTS ===== */
+
+/* Haptic-like tap feedback for interactive elements */
+@media (hover: none) and (pointer: coarse) {
+  /* Active state for touch devices */
+  .touch-feedback {
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+  }
+  
+  .touch-feedback:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+  
+  /* Disable hover effects on touch - prevents sticky hover states */
+  .hover-scale:hover {
+    transform: none;
+  }
+  
+  /* Replace with active states */
+  .hover-scale:active {
+    transform: scale(0.98);
+  }
+  
+  /* Cards with press effect */
+  .card-press:active {
+    transform: scale(0.985);
+    box-shadow: var(--shadow-md);
+  }
+  
+  /* Button press effect */
+  button:active,
+  [role="button"]:active,
+  a:active {
+    transform: scale(0.98);
+  }
+  
+  /* Prevent double-tap zoom on buttons */
+  button,
+  [role="button"],
+  a {
+    touch-action: manipulation;
+  }
+}
+
+/* ===== MINIMUM TOUCH TARGETS ===== */
+
+/* Ensure 48px minimum touch targets per WCAG */
+@media (max-width: 768px) {
+  button,
+  [role="button"],
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  /* Links in nav need larger hit areas */
+  nav a,
+  .nav-link {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Form inputs */
+  input,
+  select,
+  textarea {
+    min-height: 48px;
+    font-size: 16px; /* Prevent iOS zoom */
+  }
+}
+
+/* ===== MOBILE-FIRST ANIMATIONS ===== */
+
+/* Reduced motion for those who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimized animations for mobile */
+@media (max-width: 768px) {
+  /* Faster, snappier animations for mobile feel */
+  .animate-fade-in {
+    animation-duration: 0.25s;
+  }
+  
+  .animate-slide-up {
+    animation-duration: 0.3s;
+  }
+  
+  /* Subtle entrance animations */
+  .mobile-fade-up {
+    animation: mobileFadeUp 0.4s var(--ease-out-expo) forwards;
+    opacity: 0;
+  }
+  
+  .mobile-slide-in-left {
+    animation: mobileSlideLeft 0.35s var(--ease-out-expo) forwards;
+  }
+  
+  .mobile-slide-in-right {
+    animation: mobileSlideRight 0.35s var(--ease-out-expo) forwards;
+  }
+}
+
+@keyframes mobileFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mobileSlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes mobileSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== MOBILE SCROLL ENHANCEMENTS ===== */
+
+/* Smooth momentum scrolling */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Horizontal scroll with snap */
+.scroll-snap-x {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-snap-item {
+  scroll-snap-align: start;
+}
+
+/* Hide scrollbars on mobile for cleaner look */
+@media (max-width: 768px) {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ===== MOBILE IMAGE OPTIMIZATIONS ===== */
+
+/* Prevent image overflow from transforms */
+.image-contain {
+  max-width: 100%;
+  height: auto;
+  transform-origin: center center;
+}
+
+/* Ensure images don't cause horizontal scroll */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Parallax images - limit transform on mobile */
+@media (max-width: 768px) {
+  .parallax-image {
+    transform: none !important;
+  }
+  
+  /* Disable scale effects that cause overflow */
+  .scale-110 {
+    transform: scale(1.02);
+  }
+  
+  .group-hover\:scale-105:hover {
+    transform: scale(1.01);
+  }
+  
+  /* Ken Burns effect reduced */
+  .ken-burns {
+    transform: scale(1.02) !important;
+  }
+}
+
+/* ===== MOBILE TYPOGRAPHY ===== */
+
+@media (max-width: 640px) {
+  /* Improved line heights for mobile reading */
+  p, li {
+    line-height: 1.7;
+  }
+  
+  /* Slightly larger base font for readability */
+  body {
+    font-size: 16px;
+  }
+  
+  /* Headings scale down smoothly */
+  h1 {
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  
+  h2 {
+    font-size: clamp(1.5rem, 6vw, 2.25rem);
+    line-height: 1.2;
+  }
+  
+  h3 {
+    font-size: clamp(1.25rem, 5vw, 1.5rem);
+    line-height: 1.3;
+  }
+}
+
+/* ===== MOBILE CARD INTERACTIONS ===== */
+
+/* Subtle lift on touch */
+@media (hover: none) and (pointer: coarse) {
+  .card {
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+  }
+  
+  .card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* ===== MOBILE-SPECIFIC POLISH ===== */
+
+/* Rubber-band overscroll color */
+@media (max-width: 768px) {
+  html {
+    background-color: hsl(var(--background));
+  }
+  
+  /* Smoother border radius on mobile */
+  .rounded-2xl {
+    border-radius: 1rem;
+  }
+  
+  .rounded-3xl {
+    border-radius: 1.25rem;
+  }
+}
+
+/* ===== MOBILE BUTTON ENHANCEMENTS ===== */
+
+@media (max-width: 768px) {
+  /* Full-width buttons on mobile for easier tapping */
+  .btn-mobile-full {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Larger CTA buttons */
+  .btn-cta {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    min-height: 56px;
+  }
+  
+  /* Pill buttons with active state */
+  .btn-pill {
+    border-radius: 9999px;
+    padding: 0.875rem 1.5rem;
+  }
+  
+  .btn-pill:active {
+    transform: scale(0.97);
+  }
+}
+
+/* ===== FLOATING ELEMENTS ===== */
+
+/* Back to top button mobile positioning */
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 24px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* ===== FORM MOBILE OPTIMIZATIONS ===== */
+
+@media (max-width: 768px) {
+  /* Prevent zoom on input focus in iOS */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+  
+  /* Better touch targets for checkboxes/radios */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Labels need touch targets too */
+  label {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+}
+
+/* ===== MOBILE LOADING STATES ===== */
+
+/* Skeleton pulse animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 0%,
+    hsl(var(--muted-foreground) / 0.1) 50%,
+    hsl(var(--muted)) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+/* ===== MOBILE-FIRST GRID FIXES ===== */
+
+@media (max-width: 640px) {
+  /* Stack grids properly */
+  .grid {
+    gap: 1rem;
+  }
+  
+  /* Full-bleed sections on mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* ===== PERFORMANCE HINTS ===== */
+
+/* GPU acceleration hints for smooth animations */
+.will-animate {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduce paint areas */
+.contain-paint {
+  contain: paint;
+}
+
+.contain-layout {
+  contain: layout;
+}

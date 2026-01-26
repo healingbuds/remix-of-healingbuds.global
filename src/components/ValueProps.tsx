@@ -158,30 +158,32 @@ const ValueProps = () => {
             </h2>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-12 sm:gap-14 md:gap-16 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 md:gap-14 lg:gap-16 max-w-5xl mx-auto">
             {values.map((value, index) => {
               const IconComponent = value.icon;
               return (
                 <motion.div 
                   key={index} 
-                  className="text-center group"
+                  className="text-center group touch-feedback px-4 py-6 sm:p-0"
                   variants={cardVariants}
-                  whileHover={{ y: -4, transition: { duration: 0.3 } }}
+                  whileHover={{ y: -4, transition: { duration: 0.25 } }}
+                  whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
                 >
                   {/* Icon - clean line style without background */}
                   <motion.div 
-                    className="flex justify-center mb-6"
+                    className="flex justify-center mb-5 sm:mb-6"
                     whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
                   >
                     <IconComponent />
                   </motion.div>
                   
-                  <h3 className="font-jakarta text-lg sm:text-xl font-semibold text-white mb-4 tracking-tight">
+                  <h3 className="font-jakarta text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4 tracking-tight">
                     {value.title}
                   </h3>
                   
-                  <p className="font-jakarta text-white/70 leading-relaxed text-sm sm:text-[15px]">
+                  <p className="font-jakarta text-white/70 leading-relaxed text-sm sm:text-[15px] max-w-xs mx-auto">
                     {value.description}
                   </p>
                 </motion.div>
