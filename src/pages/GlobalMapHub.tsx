@@ -246,55 +246,54 @@ export default function GlobalMapHub() {
         <div className="h-24 md:h-32" style={{ background: bottomGradient }} />
         
         <div className="px-2 pb-3 md:px-6 md:pb-6 pointer-events-auto" style={{ backgroundColor: bgColor }}>
-          {/* Region Pills - Horizontal scroll on mobile, centered on desktop */}
-          <div className="overflow-x-auto scrollbar-hide -mx-2 px-2 md:mx-0 md:px-0">
-            <div className="flex items-center justify-start md:justify-center gap-1.5 sm:gap-2 md:gap-3 min-w-max md:min-w-0 pb-2 md:pb-0 mb-3 md:mb-4">
-              {Object.entries(countryDisplayInfo).map(([key, info]) => {
-                const isSelected = selectedCountry === key;
-                const status = statusConfig[info.status];
-                
-                return (
-                  <motion.button
-                    key={key}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => handleCountrySelect(key)}
-                    className={`
-                      relative px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-300
-                      flex items-center gap-1.5 sm:gap-2 flex-shrink-0
-                      ${isSelected 
-                        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-primary/50' 
-                        : isDark 
-                          ? 'bg-white/[0.08] text-white/80 hover:bg-white/[0.12] hover:text-white border border-white/10'
-                          : 'bg-black/[0.06] text-foreground/80 hover:bg-black/[0.10] hover:text-foreground border border-black/10'
-                      }
-                    `}
-                  >
-                    <span className="text-sm sm:text-base">{info.flag}</span>
-                    {/* Show abbreviated name on mobile, full on larger screens */}
-                    <span className="hidden sm:inline">{info.name}</span>
-                    <span className="sm:hidden text-[11px]">
-                      {key === 'southAfrica' ? 'SA' : 
-                       key === 'portugal' ? 'PT' : 
-                       key === 'thailand' ? 'TH' : 
-                       key === 'uk' ? 'UK' : info.name.split(' ')[0]}
+          {/* Region Pills - 2x2 Grid on mobile, centered flex on larger screens */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-items-center sm:justify-center gap-2 md:gap-3 mb-3 md:mb-4">
+            {Object.entries(countryDisplayInfo).map(([key, info]) => {
+              const isSelected = selectedCountry === key;
+              const status = statusConfig[info.status];
+              
+              return (
+                <motion.button
+                  key={key}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => handleCountrySelect(key)}
+                  className={`
+                    relative w-full sm:w-auto px-3 py-2.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5 
+                    rounded-xl text-xs sm:text-sm font-medium transition-all duration-300
+                    flex items-center justify-center gap-1.5 sm:gap-2
+                    ${isSelected 
+                      ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-primary/50' 
+                      : isDark 
+                        ? 'bg-white/[0.08] text-white/80 hover:bg-white/[0.12] hover:text-white border border-white/10'
+                        : 'bg-black/[0.06] text-foreground/80 hover:bg-black/[0.10] hover:text-foreground border border-black/10'
+                    }
+                  `}
+                >
+                  <span className="text-sm sm:text-base">{info.flag}</span>
+                  {/* Show full name on all screens for better readability */}
+                  <span className="hidden sm:inline">{info.name}</span>
+                  <span className="sm:hidden text-[11px] font-medium">
+                    {key === 'southAfrica' ? 'South Africa' : 
+                     key === 'portugal' ? 'Portugal' : 
+                     key === 'thailand' ? 'Thailand' : 
+                     key === 'uk' ? 'UK' : info.name}
+                  </span>
+                  
+                  {info.status === 'LIVE' && (
+                    <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2 relative">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-emerald-500" />
                     </span>
-                    
-                    {info.status === 'LIVE' && (
-                      <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2">
-                        <span className="animate-ping absolute inline-flex h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-emerald-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-emerald-500" />
-                      </span>
-                    )}
-                    {info.status !== 'LIVE' && (
-                      <span className={`hidden sm:inline text-[10px] uppercase tracking-wider ${status.textColor} opacity-80`}>
-                        {status.label}
-                      </span>
-                    )}
-                  </motion.button>
-                );
-              })}
-            </div>
+                  )}
+                  {info.status !== 'LIVE' && (
+                    <span className={`hidden sm:inline text-[10px] uppercase tracking-wider ${status.textColor} opacity-80`}>
+                      {status.label}
+                    </span>
+                  )}
+                </motion.button>
+              );
+            })}
           </div>
           
           {/* Powered by Dr. Green */}
