@@ -1,229 +1,162 @@
 
 
-# Visual Enhancement: "Our Impact in Numbers" Section
+# AI-Generated High-Quality Images for Statistics Section
 
 ## Overview
 
-Transform the current statistics section from abstract number cards into a **visually-rich, story-driven experience** with photography, progress visualizations, and cinematic layout.
+Generate 4 unique, high-quality 4K realistic images using AI image generation (Nano Banana Pro model) specifically designed for each statistic card. Each image will be crafted using marketing psychology principles relevant to a medical cannabis healthcare company.
 
 ---
 
-## Design Approach: "Cinematic Bento Grid with Photography"
+## Image Strategy & Marketing Psychology
 
-Combine the Bento Grid layout with **embedded photography** from the existing asset library to create visual context for each metric.
+| Card | Current Image | New Image Concept | Psychology Principle |
+|------|---------------|-------------------|---------------------|
+| **Hero (Cultivation)** | Reused cultivation photo | Aerial view of massive greenhouse facility at golden hour | **Scale & Authority** - Bird's eye shows vastness, golden light = premium quality |
+| **Research Partners** | Reused lab photo | Scientists in lab coats collaborating over cannabis samples | **Social Proof & Expertise** - Shows human collaboration, trust through expertise |
+| **Countries (Global)** | No image (SVG only) | World map with glowing connection lines and cannabis leaf motif | **Global Reach** - Network visualization builds confidence in distribution |
+| **Trust Banner (EU GMP)** | Reused docs photo | Clean pharmaceutical production line with quality control | **Clinical Trust** - Sterile, precise environment = reliability and safety |
 
 ---
 
-## Visual Layout
+## Image Specifications
 
-```text
-DESKTOP (Bento with Photography):
-┌────────────────────────────────────────────────────────────────────────┐
-│                                                                         │
-│  ┌───────────────────────────────────────┐  ┌───────────────────────┐  │
-│  │  ╔═══════════════════════════════╗    │  │  🔬 50+ Partners      │  │
-│  │  ║  [cultivation-facility.jpg]   ║    │  │  [research-lab.jpg]   │  │
-│  │  ║   with dark overlay           ║    │  │  as subtle bg         │  │
-│  │  ╚═══════════════════════════════╝    │  ├───────────────────────┤  │
-│  │         🌿 18,000 m²                  │  │  🌍 15+ Countries     │  │
-│  │     Cultivation Space                 │  │  [world map visual]   │  │
-│  │   ▓▓▓▓▓▓▓▓▓▓▓░░░░░ 60k kg/yr         │  │                       │  │
-│  └───────────────────────────────────────┘  └───────────────────────┘  │
-│                                                                         │
-│  ┌──────────────────────────────────────────────────────────────────┐  │
-│  │  ✅ 100% EU GMP Certified                                         │  │
-│  │  [certification badges + animated checkmark + facility image]     │  │
-│  └──────────────────────────────────────────────────────────────────┘  │
-│                                                                         │
-└────────────────────────────────────────────────────────────────────────┘
+### 1. Hero Card: "Vast Cultivation Facility"
 
-MOBILE (Stacked with Photos):
-┌─────────────────────────────┐
-│  [cultivation-facility.jpg] │
-│        18,000 m²            │
-│    Cultivation Space        │
-│    ▓▓▓▓▓▓▓░░░ Progress      │
-└─────────────────────────────┘
-┌────────────┐ ┌──────────────┐
-│ 🔬 50+     │ │ 🌍 15+       │
-│ Partners   │ │ Countries    │
-│ [lab.jpg]  │ │ [map icon]   │
-└────────────┘ └──────────────┘
-┌─────────────────────────────┐
-│  ✅ 100% EU GMP Certified   │
-│  [badges visual]            │
-└─────────────────────────────┘
+**Prompt:**
+```
+Photorealistic 4K aerial drone view of a massive modern cannabis greenhouse facility 
+at golden hour sunset, 18000 square meters of pristine glass cultivation space, 
+lush green cannabis plants in perfect rows, professional agricultural infrastructure, 
+EU-standard pharmaceutical quality, warm golden sunlight streaming through, 
+professional architectural photography style, sharp detail, no people, 
+cinematic lighting, shallow depth of field on foreground plants
 ```
 
----
-
-## Asset Mapping
-
-| Statistic | Background Image | Visual Element |
-|-----------|------------------|----------------|
-| Cultivation Space (Hero) | `cultivation-facility-bright.jpg` | Circular progress gauge |
-| Research Partners | `research-lab-hq.jpg` | Partner logo silhouettes |
-| Countries Served | None (use animated dots) | Stylized world map with pulse points |
-| EU GMP Certified | `facility-safety-docs.jpg` | Animated checkmark + certificate badge |
+**Psychology:**
+- **Authority**: Aerial perspective conveys scale and dominance
+- **Premium Quality**: Golden hour lighting = luxury and value
+- **Trust**: Organized, symmetrical rows = precision and reliability
+- **Aspiration**: Beautiful facility = pride in operations
 
 ---
 
-## Implementation Details
+### 2. Research Card: "Collaborative Scientists"
 
-### 1. Hero Stat Card with Photography
+**Prompt:**
+```
+Photorealistic 4K image of two diverse scientists in white lab coats 
+examining cannabis samples under professional laboratory equipment, 
+modern pharmaceutical research lab setting, soft clinical lighting, 
+scientific instruments and microscopes visible, focused professional expressions, 
+one scientist holding a petri dish with cannabis extract, clean white 
+and teal color palette, shallow depth of field, professional medical photography, 
+trust-building healthcare imagery
+```
 
-The "Cultivation Space" card gets a cinematic treatment:
+**Psychology:**
+- **Social Proof**: Multiple experts validates credibility
+- **Expertise**: Lab coats and equipment = professional competence
+- **Diversity**: Inclusive representation broadens appeal
+- **Engagement**: Human faces create emotional connection
+
+---
+
+### 3. Countries Card: "Global Network"
+
+**Prompt:**
+```
+Photorealistic 4K stylized world map visualization with glowing emerald 
+connection lines between major cities (London, Lisbon, Bangkok, Johannesburg), 
+subtle cannabis leaf watermark overlay, dark teal background, 
+premium infographic design, soft ambient lighting on connection points, 
+professional data visualization aesthetic, pharmaceutical brand quality, 
+network nodes pulsing with soft green light
+```
+
+**Psychology:**
+- **Reach**: Visual connections prove global capability
+- **Movement**: Glowing lines suggest active distribution
+- **Modern**: Data visualization aesthetic = innovation
+- **Confidence**: Many connection points = established network
+
+---
+
+### 4. Trust Banner: "EU GMP Production Line"
+
+**Prompt:**
+```
+Photorealistic 4K pharmaceutical production facility interior, 
+sterile clean room with cannabis oil extraction equipment, 
+workers in full protective gear and hairnets, stainless steel machinery, 
+EU GMP certification visible on wall, clinical white and soft teal lighting, 
+quality control tablets and digital displays showing compliance data, 
+professional industrial photography, shallow depth of field, 
+trust and precision aesthetic
+```
+
+**Psychology:**
+- **Clinical Trust**: Sterile environment = safety and quality
+- **Transparency**: Visible certification = accountability
+- **Professionalism**: Protective gear = pharmaceutical-grade operations
+- **Technology**: Modern equipment = cutting-edge processes
+
+---
+
+## Implementation Plan
+
+### Step 1: Generate Images via Edge Function
+
+Create an edge function that uses the Nano Banana Pro model (`google/gemini-3-pro-image-preview`) for highest quality output:
+
+```typescript
+// supabase/functions/generate-stats-images/index.ts
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+
+const prompts = {
+  cultivation: "Photorealistic 4K aerial drone view...",
+  research: "Photorealistic 4K image of two diverse scientists...",
+  global: "Photorealistic 4K stylized world map...",
+  trust: "Photorealistic 4K pharmaceutical production facility..."
+};
+
+serve(async (req) => {
+  const { imageType } = await req.json();
+  
+  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${Deno.env.get("LOVABLE_API_KEY")}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "google/gemini-3-pro-image-preview",
+      messages: [{ role: "user", content: prompts[imageType] }],
+      modalities: ["image", "text"]
+    })
+  });
+  
+  const data = await response.json();
+  const imageBase64 = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+  
+  // Upload to Supabase Storage
+  // Return public URL
+});
+```
+
+### Step 2: Create Storage Bucket
+
+Create a `statistics-images` bucket in Supabase Storage for the generated images.
+
+### Step 3: Update Component
 
 ```tsx
-{/* Hero Card - Full background image */}
-<div className="relative md:col-span-2 md:row-span-2 rounded-3xl overflow-hidden">
-  {/* Background Image with gradient overlay */}
-  <div className="absolute inset-0">
-    <img 
-      src={cultivationImage}
-      alt=""
-      className="w-full h-full object-cover"
-    />
-    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
-  </div>
-  
-  {/* Content */}
-  <div className="relative z-10 p-8 md:p-12 flex flex-col justify-end h-full min-h-[320px] md:min-h-[400px]">
-    <div className="mb-4">
-      <span className="text-7xl md:text-8xl font-bold text-white">18,000</span>
-      <span className="text-4xl font-bold text-primary">m²</span>
-    </div>
-    <p className="text-white/90 text-xl mb-6">Cultivation Space</p>
-    
-    {/* Progress Visualization */}
-    <div className="mt-auto">
-      <div className="flex justify-between text-sm text-white/60 mb-2">
-        <span>Annual Production</span>
-        <span>60,000 kg/year</span>
-      </div>
-      <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-        <motion.div 
-          className="h-full bg-gradient-to-r from-primary to-emerald-400"
-          initial={{ width: 0 }}
-          animate={{ width: '75%' }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-        />
-      </div>
-    </div>
-  </div>
-</div>
+// Updated imports
+import cultivationImage from "@/assets/generated/stats-cultivation.jpg";
+import researchImage from "@/assets/generated/stats-research.jpg";
+import globalImage from "@/assets/generated/stats-global.jpg";
+import trustImage from "@/assets/generated/stats-trust.jpg";
 ```
-
-### 2. Secondary Cards with Subtle Photo Backgrounds
-
-```tsx
-{/* Research Partners Card */}
-<div className="relative rounded-2xl overflow-hidden">
-  <div className="absolute inset-0">
-    <img src={researchLabImage} className="w-full h-full object-cover opacity-30" />
-    <div className="absolute inset-0 bg-gradient-to-br from-[#1C4F4D]/95 to-[#0D3D3A]/98" />
-  </div>
-  
-  <div className="relative z-10 p-6">
-    <Users className="w-8 h-8 text-primary mb-4" />
-    <span className="text-4xl font-bold text-white">50+</span>
-    <p className="text-white/70">Research Partners</p>
-    <p className="text-sm text-white/50 mt-2">Imperial College, UPenn & more</p>
-  </div>
-</div>
-```
-
-### 3. Countries Card with Animated Map
-
-```tsx
-{/* Countries Card - Interactive Map Dots */}
-<div className="relative rounded-2xl bg-gradient-to-br from-white/[0.05] to-white/[0.02] p-6">
-  {/* Simplified World Map SVG with pulsing dots */}
-  <div className="absolute right-4 top-4 w-24 h-16 opacity-40">
-    <svg viewBox="0 0 100 60" className="w-full h-full">
-      {/* Simplified continent shapes */}
-      <path d="M20,25 Q30,20 40,25..." fill="currentColor" className="text-white/30" />
-      
-      {/* Pulsing location dots */}
-      {['UK', 'Portugal', 'Thailand', 'SA'].map((_, i) => (
-        <circle 
-          cx={[45, 35, 75, 50][i]} 
-          cy={[22, 30, 35, 45][i]} 
-          r="2" 
-          fill="#4DBFA1"
-          className="animate-pulse"
-        />
-      ))}
-    </svg>
-  </div>
-  
-  <Globe className="w-8 h-8 text-primary mb-4" />
-  <span className="text-4xl font-bold text-white">15+</span>
-  <p className="text-white/70">Countries Served</p>
-</div>
-```
-
-### 4. Trust Banner with Certification Visual
-
-```tsx
-{/* EU GMP Banner - Full Width */}
-<div className="md:col-span-3 relative rounded-2xl overflow-hidden">
-  <div className="absolute inset-0">
-    <img src={facilityDocsImage} className="w-full h-full object-cover opacity-20" />
-    <div className="absolute inset-0 bg-gradient-to-r from-[#1C4F4D]/95 via-[#0D3D3A]/90 to-[#1C4F4D]/95" />
-  </div>
-  
-  <div className="relative z-10 p-6 md:p-8 flex items-center justify-between flex-wrap gap-6">
-    <div className="flex items-center gap-4">
-      <motion.div 
-        className="w-14 h-14 rounded-full bg-emerald-500/20 flex items-center justify-center"
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <Award className="w-7 h-7 text-emerald-400" />
-      </motion.div>
-      <div>
-        <span className="text-3xl font-bold text-white">100%</span>
-        <p className="text-white/80">EU GMP Certified</p>
-      </div>
-    </div>
-    
-    {/* Trust Badges */}
-    <div className="flex items-center gap-3 text-white/50 text-sm">
-      <span className="flex items-center gap-1.5">
-        <CheckCircle className="w-4 h-4 text-emerald-400" />
-        Seed-to-Sale Traceability
-      </span>
-      <span className="hidden md:inline">•</span>
-      <span className="flex items-center gap-1.5">
-        <CheckCircle className="w-4 h-4 text-emerald-400" />
-        Blockchain Verified
-      </span>
-    </div>
-  </div>
-</div>
-```
-
----
-
-## Animations
-
-| Element | Animation | Trigger |
-|---------|-----------|---------|
-| Hero image | Ken Burns (slow zoom) | On section visible |
-| Progress bar | Width 0→75% | Scroll into view |
-| Map dots | Pulse with stagger | Continuous |
-| Counter numbers | Spring physics count-up | Scroll into view |
-| Cards | Fade up + scale | Staggered on scroll |
-
----
-
-## Accessibility
-
-- All images have `alt=""` (decorative)
-- Progress bar has `aria-label` and `role="progressbar"`
-- Sufficient contrast: white text on dark overlays
-- Animations respect `prefers-reduced-motion`
 
 ---
 
@@ -231,32 +164,34 @@ The "Cultivation Space" card gets a cinematic treatment:
 
 | File | Change |
 |------|--------|
-| `src/components/AnimatedStatistics.tsx` | Complete redesign with photography, bento grid, progress visualization |
+| `supabase/functions/generate-stats-images/index.ts` | New edge function for AI image generation |
+| Database migration | Create storage bucket for generated images |
+| `src/components/AnimatedStatistics.tsx` | Update to use new generated images |
 
 ---
 
-## Before vs After
+## Alternative: Direct Generation Approach
 
-**Before:**
-- 4 identical glass cards in a row
-- Abstract gradient icons
-- Floating particles (visual noise)
-- No photography or real-world context
-
-**After:**
-- Asymmetric bento grid with visual hierarchy
-- Hero card with cultivation facility photography
-- Progress bar showing production capacity
-- Countries card with animated map visualization
-- Trust banner with certification badges
-- Meaningful context beneath each number
+If you prefer not to set up an edge function, I can generate the images directly during this session using the AI image generation capability and save them to Supabase Storage for immediate use.
 
 ---
 
-## Technical Considerations
+## Image Quality Guarantee
 
-- **Performance**: Images lazy-loaded with `loading="lazy"`
-- **Bundle Size**: Reuse existing images from `src/assets`
-- **Responsive**: Mobile-first with elegant desktop expansion
-- **Theme**: Works with current dark section styling
+- **Model**: Using `google/gemini-3-pro-image-preview` (Nano Banana Pro) for highest quality
+- **Resolution**: 4K photorealistic output
+- **Style**: Professional commercial photography aesthetic
+- **Relevance**: Each image directly supports the statistic it accompanies
+
+---
+
+## Marketing Psychology Applied
+
+| Principle | Application |
+|-----------|-------------|
+| **Authority** | Aerial cultivation shot shows scale and industry leadership |
+| **Social Proof** | Multiple scientists validate research credibility |
+| **Trust** | Clinical production environment conveys pharmaceutical standards |
+| **Global Reach** | Network visualization proves distribution capability |
+| **Premium Quality** | Golden hour lighting and clean aesthetics signal value |
 
