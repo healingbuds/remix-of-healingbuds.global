@@ -351,32 +351,6 @@ const RegionSlidePanel = ({
                   Visit South Africa Site
                 </Button>
               </>
-            ) : regionCode === 'pt' ? (
-              // Portugal HQ - can access global site
-              <>
-                <Button 
-                  size="lg" 
-                  className="w-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
-                  asChild
-                >
-                  <Link to="/home">
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    Continue to Global Site
-                  </Link>
-                </Button>
-                
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="w-full border-primary/30 hover:bg-primary/10"
-                  asChild
-                >
-                  <Link to="/about">
-                    <Building2 className="w-4 h-4 mr-2" />
-                    Learn About Our HQ
-                  </Link>
-                </Button>
-              </>
             ) : isRegistered ? (
               // Coming soon but registered - show confirmation
               <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center">
