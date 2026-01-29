@@ -100,7 +100,14 @@ export default function GlobalMapHub() {
     : `linear-gradient(to top, ${bgColor}, ${bgColor}ee, transparent)`;
   
   return (
-    <div className="fixed inset-0 overflow-hidden" style={{ backgroundColor: bgColor }}>
+    <div 
+      className="fixed inset-0 overflow-hidden" 
+      style={{ 
+        backgroundColor: bgColor,
+        height: '100dvh', // Dynamic viewport height for iOS
+        minHeight: '-webkit-fill-available', // iOS Safari fallback
+      }}
+    >
       {/* Full-screen Premium Leaflet Map */}
       <div className="absolute inset-0 z-0">
         {mapReady && (
