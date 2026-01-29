@@ -1,223 +1,173 @@
 
 
-# Fix Global Homepage Issues: Map Visibility + London Address
+# Mobile Country Tabs Optimization - Global Healthcare Network Page
 
-## Issues Identified
+## Issue Summary
+The country tabs at the bottom of the Global Healthcare Network page are not symmetrically displayed on mobile devices. They appear jumbled, left-aligned, and may not all fit on screen without scrolling.
 
-### Issue 1: London Address Showing Instead of Portugal HQ
-**Root Cause:** The `useGeoLocation` hook in `src/hooks/useGeoLocation.ts` falls back to language-based detection when domain detection returns `null`. On iOS devices, the browser language is often detected as `en-GB` rather than plain `en`, which maps to the UK (GB) configuration showing the London address.
+---
 
-**Location:** `src/hooks/useGeoLocation.ts` lines 117-127
+## Current State Analysis
+
+**File:** `src/pages/GlobalMapHub.tsx` (lines 248-297)
+
+Current mobile implementation:
+- Uses `overflow-x-auto` with horizontal scrolling
+- Tabs are left-aligned (`justify-start`)
+- Abbreviated names (SA, PT, TH, UK) are used on mobile
+- Status labels are hidden on mobile (good for space)
+- Gap between tabs: `gap-1.5` on mobile
+
+Problems:
+- Left-alignment breaks visual symmetry
+- Scrolling is unnecessary if all 4 tabs can fit
+- Inconsistent sizing between tabs
+
+---
+
+## Proposed Solution
+
+### Approach: Grid Layout for Mobile Symmetry
+
+Replace the flex horizontal scroll with a **2x2 grid on mobile** that fits all tabs on screen with perfect symmetry, then switch to **flex row on larger screens**.
+
+### File: `src/pages/GlobalMapHub.tsx`
+
+**Change 1:** Update container layout (lines 249-251)
 
 ```text
-Current mapping:
-en → DEFAULT (Portugal) ✓
-en-GB → GB (UK/London) ← Problem on iOS
-en-US → US
-en-ZA → ZA
+Current:
+├── overflow-x-auto scrollbar-hide
+├── flex items-center justify-start md:justify-center
+├── gap-1.5 sm:gap-2 md:gap-3
+└── min-w-max (forces horizontal scroll)
+
+Proposed:
+├── grid grid-cols-2 sm:flex
+├── gap-2 sm:gap-2 md:gap-3
+├── justify-items-center (grid) / justify-center (flex)
+└── Remove min-w-max (no scroll needed)
 ```
 
-**Fix:** Update the language mapping so that all generic English variants (`en-GB`, `en-AU`, etc.) default to the Portugal Global HQ, rather than regional addresses. Only domain-based detection should trigger regional content.
+**Change 2:** Update button sizing for consistent width (lines 262-271)
 
-### Issue 2: Map Not Visible on iOS
-**Root Cause:** Multiple potential causes for Leaflet map tiles not rendering on iOS:
+```text
+Current button classes:
+├── px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5
+└── flex-shrink-0
 
-1. **Viewport Height Issues:** iOS Safari has dynamic viewport height that can cause Leaflet to miscalculate container size
-2. **CSS Transform/GPU Acceleration:** iOS can struggle with complex CSS animations during initial render
-3. **Delayed Invalidation:** The current invalidation timers (100ms, 400ms, 900ms) may not be sufficient for slower iOS devices
+Proposed button classes:
+├── px-3 py-2 sm:px-3 sm:py-2 md:px-4 md:py-2.5
+├── w-full sm:w-auto (full width in grid cell)
+├── justify-center (center content)
+└── Remove flex-shrink-0 (not needed with grid)
+```
 
-**Locations:**
-- `src/pages/GlobalMapHub.tsx` lines 103-112
-- `src/components/PremiumLeafletMap.tsx` lines 505-515
+**Change 3:** Simplify mobile abbreviations (lines 276-281)
+
+Keep abbreviated names but ensure consistent display:
+- 🇿🇦 SA (South Africa)
+- 🇵🇹 PT (Portugal)  
+- 🇹🇭 TH (Thailand)
+- 🇬🇧 UK (United Kingdom)
 
 ---
 
-## Proposed Changes
+## Code Implementation
 
-### File 1: `src/hooks/useGeoLocation.ts`
+### Updated Container Structure
 
-**Change 1:** Update language-to-country mapping to default ALL English variants to Portugal HQ (lines 117-127)
-
-```typescript
-// Before:
-const languageToCountry: Record<string, string> = {
-  pt: 'PT',
-  'pt-PT': 'PT',
-  'pt-BR': 'PT',
-  en: 'DEFAULT',
-  'en-GB': 'GB',      // ← Shows London on iOS
-  'en-US': 'US',
-  'en-ZA': 'ZA',
-  th: 'TH',
-  'th-TH': 'TH',
-};
-
-// After:
-const languageToCountry: Record<string, string> = {
-  pt: 'PT',
-  'pt-PT': 'PT',
-  'pt-BR': 'PT',
-  en: 'DEFAULT',
-  'en-GB': 'DEFAULT',  // ← All English → Portugal HQ
-  'en-US': 'DEFAULT',  // ← Domain detection handles regional
-  'en-ZA': 'DEFAULT',  // ← Domain detection handles regional
-  'en-AU': 'DEFAULT',  // ← Add Australian English
-  'en-IE': 'DEFAULT',  // ← Add Irish English
-  th: 'TH',
-  'th-TH': 'TH',
-};
-```
-
-**Rationale:** Domain-based detection (`getCountryFromDomain`) is the authoritative source for regional content. Language preference should NOT override this - a user in the UK using healingbuds.global should see Portugal HQ details, not London.
-
----
-
-### File 2: `src/components/PremiumLeafletMap.tsx`
-
-**Change 2:** Improve iOS map tile rendering reliability (around line 505-520)
-
-```typescript
-// Before:
-useEffect(() => {
-  if (mapRef.current && mapReady) {
-    const t1 = window.setTimeout(() => mapRef.current?.invalidateSize(), 100);
-    const t2 = window.setTimeout(() => mapRef.current?.invalidateSize(), 400);
-    const t3 = window.setTimeout(() => mapRef.current?.invalidateSize(), 900);
-    return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-      window.clearTimeout(t3);
-    };
-  }
-}, [mapReady]);
-
-// After (add more aggressive invalidation for iOS):
-useEffect(() => {
-  if (mapRef.current && mapReady) {
-    // Immediate invalidation
-    mapRef.current.invalidateSize();
-    
-    // Staggered invalidations for layout completion
-    const t1 = window.setTimeout(() => mapRef.current?.invalidateSize(), 100);
-    const t2 = window.setTimeout(() => mapRef.current?.invalidateSize(), 300);
-    const t3 = window.setTimeout(() => mapRef.current?.invalidateSize(), 600);
-    const t4 = window.setTimeout(() => mapRef.current?.invalidateSize(), 1000);
-    // iOS Safari sometimes needs longer delay
-    const t5 = window.setTimeout(() => mapRef.current?.invalidateSize(), 1500);
-    
-    return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-      window.clearTimeout(t3);
-      window.clearTimeout(t4);
-      window.clearTimeout(t5);
-    };
-  }
-}, [mapReady]);
-```
-
-**Change 3:** Add iOS-specific viewport fix in map container (around line 545-560)
-
-```typescript
-// Update the container style to use dvh (dynamic viewport height) for iOS
-<div 
-  ref={mapContainerRef} 
-  className="absolute inset-0 w-full h-full touch-pan-x touch-pan-y"
-  style={{ 
-    background: mapBg,
-    minHeight: '100dvh', // iOS dynamic viewport height
-    height: '100%',
-  }}
-/>
+```tsx
+{/* Region Pills - 2x2 Grid on mobile, centered flex on larger screens */}
+<div className="px-2 sm:px-0">
+  <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-items-center sm:justify-center gap-2 md:gap-3 mb-3 md:mb-4">
+    {Object.entries(countryDisplayInfo).map(([key, info]) => {
+      const isSelected = selectedCountry === key;
+      const status = statusConfig[info.status];
+      
+      return (
+        <motion.button
+          key={key}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => handleCountrySelect(key)}
+          className={`
+            relative w-full sm:w-auto px-3 py-2 sm:px-3 sm:py-2 md:px-4 md:py-2.5 
+            rounded-xl text-xs sm:text-sm font-medium transition-all duration-300
+            flex items-center justify-center gap-1.5 sm:gap-2
+            ${isSelected 
+              ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-primary/50' 
+              : isDark 
+                ? 'bg-white/[0.08] text-white/80 hover:bg-white/[0.12] hover:text-white border border-white/10'
+                : 'bg-black/[0.06] text-foreground/80 hover:bg-black/[0.10] hover:text-foreground border border-black/10'
+            }
+          `}
+        >
+          <span className="text-sm sm:text-base">{info.flag}</span>
+          <span className="hidden sm:inline">{info.name}</span>
+          <span className="sm:hidden text-[11px] font-medium">
+            {key === 'southAfrica' ? 'South Africa' : 
+             key === 'portugal' ? 'Portugal' : 
+             key === 'thailand' ? 'Thailand' : 
+             key === 'uk' ? 'UK' : info.name}
+          </span>
+          
+          {info.status === 'LIVE' && (
+            <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-emerald-500" />
+            </span>
+          )}
+          {info.status !== 'LIVE' && (
+            <span className={`hidden sm:inline text-[10px] uppercase tracking-wider ${status.textColor} opacity-80`}>
+              {status.label}
+            </span>
+          )}
+        </motion.button>
+      );
+    })}
+  </div>
+</div>
 ```
 
 ---
 
-### File 3: `src/pages/GlobalMapHub.tsx`
+## Visual Result
 
-**Change 4:** Add iOS viewport meta and force visibility (around line 103)
+### Mobile View (2x2 Grid):
+```text
+┌─────────────────────────────────────┐
+│  ┌───────────────┐ ┌───────────────┐│
+│  │🇿🇦 South Africa│ │🇵🇹 Portugal   ││
+│  └───────────────┘ └───────────────┘│
+│  ┌───────────────┐ ┌───────────────┐│
+│  │🇹🇭 Thailand    │ │🇬🇧 UK          ││
+│  └───────────────┘ └───────────────┘│
+│         Powered by Dr. Green         │
+└─────────────────────────────────────┘
+```
 
-Update the container to ensure proper iOS viewport handling:
-
-```typescript
-// Before:
-<div className="fixed inset-0 overflow-hidden" style={{ backgroundColor: bgColor }}>
-
-// After (add iOS-safe height):
-<div 
-  className="fixed inset-0 overflow-hidden" 
-  style={{ 
-    backgroundColor: bgColor,
-    height: '100dvh', // Dynamic viewport height for iOS
-    minHeight: '-webkit-fill-available', // iOS Safari fallback
-  }}
->
+### Desktop View (Flex Row - unchanged):
+```text
+┌────────────────────────────────────────────────────────────────────┐
+│ 🇿🇦 South Africa • │ 🇵🇹 Portugal HQ │ 🇹🇭 Thailand PROD │ 🇬🇧 UK SOON │
+└────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### File 4: `src/styles/leaflet-premium.css`
+## Regional Navigation Confirmation
 
-**Change 5:** Add iOS-specific tile rendering fixes (append to end of file)
+Verified the current navigation logic is correct:
 
-```css
-/* iOS Safari tile rendering fixes */
-@supports (-webkit-touch-callout: none) {
-  .leaflet-container {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-  
-  .leaflet-tile-container {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-  
-  .leaflet-tile-pane {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-  
-  .leaflet-tile {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-}
+| Region | Click Behavior | Status |
+|--------|----------------|--------|
+| 🇿🇦 South Africa | → External site (healingbuds.co.za) | ✅ Correct |
+| 🇵🇹 Portugal (HQ) | → Global site (/home) | ✅ Correct |
+| 🇹🇭 Thailand | → Registration form | ✅ Correct |
+| 🇬🇧 United Kingdom | → Registration form | ✅ Correct |
 
-/* Ensure map visibility on mobile devices */
-@media (max-width: 768px) {
-  .leaflet-container {
-    min-height: 100dvh;
-    min-height: -webkit-fill-available;
-  }
-  
-  .leaflet-tile-pane,
-  .leaflet-overlay-pane,
-  .leaflet-marker-pane {
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-}
-
-/* Light mode marker visibility enhancement */
-:root .premium-marker {
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
-}
-
-/* Dark mode marker glow */
-.dark .premium-marker {
-  filter: drop-shadow(0 0 12px hsl(175, 42%, 40%));
-}
-
-/* Flight path visibility - light mode */
-:root .flight-path {
-  opacity: 0.75 !important;
-}
-
-:root .flight-path-glow {
-  opacity: 0.18 !important;
-}
-```
+**No changes needed to RegionSlidePanel.tsx** - the UK and PT regions already show registration forms since they're not live.
 
 ---
 
@@ -225,19 +175,19 @@ Update the container to ensure proper iOS viewport handling:
 
 | File | Change | Purpose |
 |------|--------|---------|
-| `useGeoLocation.ts` | Map all English variants to DEFAULT | Fixes London address on iOS - always show Portugal HQ for .global domain |
-| `PremiumLeafletMap.tsx` | Add more invalidation timers + immediate call | Ensures tiles render on slower iOS devices |
-| `PremiumLeafletMap.tsx` | Add `100dvh` to container | iOS dynamic viewport height support |
-| `GlobalMapHub.tsx` | Add iOS-safe height styles | Prevents viewport calculation issues |
-| `leaflet-premium.css` | Add iOS GPU acceleration and visibility fixes | Forces tile/marker rendering on iOS Safari |
+| `GlobalMapHub.tsx` | Replace horizontal scroll with 2x2 grid on mobile | Perfect symmetry on mobile |
+| `GlobalMapHub.tsx` | Update button classes for full-width in grid | Equal-sized buttons |
+| `GlobalMapHub.tsx` | Show full country names on mobile (not just abbreviations) | Better readability with grid space |
+| `GlobalMapHub.tsx` | Remove scrollbar-hide utility usage | No longer needed |
 
 ---
 
-## Expected Results
+## Benefits
 
-1. **Address Fix:** All users visiting healingbuds.global (or preview URLs) will see Portugal HQ address regardless of their browser language setting
-2. **Map Fix:** Map tiles and markers will reliably render on iOS devices with:
-   - Proper viewport sizing
-   - GPU-accelerated rendering
-   - Multiple invalidation passes for layout stability
+1. **Symmetry**: 2x2 grid ensures perfect visual balance
+2. **No scrolling**: All 4 countries visible without horizontal scroll
+3. **Touch-friendly**: Larger tap targets with full-width buttons
+4. **Readable**: Full country names instead of abbreviations (space allows it)
+5. **Responsive**: Seamlessly transitions to flex row on larger screens
+6. **Consistent**: Same visual weight for all 4 regions
 
