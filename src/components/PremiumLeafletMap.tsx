@@ -509,18 +509,27 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
     });
   }, [selectedCountry, isMobile, mapConfig.flyToZoom]);
 
-  // Force map invalidation on mount/theme change to ensure tiles render (Leaflet can miss first paint
-  // when the container is transitioning or when we recreate the map on theme toggle)
+  // Force map invalidation on mount/theme change to ensure tiles render
+  // iOS Safari requires more aggressive invalidation due to dynamic viewport height
   useEffect(() => {
     if (mapRef.current && mapReady) {
+      // Immediate invalidation
+      mapRef.current.invalidateSize();
+      
+      // Staggered invalidations for layout completion
       const t1 = window.setTimeout(() => mapRef.current?.invalidateSize(), 100);
-      const t2 = window.setTimeout(() => mapRef.current?.invalidateSize(), 400);
-      const t3 = window.setTimeout(() => mapRef.current?.invalidateSize(), 900);
+      const t2 = window.setTimeout(() => mapRef.current?.invalidateSize(), 300);
+      const t3 = window.setTimeout(() => mapRef.current?.invalidateSize(), 600);
+      const t4 = window.setTimeout(() => mapRef.current?.invalidateSize(), 1000);
+      // iOS Safari sometimes needs longer delay for dynamic viewport
+      const t5 = window.setTimeout(() => mapRef.current?.invalidateSize(), 1500);
 
       return () => {
         window.clearTimeout(t1);
         window.clearTimeout(t2);
         window.clearTimeout(t3);
+        window.clearTimeout(t4);
+        window.clearTimeout(t5);
       };
     }
   }, [mapReady]);
@@ -533,7 +542,11 @@ export default function PremiumLeafletMap({ selectedCountry, onCountrySelect }: 
       <div 
         ref={mapContainerRef} 
         className="absolute inset-0 w-full h-full touch-pan-x touch-pan-y"
-        style={{ background: mapBg }}
+        style={{ 
+          background: mapBg,
+          minHeight: '100dvh', // iOS dynamic viewport height
+          height: '100%',
+        }}
       />
       {/* Energy flow SVG overlay */}
       <svg 

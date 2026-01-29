@@ -114,14 +114,18 @@ const locationConfigs: Record<string, LocationConfig> = {
 };
 
 // Map language codes to country codes
+// IMPORTANT: All English variants default to Portugal HQ (DEFAULT)
+// Regional content is ONLY triggered by domain detection, not language preference
 const languageToCountry: Record<string, string> = {
   pt: 'PT',
   'pt-PT': 'PT',
   'pt-BR': 'PT',
   en: 'DEFAULT',
-  'en-GB': 'GB',
-  'en-US': 'US',
-  'en-ZA': 'ZA',
+  'en-GB': 'DEFAULT',  // Domain detection handles regional content
+  'en-US': 'DEFAULT',  // Domain detection handles regional content
+  'en-ZA': 'DEFAULT',  // Domain detection handles regional content
+  'en-AU': 'DEFAULT',  // Australian English → Portugal HQ
+  'en-IE': 'DEFAULT',  // Irish English → Portugal HQ
   th: 'TH',
   'th-TH': 'TH',
 };

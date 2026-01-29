@@ -523,3 +523,43 @@
 :root .flight-path-glow {
   opacity: 0.15;
 }
+
+/* ============================================
+   iOS Safari Tile Rendering Fixes
+   ============================================ */
+@supports (-webkit-touch-callout: none) {
+  .leaflet-container {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  .leaflet-tile-container {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  .leaflet-tile-pane {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  .leaflet-tile {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Ensure map visibility on mobile devices */
+@media (max-width: 768px) {
+  .leaflet-container {
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+  }
+  
+  .leaflet-tile-pane,
+  .leaflet-overlay-pane,
+  .leaflet-marker-pane {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
