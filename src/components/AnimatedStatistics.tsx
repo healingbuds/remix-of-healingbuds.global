@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Leaf, Users, Globe, Award, CheckCircle } from "lucide-react";
 
-// Import photography assets
-import cultivationImage from "@/assets/cultivation-facility-bright.jpg";
-import researchLabImage from "@/assets/research-lab-hq.jpg";
-import facilityDocsImage from "@/assets/facility-safety-docs.jpg";
+// Import AI-generated photography assets
+import cultivationImage from "@/assets/stats-cultivation-hero.jpg";
+import researchLabImage from "@/assets/stats-research-lab.jpg";
+import globalNetworkImage from "@/assets/stats-global-network.jpg";
+import facilityDocsImage from "@/assets/stats-gmp-production.jpg";
 
 // Animated counter hook
 const useAnimatedCounter = (target: number, isInView: boolean, duration: number = 2000) => {
@@ -193,10 +194,19 @@ const CountriesCard = ({ isInView }: { isInView: boolean }) => {
       transition={{ duration: 0.6, delay: 0.25, ease: [0.25, 0.4, 0.25, 1] }}
       className="relative rounded-2xl overflow-hidden group"
     >
-      {/* Glass background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm border border-white/[0.06] rounded-2xl" />
+      {/* Global network background image */}
+      <div className="absolute inset-0">
+        <img 
+          src={globalNetworkImage} 
+          alt=""
+          loading="lazy"
+          className="w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-500" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--section-color))]/80 to-[hsl(var(--section-color))]/95" />
+      </div>
       
-      {/* Animated World Map SVG */}
+      {/* Glass overlay */}
+      <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl" />
       <div className="absolute right-3 top-3 w-20 h-14 sm:w-24 sm:h-16 md:w-28 md:h-20 opacity-50">
         <svg viewBox="0 0 100 60" className="w-full h-full">
           {/* Simplified continent outlines */}
