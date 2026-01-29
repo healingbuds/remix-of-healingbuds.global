@@ -329,8 +329,8 @@ const RegionSlidePanel = ({
           
           {/* Action Buttons or Registration Form */}
           <div className="space-y-4 pt-4 border-t border-border/50">
-            {isLive && externalUrl && regionCode === 'za' ? (
-              // South Africa specific - eligibility focused
+            {/* South Africa - LIVE with full site access */}
+            {regionCode === 'za' && isLive && externalUrl ? (
               <>
                 <Button 
                   size="lg" 
@@ -351,16 +351,18 @@ const RegionSlidePanel = ({
                   Visit South Africa Site
                 </Button>
               </>
-            ) : isLive && externalUrl ? (
-              // Other live regions - show visit and preview buttons
+            ) : regionCode === 'pt' ? (
+              // Portugal HQ - can access global site
               <>
                 <Button 
                   size="lg" 
                   className="w-full bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
-                  onClick={() => window.open(externalUrl, '_blank')}
+                  asChild
                 >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Visit {content?.name || countryName} Site
+                  <Link to="/home">
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Continue to Global Site
+                  </Link>
                 </Button>
                 
                 <Button 
@@ -369,37 +371,28 @@ const RegionSlidePanel = ({
                   className="w-full border-primary/30 hover:bg-primary/10"
                   asChild
                 >
-                  <Link to={`/preview/${regionCode}`}>
-                    <Eye className="w-4 h-4 mr-2" />
-                    Preview Site
+                  <Link to="/about">
+                    <Building2 className="w-4 h-4 mr-2" />
+                    Learn About Our HQ
                   </Link>
                 </Button>
               </>
             ) : isRegistered ? (
-              // Coming soon but registered - show preview button
-              <>
-                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center">
-                  <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
-                  <p className="text-sm font-medium text-emerald-400">You're registered!</p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    We'll notify you when we launch in {content?.name || countryName}
-                  </p>
-                </div>
-                
-                <Button 
-                  size="lg" 
-                  className="w-full bg-primary hover:bg-primary/90"
-                  asChild
-                >
-                  <Link to={`/preview/${regionCode}`}>
-                    <Eye className="w-4 h-4 mr-2" />
-                    Preview Site
-                  </Link>
-                </Button>
-              </>
+              // Coming soon but registered - show confirmation
+              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center">
+                <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
+                <p className="text-sm font-medium text-emerald-400">You're registered!</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  We'll notify you when we launch in {content?.name || countryName}
+                </p>
+              </div>
             ) : content ? (
-              // Coming soon and not registered - show registration form
+              // UK, Thailand, etc. - Coming soon, show registration form
               <div className="bg-background/50 rounded-2xl border border-border/50 p-6">
+                <div className="text-center mb-4">
+                  <h4 className="font-semibold text-foreground mb-1">Coming Soon to {content.name}</h4>
+                  <p className="text-sm text-muted-foreground">Register to be notified when we launch</p>
+                </div>
                 <RegionalRegistrationForm 
                   content={content}
                   regionCode={regionCode}

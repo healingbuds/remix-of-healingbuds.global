@@ -136,14 +136,14 @@ export default function GlobalMapHub() {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className="absolute top-0 left-0 right-0 z-30"
       >
-        <div className="mx-4 mt-4 md:mx-6 md:mt-6">
-          <div className="flex items-center justify-between px-4 py-3 md:px-6 md:py-4 rounded-2xl bg-[hsl(178,48%,21%)] backdrop-blur-xl border border-white/10 shadow-2xl">
+        <div className="mx-3 mt-3 md:mx-6 md:mt-6">
+          <div className="flex items-center justify-between px-3 py-2.5 md:px-6 md:py-4 rounded-xl md:rounded-2xl bg-[hsl(178,48%,21%)] backdrop-blur-xl border border-white/10 shadow-2xl">
             {/* Logo */}
             <Link to="/home" className="flex items-center group">
               <img 
                 src={hbLogoWhite} 
                 alt="Healing Buds" 
-                className="h-12 sm:h-14 md:h-16 w-auto min-w-[140px] sm:min-w-[160px] object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                className="h-10 sm:h-12 md:h-16 w-auto min-w-[100px] sm:min-w-[140px] md:min-w-[160px] object-contain opacity-90 group-hover:opacity-100 transition-opacity"
               />
             </Link>
             
@@ -243,59 +243,67 @@ export default function GlobalMapHub() {
         className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
       >
         {/* Gradient fade */}
-        <div className="h-32" style={{ background: bottomGradient }} />
+        <div className="h-24 md:h-32" style={{ background: bottomGradient }} />
         
-        <div className="px-4 pb-4 md:px-6 md:pb-6 pointer-events-auto" style={{ backgroundColor: bgColor }}>
-          {/* Region Pills */}
-          <div className="flex items-center justify-center gap-2 md:gap-3 flex-wrap mb-4">
-            {Object.entries(countryDisplayInfo).map(([key, info]) => {
-              const isSelected = selectedCountry === key;
-              const status = statusConfig[info.status];
-              
-              return (
-                <motion.button
-                  key={key}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => handleCountrySelect(key)}
-                  className={`
-                    relative px-3 py-2 md:px-4 md:py-2.5 rounded-xl text-sm font-medium transition-all duration-300
-                    flex items-center gap-2
-                    ${isSelected 
-                      ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-primary/50' 
-                      : isDark 
-                        ? 'bg-white/[0.08] text-white/80 hover:bg-white/[0.12] hover:text-white border border-white/10'
-                        : 'bg-black/[0.06] text-foreground/80 hover:bg-black/[0.10] hover:text-foreground border border-black/10'
-                    }
-                  `}
-                >
-                  <span className="text-base">{info.flag}</span>
-                  <span className="hidden sm:inline">{info.name}</span>
-                  <span className="sm:hidden">{info.name.split(' ')[0]}</span>
-                  
-                  {info.status === 'LIVE' && (
-                    <span className="flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+        <div className="px-2 pb-3 md:px-6 md:pb-6 pointer-events-auto" style={{ backgroundColor: bgColor }}>
+          {/* Region Pills - Horizontal scroll on mobile, centered on desktop */}
+          <div className="overflow-x-auto scrollbar-hide -mx-2 px-2 md:mx-0 md:px-0">
+            <div className="flex items-center justify-start md:justify-center gap-1.5 sm:gap-2 md:gap-3 min-w-max md:min-w-0 pb-2 md:pb-0 mb-3 md:mb-4">
+              {Object.entries(countryDisplayInfo).map(([key, info]) => {
+                const isSelected = selectedCountry === key;
+                const status = statusConfig[info.status];
+                
+                return (
+                  <motion.button
+                    key={key}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => handleCountrySelect(key)}
+                    className={`
+                      relative px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-300
+                      flex items-center gap-1.5 sm:gap-2 flex-shrink-0
+                      ${isSelected 
+                        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-primary/50' 
+                        : isDark 
+                          ? 'bg-white/[0.08] text-white/80 hover:bg-white/[0.12] hover:text-white border border-white/10'
+                          : 'bg-black/[0.06] text-foreground/80 hover:bg-black/[0.10] hover:text-foreground border border-black/10'
+                      }
+                    `}
+                  >
+                    <span className="text-sm sm:text-base">{info.flag}</span>
+                    {/* Show abbreviated name on mobile, full on larger screens */}
+                    <span className="hidden sm:inline">{info.name}</span>
+                    <span className="sm:hidden text-[11px]">
+                      {key === 'southAfrica' ? 'SA' : 
+                       key === 'portugal' ? 'PT' : 
+                       key === 'thailand' ? 'TH' : 
+                       key === 'uk' ? 'UK' : info.name.split(' ')[0]}
                     </span>
-                  )}
-                  {info.status !== 'LIVE' && (
-                    <span className={`text-[10px] uppercase tracking-wider ${status.textColor} opacity-80`}>
-                      {status.label}
-                    </span>
-                  )}
-                </motion.button>
-              );
-            })}
+                    
+                    {info.status === 'LIVE' && (
+                      <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2">
+                        <span className="animate-ping absolute inline-flex h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-emerald-500" />
+                      </span>
+                    )}
+                    {info.status !== 'LIVE' && (
+                      <span className={`hidden sm:inline text-[10px] uppercase tracking-wider ${status.textColor} opacity-80`}>
+                        {status.label}
+                      </span>
+                    )}
+                  </motion.button>
+                );
+              })}
+            </div>
           </div>
           
           {/* Powered by Dr. Green */}
           <div className="flex items-center justify-center gap-2 sm:gap-3">
-            <span className={`${isDark ? 'text-white/40' : 'text-foreground/50'} text-xs sm:text-sm`}>Powered by</span>
+            <span className={`${isDark ? 'text-white/40' : 'text-foreground/50'} text-[10px] sm:text-xs md:text-sm`}>Powered by</span>
             <img 
               src={drGreenLogo} 
               alt="Dr. Green" 
-              className={`h-7 sm:h-8 w-auto object-contain ${isDark ? 'opacity-70' : 'opacity-80 brightness-0'}`}
+              className={`h-5 sm:h-7 md:h-8 w-auto object-contain ${isDark ? 'opacity-70' : 'opacity-80 brightness-0'}`}
             />
           </div>
         </div>
