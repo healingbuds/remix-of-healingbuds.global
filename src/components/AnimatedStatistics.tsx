@@ -1,235 +1,344 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { Leaf, Users, Globe, Award } from "lucide-react";
-import { LucideIcon } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { Leaf, Users, Globe, Award, CheckCircle } from "lucide-react";
 
-interface Statistic {
-  value: number;
-  suffix: string;
-  label: string;
-  icon: LucideIcon;
-  gradient: string;
-  glowColor: string;
-}
+// Import photography assets
+import cultivationImage from "@/assets/cultivation-facility-bright.jpg";
+import researchLabImage from "@/assets/research-lab-hq.jpg";
+import facilityDocsImage from "@/assets/facility-safety-docs.jpg";
 
-const statistics: Statistic[] = [
-  { 
-    value: 18000, 
-    suffix: "m²", 
-    label: "Cultivation Space", 
-    icon: Leaf,
-    gradient: "from-[#4DBFA1] via-[#2C7D7A] to-[#1C4F4D]",
-    glowColor: "rgba(77, 191, 161, 0.4)"
-  },
-  { 
-    value: 50, 
-    suffix: "+", 
-    label: "Research Partners", 
-    icon: Users,
-    gradient: "from-[#0D9488] via-[#2C7D7A] to-[#1C4F4D]",
-    glowColor: "rgba(13, 148, 136, 0.4)"
-  },
-  { 
-    value: 15, 
-    suffix: "+", 
-    label: "Countries Served", 
-    icon: Globe,
-    gradient: "from-[#4DBFA1] via-[#0D9488] to-[#2C7D7A]",
-    glowColor: "rgba(44, 125, 122, 0.4)"
-  },
-  { 
-    value: 100, 
-    suffix: "%", 
-    label: "EU GMP Certified", 
-    icon: Award,
-    gradient: "from-[#84CC16] via-[#4DBFA1] to-[#2C7D7A]",
-    glowColor: "rgba(132, 204, 22, 0.4)"
-  },
-];
-
-interface StatCardProps {
-  stat: Statistic;
-  index: number;
-}
-
-const StatCard = ({ stat, index }: StatCardProps) => {
+// Animated counter hook
+const useAnimatedCounter = (target: number, isInView: boolean, duration: number = 2000) => {
   const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
   
-  // Mouse tracking for 3D tilt effect
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
   useEffect(() => {
     if (!isInView) return;
-
-    const duration = 2000;
+    
     const steps = 60;
-    const stepValue = stat.value / steps;
+    const stepValue = target / steps;
     const stepDuration = duration / steps;
-
     let currentStep = 0;
+    
     const timer = setInterval(() => {
       currentStep++;
       if (currentStep >= steps) {
-        setCount(stat.value);
+        setCount(target);
         clearInterval(timer);
       } else {
         setCount(Math.floor(stepValue * currentStep));
       }
     }, stepDuration);
-
+    
     return () => clearInterval(timer);
-  }, [isInView, stat.value]);
+  }, [isInView, target, duration]);
+  
+  return count;
+};
 
-  const Icon = stat.icon;
-
+// Hero Stat Card with Photography
+const HeroStatCard = ({ isInView }: { isInView: boolean }) => {
+  const count = useAnimatedCounter(18000, isInView);
+  
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ 
-        duration: 0.6, 
-        delay: index * 0.1, 
-        ease: [0.25, 0.4, 0.25, 1],
-      }}
-      className="relative group touch-feedback"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
+      className="relative md:col-span-2 md:row-span-2 rounded-2xl md:rounded-3xl overflow-hidden group"
     >
+      {/* Background Image with Ken Burns effect */}
       <motion.div 
-        className="relative h-full md:perspective-1000"
-        style={{ 
-          rotateX: typeof window !== 'undefined' && window.innerWidth >= 768 ? rotateX : 0, 
-          rotateY: typeof window !== 'undefined' && window.innerWidth >= 768 ? rotateY : 0, 
-          transformStyle: "preserve-3d" 
-        }}
+        className="absolute inset-0"
+        animate={isInView ? { scale: [1, 1.05] } : {}}
+        transition={{ duration: 20, ease: "linear" }}
       >
-        {/* Animated glow background */}
-        <motion.div
-          className="absolute -inset-1 rounded-3xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-700"
-          style={{ background: `linear-gradient(135deg, ${stat.glowColor}, transparent)` }}
-          animate={isInView ? { 
-            scale: [1, 1.05, 1],
-          } : {}}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        <img 
+          src={cultivationImage}
+          alt=""
+          loading="lazy"
+          className="w-full h-full object-cover"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
+      </motion.div>
+      
+      {/* Content */}
+      <div className="relative z-10 p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-end h-full min-h-[280px] sm:min-h-[320px] md:min-h-[400px]">
+        {/* Icon */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-primary/20 backdrop-blur-sm flex items-center justify-center mb-4 md:mb-6 border border-primary/30"
+        >
+          <Leaf className="w-6 h-6 md:w-7 md:h-7 text-primary" />
+        </motion.div>
         
-        {/* Card */}
-        <div className="relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 border border-white/10 hover:border-white/30 transition-all duration-300 overflow-hidden group-hover:shadow-2xl active:scale-[0.98] touch-manipulation">
-          {/* Animated gradient border on hover */}
-          <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
+        {/* Counter */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="mb-2 md:mb-4"
+        >
+          <span className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white tracking-tighter">
+            {count.toLocaleString()}
+          </span>
+          <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary ml-1">m²</span>
+        </motion.div>
+        
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="text-white/90 text-lg md:text-xl mb-4 md:mb-6"
+        >
+          Cultivation Space
+        </motion.p>
+        
+        {/* Progress Visualization */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="mt-auto"
+        >
+          <div className="flex justify-between text-xs sm:text-sm text-white/60 mb-2">
+            <span>Annual Production Capacity</span>
+            <span className="text-primary font-medium">60,000 kg/year</span>
+          </div>
+          <div 
+            className="h-2 md:h-2.5 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm"
+            role="progressbar"
+            aria-label="Production capacity"
+            aria-valuenow={75}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
+            <motion.div 
+              className="h-full bg-gradient-to-r from-primary via-emerald-400 to-primary rounded-full"
+              initial={{ width: 0 }}
+              animate={isInView ? { width: '75%' } : {}}
+              transition={{ duration: 1.5, delay: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
+            />
+          </div>
+          <p className="text-xs text-white/40 mt-2">Powering EU GMP production at scale</p>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Secondary Stat Card with Photo Background
+const ResearchCard = ({ isInView }: { isInView: boolean }) => {
+  const count = useAnimatedCounter(50, isInView);
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.4, 0.25, 1] }}
+      className="relative rounded-2xl overflow-hidden group"
+    >
+      {/* Subtle Photo Background */}
+      <div className="absolute inset-0">
+        <img 
+          src={researchLabImage} 
+          alt=""
+          loading="lazy"
+          className="w-full h-full object-cover opacity-25 group-hover:opacity-35 transition-opacity duration-500" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--section-color))]/95 to-[hsl(var(--section-color))]/98" />
+      </div>
+      
+      {/* Glass overlay */}
+      <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl" />
+      
+      <div className="relative z-10 p-5 sm:p-6 md:p-7 min-h-[160px] md:min-h-[180px] flex flex-col">
+        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-3 md:mb-4 border border-primary/20">
+          <Users className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+        </div>
+        
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ delay: 0.3, duration: 0.5, type: "spring", stiffness: 150 }}
+        >
+          <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">{count}</span>
+          <span className="text-xl sm:text-2xl font-bold text-primary">+</span>
+        </motion.div>
+        
+        <p className="text-white/80 text-sm md:text-base font-medium mt-1">Research Partners</p>
+        <p className="text-xs sm:text-sm text-white/40 mt-2">Imperial College, UPenn & more</p>
+      </div>
+    </motion.div>
+  );
+};
+
+// Countries Card with Animated Map
+const CountriesCard = ({ isInView }: { isInView: boolean }) => {
+  const count = useAnimatedCounter(15, isInView);
+  
+  // Location coordinates for dots (relative to viewBox)
+  const locations = [
+    { name: 'UK', cx: 48, cy: 20 },
+    { name: 'Portugal', cx: 42, cy: 28 },
+    { name: 'Thailand', cx: 78, cy: 35 },
+    { name: 'South Africa', cx: 55, cy: 52 },
+  ];
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.25, ease: [0.25, 0.4, 0.25, 1] }}
+      className="relative rounded-2xl overflow-hidden group"
+    >
+      {/* Glass background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-sm border border-white/[0.06] rounded-2xl" />
+      
+      {/* Animated World Map SVG */}
+      <div className="absolute right-3 top-3 w-20 h-14 sm:w-24 sm:h-16 md:w-28 md:h-20 opacity-50">
+        <svg viewBox="0 0 100 60" className="w-full h-full">
+          {/* Simplified continent outlines */}
+          <path 
+            d="M45,18 Q50,15 55,18 L58,22 Q55,28 50,25 Q45,22 45,18 M38,22 Q42,20 44,24 L42,30 Q38,28 36,25 Q36,23 38,22 M70,30 Q78,28 82,35 Q80,40 75,38 Q72,35 70,30 M48,42 Q55,40 60,48 L58,55 Q52,58 48,52 Q46,48 48,42"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="0.5"
+            className="text-white/20"
+          />
           
-          {/* Floating particles */}
-          <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={i}
-                className={`absolute w-1 h-1 rounded-full bg-gradient-to-r ${stat.gradient}`}
-                style={{
-                  left: `${20 + i * 15}%`,
-                  top: `${30 + (i % 3) * 20}%`,
-                }}
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0, 0.6, 0],
-                  scale: [0.5, 1, 0.5],
-                }}
-                transition={{
-                  duration: 3 + i * 0.5,
-                  repeat: Infinity,
+          {/* Pulsing location dots */}
+          {locations.map((loc, i) => (
+            <g key={loc.name}>
+              {/* Pulse ring */}
+              <motion.circle
+                cx={loc.cx}
+                cy={loc.cy}
+                r="3"
+                fill="none"
+                stroke="hsl(var(--primary))"
+                strokeWidth="0.5"
+                initial={{ scale: 0.5, opacity: 0.8 }}
+                animate={{ scale: 2, opacity: 0 }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity, 
                   delay: i * 0.3,
-                  ease: "easeInOut",
+                  ease: "easeOut"
                 }}
               />
-            ))}
-          </div>
-          
-          {/* Shine sweep effect */}
-          <motion.div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
-            initial={{ x: "-100%" }}
-            whileHover={{ x: "200%" }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
+              {/* Dot */}
+              <motion.circle
+                cx={loc.cx}
+                cy={loc.cy}
+                r="2"
+                fill="hsl(var(--primary))"
+                initial={{ scale: 0 }}
+                animate={isInView ? { scale: 1 } : {}}
+                transition={{ delay: 0.5 + i * 0.1, type: "spring", stiffness: 200 }}
+              />
+            </g>
+          ))}
+        </svg>
+      </div>
+      
+      <div className="relative z-10 p-5 sm:p-6 md:p-7 min-h-[160px] md:min-h-[180px] flex flex-col">
+        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-3 md:mb-4 border border-primary/20">
+          <Globe className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+        </div>
+        
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ delay: 0.35, duration: 0.5, type: "spring", stiffness: 150 }}
+        >
+          <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">{count}</span>
+          <span className="text-xl sm:text-2xl font-bold text-primary">+</span>
+        </motion.div>
+        
+        <p className="text-white/80 text-sm md:text-base font-medium mt-1">Countries Served</p>
+        <p className="text-xs sm:text-sm text-white/40 mt-2">Global distribution network</p>
+      </div>
+    </motion.div>
+  );
+};
+
+// Trust Banner with Certification
+const TrustBanner = ({ isInView }: { isInView: boolean }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
+      className="md:col-span-3 relative rounded-2xl overflow-hidden"
+    >
+      {/* Background with photo */}
+      <div className="absolute inset-0">
+        <img 
+          src={facilityDocsImage} 
+          alt=""
+          loading="lazy"
+          className="w-full h-full object-cover opacity-15" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--section-color))]/95 via-[hsl(var(--section-color))]/90 to-[hsl(var(--section-color))]/95" />
+      </div>
+      
+      {/* Glass overlay */}
+      <div className="absolute inset-0 bg-white/[0.02] backdrop-blur-sm border border-white/[0.06] rounded-2xl" />
+      
+      <div className="relative z-10 p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
+        {/* Main stat */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          <motion.div 
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-emerald-500/15 flex items-center justify-center border border-emerald-500/20"
+            animate={isInView ? { 
+              scale: [1, 1.08, 1],
+              boxShadow: [
+                "0 0 0 0 rgba(16, 185, 129, 0)",
+                "0 0 0 8px rgba(16, 185, 129, 0.1)",
+                "0 0 0 0 rgba(16, 185, 129, 0)"
+              ]
+            } : {}}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="w-1/3 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+            <Award className="w-6 h-6 sm:w-7 sm:h-7 text-emerald-400" />
           </motion.div>
-          
-          {/* Icon with animated ring */}
-          <div className="relative mb-6">
-            <motion.div
-              className={`absolute -inset-3 rounded-2xl bg-gradient-to-br ${stat.gradient} opacity-20 blur-lg`}
-              animate={isInView ? {
-                scale: [1, 1.2, 1],
-                opacity: [0.2, 0.4, 0.2],
-              } : {}}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
-            />
-            <motion.div 
-              className={`relative w-16 h-16 bg-gradient-to-br ${stat.gradient} rounded-2xl flex items-center justify-center shadow-lg`}
-              whileHover={{ scale: 1.15, rotate: 5 }}
-              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+          <div>
+            <motion.span 
+              className="text-2xl sm:text-3xl font-bold text-white block"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.5 }}
             >
-              <Icon className="w-8 h-8 text-white drop-shadow-lg" strokeWidth={2} />
-            </motion.div>
-          </div>
-          
-          {/* Counter with gradient text */}
-          <div className="relative z-10 mb-3">
-            <motion.div
-              className="flex items-baseline justify-start"
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={isInView ? { scale: 1, opacity: 1 } : {}}
-              transition={{ 
-                duration: 0.6, 
-                delay: index * 0.15 + 0.3, 
-                type: "spring", 
-                stiffness: 150 
-              }}
-            >
-              <span 
-                className={`text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent tracking-tighter`}
-              >
-                {count.toLocaleString()}
-              </span>
-              <span className={`text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r ${stat.gradient} bg-clip-text text-transparent ml-1`}>
-                {stat.suffix}
-              </span>
-            </motion.div>
-          </div>
-          
-          {/* Label with animated underline */}
-          <div className="relative">
-            <p className="text-white/80 text-base md:text-lg font-medium tracking-wide">
-              {stat.label}
-            </p>
-            <motion.div
-              className={`h-0.5 bg-gradient-to-r ${stat.gradient} mt-2 rounded-full`}
-              initial={{ width: 0 }}
-              animate={isInView ? { width: "60%" } : {}}
-              transition={{ duration: 0.8, delay: index * 0.15 + 0.5, ease: "easeOut" }}
-            />
+              100%
+            </motion.span>
+            <p className="text-white/80 text-sm sm:text-base">EU GMP Certified</p>
           </div>
         </div>
-      </motion.div>
+        
+        {/* Trust badges */}
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-white/50 text-xs sm:text-sm">
+          <motion.span 
+            className="flex items-center gap-1.5 bg-white/[0.03] px-3 py-1.5 rounded-full border border-white/[0.06]"
+            initial={{ opacity: 0, x: -10 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.6 }}
+          >
+            <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
+            Seed-to-Sale Traceability
+          </motion.span>
+          <motion.span 
+            className="flex items-center gap-1.5 bg-white/[0.03] px-3 py-1.5 rounded-full border border-white/[0.06]"
+            initial={{ opacity: 0, x: -10 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.7 }}
+          >
+            <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
+            Blockchain Verified
+          </motion.span>
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -240,98 +349,59 @@ interface AnimatedStatisticsProps {
 
 const AnimatedStatistics = ({ className = "" }: AnimatedStatisticsProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-50px" });
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
   return (
     <section 
       ref={sectionRef}
-      className={`py-20 md:py-32 relative overflow-hidden my-0 ${className}`}
+      className={`py-16 sm:py-20 md:py-28 lg:py-32 relative overflow-hidden ${className}`}
       style={{ backgroundColor: 'hsl(var(--section-color))' }}
     >
-      {/* Animated background elements */}
+      {/* Subtle background elements */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Large gradient orbs - brand-aligned */}
-        <motion.div
-          className="absolute -top-40 -left-40 w-80 h-80 bg-[#4DBFA1]/20 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.15, 0.25, 0.15],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -bottom-40 -right-40 w-96 h-96 bg-[#2C7D7A]/20 rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.1, 0.2],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#1C4F4D]/15 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.1, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        />
-        
-        {/* Grid pattern overlay */}
-        <div 
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: '50px 50px'
-          }}
-        />
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-primary/8 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
-          className="text-center mb-16 md:mb-20"
+          transition={{ duration: 0.7, ease: [0.25, 0.4, 0.25, 1] }}
+          className="text-center mb-10 sm:mb-12 md:mb-16"
         >
-          {/* Decorative badge */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6"
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/[0.04] border border-white/[0.08] mb-4 sm:mb-6"
           >
-            <span className="w-2 h-2 rounded-full bg-[#4DBFA1] animate-pulse" />
-            <span className="text-sm text-white/70 font-medium tracking-wide uppercase">Global Impact</span>
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs sm:text-sm text-white/60 font-medium tracking-wide uppercase">Global Impact</span>
           </motion.div>
           
-          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white tracking-tight mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3 sm:mb-4">
             Our Impact in{" "}
-            <span className="bg-gradient-to-r from-[#4DBFA1] via-[#2C7D7A] to-[#0D9488] bg-clip-text text-transparent">
-              Numbers
-            </span>
+            <span className="text-primary">Numbers</span>
           </h2>
-          <p className="text-white/60 text-base md:text-lg max-w-2xl mx-auto">
-            Building the future of medical cannabis with precision, scale, and global reach
+          <p className="text-white/50 text-sm sm:text-base md:text-lg max-w-xl mx-auto">
+            Building the future of medical cannabis with precision and global reach
           </p>
         </motion.div>
         
-        {/* Stats grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto">
-          {statistics.map((stat, index) => (
-            <StatCard key={stat.label} stat={stat} index={index} />
-          ))}
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 max-w-6xl mx-auto">
+          {/* Hero stat - spans 2 columns and 2 rows on desktop */}
+          <HeroStatCard isInView={isInView} />
+          
+          {/* Secondary stats - stacked on right */}
+          <ResearchCard isInView={isInView} />
+          <CountriesCard isInView={isInView} />
+          
+          {/* Trust banner - full width */}
+          <TrustBanner isInView={isInView} />
         </div>
-        
-        {/* Bottom decorative line */}
-        <motion.div
-          className="mt-16 md:mt-20 flex justify-center"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 1, delay: 0.8 }}
-        >
-          <div className="h-px w-32 md:w-48 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-        </motion.div>
       </div>
     </section>
   );
