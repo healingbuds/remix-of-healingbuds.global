@@ -1,193 +1,262 @@
 
 
-# Mobile Country Tabs Optimization - Global Healthcare Network Page
+# Visual Enhancement: "Our Impact in Numbers" Section
 
-## Issue Summary
-The country tabs at the bottom of the Global Healthcare Network page are not symmetrically displayed on mobile devices. They appear jumbled, left-aligned, and may not all fit on screen without scrolling.
+## Overview
 
----
-
-## Current State Analysis
-
-**File:** `src/pages/GlobalMapHub.tsx` (lines 248-297)
-
-Current mobile implementation:
-- Uses `overflow-x-auto` with horizontal scrolling
-- Tabs are left-aligned (`justify-start`)
-- Abbreviated names (SA, PT, TH, UK) are used on mobile
-- Status labels are hidden on mobile (good for space)
-- Gap between tabs: `gap-1.5` on mobile
-
-Problems:
-- Left-alignment breaks visual symmetry
-- Scrolling is unnecessary if all 4 tabs can fit
-- Inconsistent sizing between tabs
+Transform the current statistics section from abstract number cards into a **visually-rich, story-driven experience** with photography, progress visualizations, and cinematic layout.
 
 ---
 
-## Proposed Solution
+## Design Approach: "Cinematic Bento Grid with Photography"
 
-### Approach: Grid Layout for Mobile Symmetry
+Combine the Bento Grid layout with **embedded photography** from the existing asset library to create visual context for each metric.
 
-Replace the flex horizontal scroll with a **2x2 grid on mobile** that fits all tabs on screen with perfect symmetry, then switch to **flex row on larger screens**.
+---
 
-### File: `src/pages/GlobalMapHub.tsx`
-
-**Change 1:** Update container layout (lines 249-251)
+## Visual Layout
 
 ```text
-Current:
-├── overflow-x-auto scrollbar-hide
-├── flex items-center justify-start md:justify-center
-├── gap-1.5 sm:gap-2 md:gap-3
-└── min-w-max (forces horizontal scroll)
+DESKTOP (Bento with Photography):
+┌────────────────────────────────────────────────────────────────────────┐
+│                                                                         │
+│  ┌───────────────────────────────────────┐  ┌───────────────────────┐  │
+│  │  ╔═══════════════════════════════╗    │  │  🔬 50+ Partners      │  │
+│  │  ║  [cultivation-facility.jpg]   ║    │  │  [research-lab.jpg]   │  │
+│  │  ║   with dark overlay           ║    │  │  as subtle bg         │  │
+│  │  ╚═══════════════════════════════╝    │  ├───────────────────────┤  │
+│  │         🌿 18,000 m²                  │  │  🌍 15+ Countries     │  │
+│  │     Cultivation Space                 │  │  [world map visual]   │  │
+│  │   ▓▓▓▓▓▓▓▓▓▓▓░░░░░ 60k kg/yr         │  │                       │  │
+│  └───────────────────────────────────────┘  └───────────────────────┘  │
+│                                                                         │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │  ✅ 100% EU GMP Certified                                         │  │
+│  │  [certification badges + animated checkmark + facility image]     │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+└────────────────────────────────────────────────────────────────────────┘
 
-Proposed:
-├── grid grid-cols-2 sm:flex
-├── gap-2 sm:gap-2 md:gap-3
-├── justify-items-center (grid) / justify-center (flex)
-└── Remove min-w-max (no scroll needed)
+MOBILE (Stacked with Photos):
+┌─────────────────────────────┐
+│  [cultivation-facility.jpg] │
+│        18,000 m²            │
+│    Cultivation Space        │
+│    ▓▓▓▓▓▓▓░░░ Progress      │
+└─────────────────────────────┘
+┌────────────┐ ┌──────────────┐
+│ 🔬 50+     │ │ 🌍 15+       │
+│ Partners   │ │ Countries    │
+│ [lab.jpg]  │ │ [map icon]   │
+└────────────┘ └──────────────┘
+┌─────────────────────────────┐
+│  ✅ 100% EU GMP Certified   │
+│  [badges visual]            │
+└─────────────────────────────┘
 ```
-
-**Change 2:** Update button sizing for consistent width (lines 262-271)
-
-```text
-Current button classes:
-├── px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2.5
-└── flex-shrink-0
-
-Proposed button classes:
-├── px-3 py-2 sm:px-3 sm:py-2 md:px-4 md:py-2.5
-├── w-full sm:w-auto (full width in grid cell)
-├── justify-center (center content)
-└── Remove flex-shrink-0 (not needed with grid)
-```
-
-**Change 3:** Simplify mobile abbreviations (lines 276-281)
-
-Keep abbreviated names but ensure consistent display:
-- 🇿🇦 SA (South Africa)
-- 🇵🇹 PT (Portugal)  
-- 🇹🇭 TH (Thailand)
-- 🇬🇧 UK (United Kingdom)
 
 ---
 
-## Code Implementation
+## Asset Mapping
 
-### Updated Container Structure
+| Statistic | Background Image | Visual Element |
+|-----------|------------------|----------------|
+| Cultivation Space (Hero) | `cultivation-facility-bright.jpg` | Circular progress gauge |
+| Research Partners | `research-lab-hq.jpg` | Partner logo silhouettes |
+| Countries Served | None (use animated dots) | Stylized world map with pulse points |
+| EU GMP Certified | `facility-safety-docs.jpg` | Animated checkmark + certificate badge |
+
+---
+
+## Implementation Details
+
+### 1. Hero Stat Card with Photography
+
+The "Cultivation Space" card gets a cinematic treatment:
 
 ```tsx
-{/* Region Pills - 2x2 Grid on mobile, centered flex on larger screens */}
-<div className="px-2 sm:px-0">
-  <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-items-center sm:justify-center gap-2 md:gap-3 mb-3 md:mb-4">
-    {Object.entries(countryDisplayInfo).map(([key, info]) => {
-      const isSelected = selectedCountry === key;
-      const status = statusConfig[info.status];
+{/* Hero Card - Full background image */}
+<div className="relative md:col-span-2 md:row-span-2 rounded-3xl overflow-hidden">
+  {/* Background Image with gradient overlay */}
+  <div className="absolute inset-0">
+    <img 
+      src={cultivationImage}
+      alt=""
+      className="w-full h-full object-cover"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
+  </div>
+  
+  {/* Content */}
+  <div className="relative z-10 p-8 md:p-12 flex flex-col justify-end h-full min-h-[320px] md:min-h-[400px]">
+    <div className="mb-4">
+      <span className="text-7xl md:text-8xl font-bold text-white">18,000</span>
+      <span className="text-4xl font-bold text-primary">m²</span>
+    </div>
+    <p className="text-white/90 text-xl mb-6">Cultivation Space</p>
+    
+    {/* Progress Visualization */}
+    <div className="mt-auto">
+      <div className="flex justify-between text-sm text-white/60 mb-2">
+        <span>Annual Production</span>
+        <span>60,000 kg/year</span>
+      </div>
+      <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+        <motion.div 
+          className="h-full bg-gradient-to-r from-primary to-emerald-400"
+          initial={{ width: 0 }}
+          animate={{ width: '75%' }}
+          transition={{ duration: 1.5, delay: 0.5 }}
+        />
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+### 2. Secondary Cards with Subtle Photo Backgrounds
+
+```tsx
+{/* Research Partners Card */}
+<div className="relative rounded-2xl overflow-hidden">
+  <div className="absolute inset-0">
+    <img src={researchLabImage} className="w-full h-full object-cover opacity-30" />
+    <div className="absolute inset-0 bg-gradient-to-br from-[#1C4F4D]/95 to-[#0D3D3A]/98" />
+  </div>
+  
+  <div className="relative z-10 p-6">
+    <Users className="w-8 h-8 text-primary mb-4" />
+    <span className="text-4xl font-bold text-white">50+</span>
+    <p className="text-white/70">Research Partners</p>
+    <p className="text-sm text-white/50 mt-2">Imperial College, UPenn & more</p>
+  </div>
+</div>
+```
+
+### 3. Countries Card with Animated Map
+
+```tsx
+{/* Countries Card - Interactive Map Dots */}
+<div className="relative rounded-2xl bg-gradient-to-br from-white/[0.05] to-white/[0.02] p-6">
+  {/* Simplified World Map SVG with pulsing dots */}
+  <div className="absolute right-4 top-4 w-24 h-16 opacity-40">
+    <svg viewBox="0 0 100 60" className="w-full h-full">
+      {/* Simplified continent shapes */}
+      <path d="M20,25 Q30,20 40,25..." fill="currentColor" className="text-white/30" />
       
-      return (
-        <motion.button
-          key={key}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={() => handleCountrySelect(key)}
-          className={`
-            relative w-full sm:w-auto px-3 py-2 sm:px-3 sm:py-2 md:px-4 md:py-2.5 
-            rounded-xl text-xs sm:text-sm font-medium transition-all duration-300
-            flex items-center justify-center gap-1.5 sm:gap-2
-            ${isSelected 
-              ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-primary/50' 
-              : isDark 
-                ? 'bg-white/[0.08] text-white/80 hover:bg-white/[0.12] hover:text-white border border-white/10'
-                : 'bg-black/[0.06] text-foreground/80 hover:bg-black/[0.10] hover:text-foreground border border-black/10'
-            }
-          `}
-        >
-          <span className="text-sm sm:text-base">{info.flag}</span>
-          <span className="hidden sm:inline">{info.name}</span>
-          <span className="sm:hidden text-[11px] font-medium">
-            {key === 'southAfrica' ? 'South Africa' : 
-             key === 'portugal' ? 'Portugal' : 
-             key === 'thailand' ? 'Thailand' : 
-             key === 'uk' ? 'UK' : info.name}
-          </span>
-          
-          {info.status === 'LIVE' && (
-            <span className="flex h-1.5 w-1.5 sm:h-2 sm:w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-emerald-500" />
-            </span>
-          )}
-          {info.status !== 'LIVE' && (
-            <span className={`hidden sm:inline text-[10px] uppercase tracking-wider ${status.textColor} opacity-80`}>
-              {status.label}
-            </span>
-          )}
-        </motion.button>
-      );
-    })}
+      {/* Pulsing location dots */}
+      {['UK', 'Portugal', 'Thailand', 'SA'].map((_, i) => (
+        <circle 
+          cx={[45, 35, 75, 50][i]} 
+          cy={[22, 30, 35, 45][i]} 
+          r="2" 
+          fill="#4DBFA1"
+          className="animate-pulse"
+        />
+      ))}
+    </svg>
+  </div>
+  
+  <Globe className="w-8 h-8 text-primary mb-4" />
+  <span className="text-4xl font-bold text-white">15+</span>
+  <p className="text-white/70">Countries Served</p>
+</div>
+```
+
+### 4. Trust Banner with Certification Visual
+
+```tsx
+{/* EU GMP Banner - Full Width */}
+<div className="md:col-span-3 relative rounded-2xl overflow-hidden">
+  <div className="absolute inset-0">
+    <img src={facilityDocsImage} className="w-full h-full object-cover opacity-20" />
+    <div className="absolute inset-0 bg-gradient-to-r from-[#1C4F4D]/95 via-[#0D3D3A]/90 to-[#1C4F4D]/95" />
+  </div>
+  
+  <div className="relative z-10 p-6 md:p-8 flex items-center justify-between flex-wrap gap-6">
+    <div className="flex items-center gap-4">
+      <motion.div 
+        className="w-14 h-14 rounded-full bg-emerald-500/20 flex items-center justify-center"
+        animate={{ scale: [1, 1.1, 1] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <Award className="w-7 h-7 text-emerald-400" />
+      </motion.div>
+      <div>
+        <span className="text-3xl font-bold text-white">100%</span>
+        <p className="text-white/80">EU GMP Certified</p>
+      </div>
+    </div>
+    
+    {/* Trust Badges */}
+    <div className="flex items-center gap-3 text-white/50 text-sm">
+      <span className="flex items-center gap-1.5">
+        <CheckCircle className="w-4 h-4 text-emerald-400" />
+        Seed-to-Sale Traceability
+      </span>
+      <span className="hidden md:inline">•</span>
+      <span className="flex items-center gap-1.5">
+        <CheckCircle className="w-4 h-4 text-emerald-400" />
+        Blockchain Verified
+      </span>
+    </div>
   </div>
 </div>
 ```
 
 ---
 
-## Visual Result
+## Animations
 
-### Mobile View (2x2 Grid):
-```text
-┌─────────────────────────────────────┐
-│  ┌───────────────┐ ┌───────────────┐│
-│  │🇿🇦 South Africa│ │🇵🇹 Portugal   ││
-│  └───────────────┘ └───────────────┘│
-│  ┌───────────────┐ ┌───────────────┐│
-│  │🇹🇭 Thailand    │ │🇬🇧 UK          ││
-│  └───────────────┘ └───────────────┘│
-│         Powered by Dr. Green         │
-└─────────────────────────────────────┘
-```
-
-### Desktop View (Flex Row - unchanged):
-```text
-┌────────────────────────────────────────────────────────────────────┐
-│ 🇿🇦 South Africa • │ 🇵🇹 Portugal HQ │ 🇹🇭 Thailand PROD │ 🇬🇧 UK SOON │
-└────────────────────────────────────────────────────────────────────┘
-```
+| Element | Animation | Trigger |
+|---------|-----------|---------|
+| Hero image | Ken Burns (slow zoom) | On section visible |
+| Progress bar | Width 0→75% | Scroll into view |
+| Map dots | Pulse with stagger | Continuous |
+| Counter numbers | Spring physics count-up | Scroll into view |
+| Cards | Fade up + scale | Staggered on scroll |
 
 ---
 
-## Regional Navigation Confirmation
+## Accessibility
 
-Verified the current navigation logic is correct:
-
-| Region | Click Behavior | Status |
-|--------|----------------|--------|
-| 🇿🇦 South Africa | → External site (healingbuds.co.za) | ✅ Correct |
-| 🇵🇹 Portugal (HQ) | → Global site (/home) | ✅ Correct |
-| 🇹🇭 Thailand | → Registration form | ✅ Correct |
-| 🇬🇧 United Kingdom | → Registration form | ✅ Correct |
-
-**No changes needed to RegionSlidePanel.tsx** - the UK and PT regions already show registration forms since they're not live.
+- All images have `alt=""` (decorative)
+- Progress bar has `aria-label` and `role="progressbar"`
+- Sufficient contrast: white text on dark overlays
+- Animations respect `prefers-reduced-motion`
 
 ---
 
-## Summary of Changes
+## File Changes Summary
 
-| File | Change | Purpose |
-|------|--------|---------|
-| `GlobalMapHub.tsx` | Replace horizontal scroll with 2x2 grid on mobile | Perfect symmetry on mobile |
-| `GlobalMapHub.tsx` | Update button classes for full-width in grid | Equal-sized buttons |
-| `GlobalMapHub.tsx` | Show full country names on mobile (not just abbreviations) | Better readability with grid space |
-| `GlobalMapHub.tsx` | Remove scrollbar-hide utility usage | No longer needed |
+| File | Change |
+|------|--------|
+| `src/components/AnimatedStatistics.tsx` | Complete redesign with photography, bento grid, progress visualization |
 
 ---
 
-## Benefits
+## Before vs After
 
-1. **Symmetry**: 2x2 grid ensures perfect visual balance
-2. **No scrolling**: All 4 countries visible without horizontal scroll
-3. **Touch-friendly**: Larger tap targets with full-width buttons
-4. **Readable**: Full country names instead of abbreviations (space allows it)
-5. **Responsive**: Seamlessly transitions to flex row on larger screens
-6. **Consistent**: Same visual weight for all 4 regions
+**Before:**
+- 4 identical glass cards in a row
+- Abstract gradient icons
+- Floating particles (visual noise)
+- No photography or real-world context
+
+**After:**
+- Asymmetric bento grid with visual hierarchy
+- Hero card with cultivation facility photography
+- Progress bar showing production capacity
+- Countries card with animated map visualization
+- Trust banner with certification badges
+- Meaningful context beneath each number
+
+---
+
+## Technical Considerations
+
+- **Performance**: Images lazy-loaded with `loading="lazy"`
+- **Bundle Size**: Reuse existing images from `src/assets`
+- **Responsive**: Mobile-first with elegant desktop expansion
+- **Theme**: Works with current dark section styling
 
